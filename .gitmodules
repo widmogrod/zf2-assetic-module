@@ -1,0 +1,3 @@
+[submodule "library/assetic"]
+	path = library/assetic
+	url = git://github.com/kriswallsmith/assetic.git
