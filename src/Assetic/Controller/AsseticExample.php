@@ -1,10 +1,10 @@
 <?php
 
-namespace ZendSkeletonModule\Controller;
+namespace Assetic\Controller;
 
 use Zend\Mvc\Controller\ActionController;
 
-class SkeletonController extends ActionController
+class ExampleController extends ActionController
 {
     public function indexAction()
     {
