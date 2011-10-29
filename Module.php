@@ -1,6 +1,6 @@
 <?php
 
-namespace ZendSkeletonModule;
+namespace Assetic;
 
 use Zend\Config\Config,
     Zend\Module\Manager,
