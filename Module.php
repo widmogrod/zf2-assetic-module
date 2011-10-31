@@ -154,9 +154,9 @@ class Module
             $e->setResponse($response);
         }
 
-        /* $var $as \Assetic\Service\Service */
+        /* $var $as \Assetic\Service */
         $as = $this->locator->get('assetic-service');
-        $as->setNamespace($this->_currentRouteName);
+        $as->setRouteName($this->_currentRouteName);
 
         $content = $response->getContent();
         $response->setContent($content);
