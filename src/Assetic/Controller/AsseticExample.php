@@ -12,6 +12,9 @@ class AsseticExampleController extends ActionController implements LocatorAware
     {
 
         $locator = $this->getLocator();
+        /* @var $as \Assetic\Service */
+        $as = $locator->get('assetic-service');
+
         /* @var $ac Assetic\Asset\AssetCollection */
 //        $as = $locator->get('assetic-service');
 //        $as->getFilterManager();

@@ -1,32 +1,64 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: gabriel
- * Date: 30.10.2011
- * Time: 23:28
- * To change this template use File | Settings | File Templates.
- */
-
-namespace Assetic\Service;
+namespace Assetic;
 
 class Service
 {
-    const DEFAULT_NAMESPACE = 'default';
+    const DEFAULT_ROUTE_NAME = 'default';
 
-    protected $namespace;
+    protected $routeName;
 
-    public function __construct()
+    /**
+     * @var \Assetic\Configuration
+     */
+    protected $configuration;
+
+    /**
+     * @var \Assetic\AssetManager
+     */
+    protected $assetManager;
+
+    /**
+     * @var \Assetic\FilterManager
+     */
+    protected $filterManager;
+
+    public function __construct(Configuration $configuration)
     {
-        
+        $this->configuration = $configuration;
     }
 
-    public function setNamespace($namespace)
+    public function setRoute($namespace)
     {
         $this->namespace = (string) $namespace;
     }
 
-    public function getNamespace()
+    public function setRouteName($routeName)
     {
-        return (null === $this->namespace) ? self::DEFAULT_NAMESPACE : $this->namespace;
+        $this->routeName = basename($routeName);
+    }
+
+    public function getRouteName()
+    {
+        return (null === $this->routeName) ? self::DEFAULT_ROUTE_NAME : $this->routeName;
+    }
+
+    public function setAssetManager(AssetManager $assetManager)
+    {
+        $this->assetManager = $assetManager;
+    }
+
+    public function getAssetManager()
+    {
+        return $this->assetManager;
+    }
+
+    public function setFilterManager(FilterManager $filterManager)
+    {
+        $this->filterManager = $filterManager;
+    }
+
+    public function getFilterManager()
+    {
+        return $this->filterManager;
     }
 }
