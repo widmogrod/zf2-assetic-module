@@ -2,29 +2,97 @@
 return array(
 
     'assetic' => array(
-        'load_function' => true,
 
-        'routes' => array(
-            'default' => array(
-                '@jquery',
-                '@base_css',
-            ),
-            'home' => array(
-                // powinno zadbać by dodać jquery
-                '@bootstrap_twitter_js',
-                '@bootstrap_twitter_css',
-            )
-        ),
     ),
 
     'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Assetic\Service' => array(
+                    'setAssetManager' => array(
+                        'assetManager' => array(
+                            'type' => 'Assetic\AssetManager',
+                            'required' => true
+                        )
+                    ),
+                    'setFilterManager' => array(
+                        'filterManager' => array(
+                            'type' => 'Assetic\FilterManager',
+                            'required' => true
+                        )
+                    )
+                )
+            )
+        ),
         'instance' => array(
             'alias' => array(
                 'asseticexample' => 'Assetic\Controller\AsseticExampleController',
-                'assetic-service' => 'Assetic\Service\Service',
                 'assetic-collection' => 'Assetic\Asset\AssetCollection',
-                'assetic-asset-glob' => 'Assetic\Asset\GlobAsset'
+                'assetic-asset-glob' => 'Assetic\Asset\GlobAsset',
+
+                'assetic-asset-manager' => 'Assetic\AssetManager',
+                'assetic-filter-manager' => 'Assetic\FilterManager',
+
+                'assetic-service' => 'Assetic\Service',
+                'assetic-configuration' => 'Assetic\Configuration'
             ),
+
+            'assetic-service' => array(
+                'parameters' => array(
+                    'configuration' => 'assetic-configuration'
+                ),
+                'injections' => array(
+                    'assetic-asset-manager',
+                    'assetic-filter-manager'
+                )
+            ),
+
+            'assetic-configuration' => array(
+                'parameters' => array(
+                    'data' => array(
+                        'debug' => false,
+                        'webPath' => __DIR__ . '/../../../public',
+                        'load_function' => false,
+                        'append_html_head' => true,
+
+                        'routes' => array(
+                            'default' => array(
+                                '@jquery',
+                                '@base_css',
+                            ),
+                            'home' => array(
+                                // powinno zadbać by dodać jquery
+                                '@bootstrap_twitter_js',
+                                '@bootstrap_twitter_css',
+                            )
+                        ),
+
+                        'modules' => array(
+                            'assetic' => array(
+                                'root_path' => __DIR__ . '/assets',
+                                'collections' => array(
+                                    'asset_test_css' => array(
+                                        'assets' => array(),
+                                        'filters' => array()
+                                    ),
+                                    'asset_test_js' => array(
+                                        'assets' => array(
+                                            'css/*.css'
+                                        ),
+                                        'filters' => array(
+                                            'js/jquery.js'
+                                        )
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+
+//            'assetic-asset-manager' => array(
+//                ''
+//            ),
 
             'assetic-manager' => array(
                 'parameters' => array(
@@ -39,12 +107,6 @@ return array(
                             '/path/to/jquery-ui-*'
                         ),
                     )
-                )
-            ),
-
-            'assetic-container' => array(
-                'parameters' => array(
-                    
                 )
             ),
 
