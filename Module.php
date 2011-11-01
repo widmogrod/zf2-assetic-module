@@ -25,9 +25,13 @@ class Module
 {
     protected $_currentRouteName;
 
+    protected $moduleManager;
+
     public function init(Manager $moduleManager)
     {
         $this->initAutoloader();
+
+        $this->moduleManager = $moduleManager;
 
         $events = StaticEventManager::getInstance();
         // pre
@@ -157,8 +161,13 @@ class Module
         /* $var $as \Assetic\Service */
         $as = $this->locator->get('assetic-service');
         $as->setRouteName($this->_currentRouteName);
+        $as->initLoadedModules($this->moduleManager->getLoadedModules());
+
+        $tags = new TagGenerator('/');
+        $tags = $tags->generateTagFromAssetsManager($as->getAssetManager());
 
         $content = $response->getContent();
+        $content = str_replace('</head>', $tags . '</head>', $content);
         $response->setContent($content);
         return $response;
     }

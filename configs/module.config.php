@@ -1,11 +1,9 @@
 <?php
 return array(
 
-    'assetic' => array(
-
-    ),
-
     'di' => array(
+        // why this not set setters?
+        /**  /
         'definition' => array(
             'class' => array(
                 'Assetic\Service' => array(
@@ -22,16 +20,19 @@ return array(
                         )
                     )
                 )
-            )
+            ),
         ),
+        /**/
         'instance' => array(
             'alias' => array(
                 'asseticexample' => 'Assetic\Controller\AsseticExampleController',
                 'assetic-collection' => 'Assetic\Asset\AssetCollection',
                 'assetic-asset-glob' => 'Assetic\Asset\GlobAsset',
 
+                /**  /
                 'assetic-asset-manager' => 'Assetic\AssetManager',
                 'assetic-filter-manager' => 'Assetic\FilterManager',
+                /**/
 
                 'assetic-service' => 'Assetic\Service',
                 'assetic-configuration' => 'Assetic\Configuration'
@@ -41,10 +42,12 @@ return array(
                 'parameters' => array(
                     'configuration' => 'assetic-configuration'
                 ),
+                /**  /
                 'injections' => array(
                     'assetic-asset-manager',
                     'assetic-filter-manager'
                 )
+                /**/
             ),
 
             'assetic-configuration' => array(
@@ -69,18 +72,20 @@ return array(
 
                         'modules' => array(
                             'assetic' => array(
-                                'root_path' => __DIR__ . '/assets',
+                                'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
                                     'asset_test_css' => array(
-                                        'assets' => array(),
+                                        'assets' => array(
+                                            'css/*.css'
+                                        ),
                                         'filters' => array()
                                     ),
                                     'asset_test_js' => array(
                                         'assets' => array(
-                                            'css/*.css'
+                                            'js/jquery.js'
                                         ),
                                         'filters' => array(
-                                            'js/jquery.js'
+
                                         )
                                     ),
                                 ),
