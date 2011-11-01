@@ -36,79 +36,18 @@ class Module
         $events = StaticEventManager::getInstance();
         // pre
         $events->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListner'), 200);
-
-        //$events = StaticEventManager::getInstance();
-        //$events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-
-        #require_once __DIR__ . '/library/assetic/src/functions.php';
-
-        $js = new AssetCollection(array(
-            new GlobAsset(__DIR__ .'/assets/css/*'),
-//            new FileAsset(__DIR__ .'/assets/js/test.js'),
-        ));
-
-        // the code is merged when the asset is dumped
-        //var_dump($js->dump());
-
-        $fa = new FileAsset(__DIR__ .'/assets/js/jquery.js');
-        $fa->setTargetPath('jquery.js');
-
-        $ga = new GlobAsset(__DIR__ .'/assets/css/*');
-        $ga->setTargetPath('all.css');
-
-        $am = new AssetManager();
-//        $am->set('jquery', $fa);
-//        $am->set('base_css', $ga);
-
-        $css = new AssetCollection(array(
-            new GlobAsset(__DIR__ .'/assets/css/*'),
-//            new GlobAsset(__DIR__ .'/assets/css/*'),
-        ), array(
-//            new Yui\CssCompressorFilter('/Users/gabriel/Downloads/yuicompressor-2.4.6/build/yuicompressor-2.4.6.jar'),
-        ));
-
-//        $writer = new AssetWriter(__DIR__ .'/assets/all.jc');
-//        $writer->writeManagerAssets($am);
-
-        $factory = new AssetFactory(__DIR__ .'/assets/');
-        $factory->setAssetManager($am);
-//        $factory->setFilterManager($fm);
-        $factory->setDebug(true);
-
-        $css = $factory->createAsset(array(
-//            '@jquery',         // load the asset manager's "reset" asset
-            'css/*.css', // load every scss files from "/path/to/asset/directory/css/src/"
-        ), array(
-//            'scss',           // filter through the filter manager's "scss" filter
-//            '?yui_css',       // don't use this filter in debug mode
-        ), array(
-            'output' => 'aaa'
-        ));
-
-        // this will echo CSS compiled by LESS and compressed by YUI
-//        echo $css->dump();
-
-        $am->set('my', $css);
-
-        $writer = new AssetWriter(__DIR__ .'/assets');
-        $writer->writeManagerAssets($am);
-//        die;
-
-//        $factory = new AssetFactory('/path/to/asset/directory/');
-//        $factory->setAssetManager($am);
-//        $factory->setFilterManager($fm);
-//        $factory->setDebug(true);
-//        $css = $factory->createAsset(array(
-//            '@reset',         // load the asset manager's "reset" asset
-//            'css/src/*.scss', // load every scss files from "/path/to/asset/directory/css/src/"
-//        ), array(
-//            'scss',           // filter through the filter manager's "scss" filter
-//            '?yui_css',       // don't use this filter in debug mode
-//        ));
-//        echo $css->dump();
-
-//        assetic_init();
     }
+
+    public function getProvides()
+    {
+        return array(
+            __NAMESPACE__ => array(
+                'version' => '0.1.0'
+            ),
+        );
+    }
+
+
 
     public function getConfig($env = null)
     {

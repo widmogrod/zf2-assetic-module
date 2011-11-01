@@ -52,11 +52,11 @@ return array(
 
             'assetic-configuration' => array(
                 'parameters' => array(
-                    'data' => array(
+                    'config' => array(
                         'debug' => false,
                         'webPath' => __DIR__ . '/../../../public',
-                        'load_function' => false,
-                        'append_html_head' => true,
+                        //'load_function' => false,
+                        //'append_html_head' => true,
 
                         'routes' => array(
                             'default' => array(

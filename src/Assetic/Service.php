@@ -82,7 +82,7 @@ class Service
 
             $conf = (array) $moduleConfiguration[$moduleName];
 
-            $factory = new Factory\AssetFactory($conf[g'root_path']);
+            $factory = new Factory\AssetFactory($conf['root_path']);
             $factory->setAssetManager($this->getAssetManager());
             $factory->setFilterManager($this->getFilterManager());
             $factory->setDebug($this->configuration->isDebug());

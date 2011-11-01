@@ -5,8 +5,6 @@ use Zend\Stdlib;
 
 class Configuration
 {
-    protected $data = array();
-
     protected $routes = array();
 
     protected $debug = false;
@@ -15,31 +13,17 @@ class Configuration
 
     protected $baseUrl;
 
-    public function __construct(array $data)
+    public function __construct(array $config)
     {
-        if ($data instanceof Traversable) {
-            if (method_exists($data, 'toArray')) {
-                $data = $data->toArray();
+        if (!is_null($config)) {
+            if (is_array($config) || $config instanceof \Traversable) {
+                $this->processArray($config);
             } else {
-                $data = iterator_to_array($data, true);
-            }
-        } elseif (!is_array($data)) {
-            throw new Exception\InvalidArgumentException(
-                'Configuration data must be of type Zend\Config\Config or an array'
-            );
-        }
-
-        $this->data = array();
-        foreach ($data as $key => $value)
-        {
-            $method = 'set'.ucfirst($key);
-            if (method_exists($this, $method))
-            {
-                $this->$method($value);
-            }
-            else
-            {
-                $this->data[$key] = $value;
+                throw new \InvalidArgumentException(
+                    'Parameter to \\Zend\\Stdlib\\Configuration\'s '
+                    . 'constructor must be an array or implement the '
+                    . '\\Traversable interface'
+                );
             }
         }
     }
@@ -123,4 +107,65 @@ class Configuration
     }
 
 
+    protected function processArray($config)
+    {
+        foreach ($config as $key => $value) {
+            $setter = $this->assembleSetterNameFromConfigKey($key);
+            $this->{$setter}($value);
+        }
+    }
+
+    protected function assembleSetterNameFromConfigKey($key)
+    {
+        $parts = explode('_', $key);
+        $parts = array_map('ucfirst', $parts);
+        $setter = 'set' . implode('', $parts);
+        if (!method_exists($this, $setter)) {
+            throw new \BadMethodCallException(
+                'The configuration key "' . $key . '" does not '
+                . 'have a matching ' . $setter . ' setter method '
+                . 'which must be defined'
+            );
+        }
+        return $setter;
+    }
+
+    protected function assembleGetterNameFromConfigKey($key)
+    {
+        $parts = explode('_', $key);
+        $parts = array_map('ucfirst', $parts);
+        $getter = 'get' . implode('', $parts);
+        if (!method_exists($this, $getter)) {
+            throw new \BadMethodCallException(
+                'The configuration key "' . $key . '" does not '
+                . 'have a matching ' . $getter . ' getter method '
+                . 'which must be defined'
+            );
+        }
+        return $getter;
+    }
+
+    public function __set($key, $value)
+    {
+        $setter = $this->assembleSetterNameFromConfigKey($key);
+        $this->{$setter}($value);
+    }
+
+    public function __get($key)
+    {
+        $getter = $this->assembleGetterNameFromConfigKey($key);
+        return $this->{$getter}();
+    }
+
+    public function __isset($key)
+    {
+        $getter = $this->assembleGetterNameFromConfigKey($key);
+        return !is_null($this->{$getter}());
+    }
+
+    public function __unset($key)
+    {
+        $setter = $this->assembleSetterNameFromConfigKey($key);
+        $this->{$setter}(null);
+    }
 }
