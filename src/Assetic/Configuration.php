@@ -13,6 +13,8 @@ class Configuration
 
     protected $webPath;
 
+    protected $baseUrl;
+
     public function __construct(array $data)
     {
         if ($data instanceof Traversable) {
@@ -108,6 +110,16 @@ class Configuration
         return array_key_exists($name, $this->modules)
                 ? $this->modules[$name]
                 : $default;
+    }
+
+    public function setBaseUrl($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
+
+    public function getBaseUrl()
+    {
+        return (null === $this->baseUrl) ? '/' : $this->baseUrl;
     }
 
 

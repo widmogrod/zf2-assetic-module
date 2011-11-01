@@ -82,7 +82,7 @@ class Service
 
             $conf = (array) $moduleConfiguration[$moduleName];
 
-            $factory = new Factory\AssetFactory($conf['root_path']);
+            $factory = new Factory\AssetFactory($conf[g'root_path']);
             $factory->setAssetManager($this->getAssetManager());
             $factory->setFilterManager($this->getFilterManager());
             $factory->setDebug($this->configuration->isDebug());
@@ -101,5 +101,11 @@ class Service
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
         }
+    }
+
+    public function generateTags()
+    {
+        $tags = new TagGenerator($this->configuration->getBaseUrl());
+        return $tags->generateTagFromAssetsManager($this->getAssetManager());
     }
 }

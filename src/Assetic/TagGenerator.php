@@ -5,11 +5,11 @@ use Assetic\Asset\AssetInterface;
 
 class TagGenerator
 {
-    private $dir;
+    private $baseUrl;
 
     public function __construct($dir)
     {
-        $this->dir = rtrim($dir, '/\\');
+        $this->baseUrl = rtrim($dir, '/\\');
     }
 
     public function generateTagFromAssetsManager(AssetManager $am)
@@ -23,7 +23,7 @@ class TagGenerator
 
     public function generateTag(AssetInterface $asset)
     {
-        return static::tag($this->dir . '/' . $asset->getTargetPath());
+        return static::tag($this->baseUrl . '/' . $asset->getTargetPath());
     }
 
     static protected function tag($path)

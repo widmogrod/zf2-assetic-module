@@ -163,11 +163,10 @@ class Module
         $as->setRouteName($this->_currentRouteName);
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
 
-        $tags = new TagGenerator('/');
-        $tags = $tags->generateTagFromAssetsManager($as->getAssetManager());
+
 
         $content = $response->getContent();
-        $content = str_replace('</head>', $tags . '</head>', $content);
+        $content = str_replace('</head>', $as->generateTags() . '</head>', $content);
         $response->setContent($content);
         return $response;
     }
