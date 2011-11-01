@@ -90,8 +90,8 @@ class Service
             $collections = (array) $conf['collections'];
             foreach($collections as $name => $options)
             {
-                $assets = (array) $options['assets'];
-                $filters = (array) $options['filters'];
+                $assets  = isset($options['assets']) ? $options['assets'] : array();
+                $filters = isset($options['filters']) ? $options['filters'] : array();
                 $options = isset($options['options']) ? $options['options'] : array();
                 $options['output'] = isset($options['output']) ? $options['output'] : $name;
                 $asset = $factory->createAsset($assets, $filters, $options);

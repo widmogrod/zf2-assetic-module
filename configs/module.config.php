@@ -71,6 +71,16 @@ return array(
                         ),
 
                         'modules' => array(
+                            'application' => array(
+                                'root_path' => __DIR__ . '/../assets',
+                                'collections' => array(
+                                    'asset_app_test_css' => array(
+                                        'assets' => array(
+                                            '@asset_test_css'
+                                        )
+                                    ),
+                                ),
+                            ),
                             'assetic' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
@@ -84,9 +94,7 @@ return array(
                                         'assets' => array(
                                             'js/jquery.js'
                                         ),
-                                        'filters' => array(
-
-                                        )
+                                        'filters' => array()
                                     ),
                                 ),
                             ),
