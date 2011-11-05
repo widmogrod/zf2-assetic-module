@@ -42,6 +42,10 @@ class Service
         return (null === $this->routeName) ? self::DEFAULT_ROUTE_NAME : $this->routeName;
     }
 
+    /**
+     * @Zend\Di\Definition\Annotation\Inject
+     * @Required
+     */
     public function setAssetManager(AssetManager $assetManager)
     {
         $this->assetManager = $assetManager;
@@ -75,7 +79,7 @@ class Service
         $moduleConfiguration = $this->configuration->getModules();
         foreach($loadedModules as $moduleName => $module)
         {
-            $moduleName = strtolower($moduleName);;
+            $moduleName = strtolower($moduleName);
             if (!isset($moduleConfiguration[$moduleName])) {
                 continue;
             }

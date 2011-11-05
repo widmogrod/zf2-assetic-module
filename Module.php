@@ -86,7 +86,7 @@ class Module
     {
         /* @var $router \Zend\Mvc\Router\Http\TreeRouteStack */
         $router = $e->getRouter();
-        $this->_currentRouteName = $router->getCurrentRouteName();
+//        $this->_currentRouteName = $router->getCurrentRouteName();
     }
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
@@ -99,13 +99,13 @@ class Module
 
         /* $var $as \Assetic\Service */
         $as = $this->locator->get('assetic-service');
-        $as->setRouteName($this->_currentRouteName);
+//        $as->setRouteName($this->_currentRouteName);
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
 
 
 
         $content = $response->getContent();
-        $content = str_replace('</head>', $as->generateTags() . '</head>', $content);
+        $content = str_replace('<head>', '<head>'.$as->generateTags(), $content);
         $response->setContent($content);
         return $response;
     }

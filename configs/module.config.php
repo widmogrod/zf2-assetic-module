@@ -3,22 +3,26 @@ return array(
 
     'di' => array(
         // why this not set setters?
-        /**  /
+        /**/
         'definition' => array(
             'class' => array(
                 'Assetic\Service' => array(
-                    'setAssetManager' => array(
-                        'assetManager' => array(
-                            'type' => 'Assetic\AssetManager',
-                            'required' => true
-                        )
+                    'methods' => array(
+                        'setAssetManager' => array(
+                            'assetManager' => array(
+//                                'name' => 'assetManager',
+                                'type' => 'Assetic\AssetManager',
+                                'required' => true
+                            )
+                        ),
+                        'setFilterManager' => array(
+                            'filterManager' => array(
+//                                'name' => 'filterManager',
+                                'type' => 'Assetic\FilterManager',
+                                'required' => true
+                            )
+                        ),
                     ),
-                    'setFilterManager' => array(
-                        'filterManager' => array(
-                            'type' => 'Assetic\FilterManager',
-                            'required' => true
-                        )
-                    )
                 )
             ),
         ),
@@ -29,7 +33,7 @@ return array(
                 'assetic-collection' => 'Assetic\Asset\AssetCollection',
                 'assetic-asset-glob' => 'Assetic\Asset\GlobAsset',
 
-                /**  /
+                /**/
                 'assetic-asset-manager' => 'Assetic\AssetManager',
                 'assetic-filter-manager' => 'Assetic\FilterManager',
                 /**/
@@ -42,10 +46,12 @@ return array(
                 'parameters' => array(
                     'configuration' => 'assetic-configuration'
                 ),
-                /**  /
+                /**/
                 'injections' => array(
+//                    'setAssetManager' =>
                     'assetic-asset-manager',
-                    'assetic-filter-manager'
+//                    'setFilterManager' =>
+                    'assetic-filter-manager',
                 )
                 /**/
             ),
@@ -71,6 +77,7 @@ return array(
                         ),
 
                         'modules' => array(
+                            /**  /
                             'application' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
@@ -81,6 +88,8 @@ return array(
                                     ),
                                 ),
                             ),
+                            /** /
+                            /** /
                             'assetic' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
@@ -98,6 +107,7 @@ return array(
                                     ),
                                 ),
                             ),
+                            /**/
                         ),
                     ),
                 ),
