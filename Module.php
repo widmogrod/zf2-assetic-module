@@ -105,7 +105,18 @@ class Module
 
 
         $content = $response->getContent();
-        $content = str_replace('<head>', '<head>'.$as->generateTags(), $content);
+        $tags = $as->generateTags();
+
+        // @todo fix this temporary solution
+
+        if (isset($tags['css'])) {
+            $content = str_replace('<head>', '<head>'.$tags['css'], $content);
+        }
+
+        if (isset($tags['js'])) {
+            $content = str_replace('</body>', $tags['js'] . '</body>', $content);
+        }
+
         $response->setContent($content);
         return $response;
     }
