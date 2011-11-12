@@ -2,22 +2,19 @@
 return array(
 
     'di' => array(
-        // why this not set setters?
-        /**/
+
         'definition' => array(
             'class' => array(
                 'AsseticBundle\Service' => array(
                     'methods' => array(
                         'setAssetManager' => array(
                             'assetManager' => array(
-//                                'name' => 'assetManager',
                                 'type' => 'Assetic\AssetManager',
                                 'required' => true
                             )
                         ),
                         'setFilterManager' => array(
                             'filterManager' => array(
-//                                'name' => 'filterManager',
                                 'type' => 'Assetic\FilterManager',
                                 'required' => true
                             )
@@ -26,34 +23,24 @@ return array(
                 )
             ),
         ),
-        /**/
+
         'instance' => array(
             'alias' => array(
-                'asseticexample' => 'AsseticBundle\Controller\AsseticExampleController',
-                'assetic-collection' => 'Assetic\Asset\AssetCollection',
-                'assetic-asset-glob' => 'Assetic\Asset\GlobAsset',
-
-                /**/
-                'assetic-asset-manager' => 'Assetic\AssetManager',
+                'assetic-asset-manager'  => 'Assetic\AssetManager',
                 'assetic-filter-manager' => 'Assetic\FilterManager',
-                /**/
 
-                'assetic-service' => 'AsseticBundle\Service',
-                'assetic-configuration' => 'AsseticBundle\Configuration'
+                'assetic'                => 'AsseticBundle\Service',
+                'assetic-configuration'  => 'AsseticBundle\Configuration'
             ),
 
-            'assetic-service' => array(
+            'assetic' => array(
                 'parameters' => array(
                     'configuration' => 'assetic-configuration'
                 ),
-                /**/
                 'injections' => array(
-//                    'setAssetManager' =>
                     'assetic-asset-manager',
-//                    'setFilterManager' =>
                     'assetic-filter-manager',
                 )
-                /**/
             ),
 
             'assetic-configuration' => array(
@@ -110,56 +97,6 @@ return array(
                                 ),
                             ),
                             /**/
-                        ),
-                    ),
-                ),
-            ),
-
-//            'assetic-asset-manager' => array(
-//                ''
-//            ),
-
-            'assetic-manager' => array(
-                'parameters' => array(
-                    'filter' => array(
-                        'sass' => array('SassFilter', '/path/to/parser/sass'),
-                        'yui_css' => array('Yui\CssCompressorFilter', '/path/to/yuicompressor.jar'),
-                    ),
-                    'asset'  => array(
-                        'jquery' => array(),
-                        'jquery-ui' => array(
-                            '@jquery',
-                            '/path/to/jquery-ui-*'
-                        ),
-                    )
-                )
-            ),
-
-            'assetic-collection' => array(
-                'parameters' => array(
-                    'assets' => array('alias:assetic-asset-glob'),
-                    'filters' => array(),
-                    'sourceRoot' => ''
-                )
-            ),
-
-            'assetic-asset-glob' => array(
-                'parameters' => array(
-                    'globs' => __DIR__ . '/../assets/css/*'
-                )
-            ),
-
-            'assetic-asset-glob-param1' => array(
-                'parameters' => array(
-                    'assetic-asset-glob'
-                )
-            ),
-
-            'Zend\View\PhpRenderer' => array(
-                'parameters' => array(
-                    'options'  => array(
-                        'script_paths' => array(
-                            'asseticexample' => __DIR__ . '/../views',
                         ),
                     ),
                 ),

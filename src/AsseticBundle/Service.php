@@ -137,12 +137,12 @@ class Service
 
     public function generateTags()
     {
-        #  generate from router
-        $tags = $this->generateTagsForRouter();
+        #  generate from controller
+        $tags = $this->generateTagsForController();
 
-        # if can't, ten from controller
+        # if can't, ten from router
         if (!$tags) {
-            $tags = $this->generateTagsForController();
+            $tags = $this->generateTagsForRouter();
         }
 
         # if can't, ten from all assets

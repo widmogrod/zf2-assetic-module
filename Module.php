@@ -2,29 +2,18 @@
 
 namespace AsseticBundle;
 
-use Zend\Config\Config,
-    Zend\Module\Manager,
-    Zend\Loader\AutoloaderFactory;
-
-#use Zend\EventManager\StaticEventManager;
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-use Assetic\Asset\GlobAsset;
-use Assetic\AssetManager;
-use Assetic\Asset\HttpAsset;
-use Assetic\Factory\AssetFactory;
-//use Assetic\Filter\CssMinFilter;
-use Assetic\Filter\Yui;
-#use Assetic\Factory\AssetFactory;
-
-use Zend\Http\Response;
-
-use Zend\EventManager\StaticEventManager;
+use Zend\Module\Manager,
+    Zend\Loader\AutoloaderFactory,
+    Zend\Http\Response,
+    Zend\EventManager\StaticEventManager;
 
 class Module
 {
     protected $_currentRouteName;
 
+    /**
+     * @var \Zend\Module\Manager
+     */
     protected $moduleManager;
 
     public function init(Manager $moduleManager)
@@ -33,8 +22,8 @@ class Module
 
         $this->moduleManager = $moduleManager;
 
+        # pre bootstrap
         $events = StaticEventManager::getInstance();
-        // pre
         $events->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListner'), 200);
     }
 
@@ -49,7 +38,7 @@ class Module
 
     public function getConfig($env = null)
     {
-        return new Config(include __DIR__ . '/configs/module.config.php');
+        return include __DIR__ . '/configs/module.config.php';
     }
 
     public function initAutoloader()
@@ -75,16 +64,9 @@ class Module
 
         $this->locator = $app->getLocator();
 
-        // post
-//        $app->events()->attach('route', array($this, 'currentRouteName'), -200);
+        # post dispatch action
         $app->events()->attach('dispatch', array($this, 'renderAssets'), -2000);
     }
-
-//    public function currentRouteName(\Zend\Mvc\MvcEvent $e)
-//    {
-//
-//        $this->_currentRouteName = $router->getMatchedRouteName();
-//    }
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
     {
@@ -97,14 +79,18 @@ class Module
         $router = $e->getRouteMatch();
 
         /* $var $as \AsseticBundle\Service */
-        $as = $this->locator->get('assetic-service');
+        $as = $this->locator->get('assetic');
 
+        # setup service
         $as->setRouteName($router->getMatchedRouteName());
         $as->setControllerName($router->getParam('controller'));
         $as->setActionName($router->getParam('action'));
 
+        # init assets for modules
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
 
+        # setup response content (attache stylesheet's nad scripts)
+        # @todo allow to setup view helpers.
         $content = $response->getContent();
         $content = $as->setupResponseContent($content);
         $response->setContent($content);
