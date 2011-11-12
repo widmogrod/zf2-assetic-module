@@ -6,7 +6,7 @@ return array(
         /**/
         'definition' => array(
             'class' => array(
-                'Assetic\Service' => array(
+                'AsseticBundle\Service' => array(
                     'methods' => array(
                         'setAssetManager' => array(
                             'assetManager' => array(
@@ -29,7 +29,7 @@ return array(
         /**/
         'instance' => array(
             'alias' => array(
-                'asseticexample' => 'Assetic\Controller\AsseticExampleController',
+                'asseticexample' => 'AsseticBundle\Controller\AsseticExampleController',
                 'assetic-collection' => 'Assetic\Asset\AssetCollection',
                 'assetic-asset-glob' => 'Assetic\Asset\GlobAsset',
 
@@ -38,8 +38,8 @@ return array(
                 'assetic-filter-manager' => 'Assetic\FilterManager',
                 /**/
 
-                'assetic-service' => 'Assetic\Service',
-                'assetic-configuration' => 'Assetic\Configuration'
+                'assetic-service' => 'AsseticBundle\Service',
+                'assetic-configuration' => 'AsseticBundle\Configuration'
             ),
 
             'assetic-service' => array(
@@ -64,6 +64,7 @@ return array(
                         //'load_function' => false,
                         //'append_html_head' => true,
 
+                        /** /
                         'routes' => array(
                             'default' => array(
                                 '@jquery',
@@ -75,6 +76,7 @@ return array(
                                 '@bootstrap_twitter_css',
                             )
                         ),
+                        /**/
 
                         'modules' => array(
                             /**  /

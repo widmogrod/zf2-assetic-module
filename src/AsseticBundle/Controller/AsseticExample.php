@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetic\Controller;
+namespace AsseticBundle\Controller;
 
 use Zend\Mvc\Controller\ActionController;
 use Zend\Mvc\LocatorAware;
@@ -12,7 +12,7 @@ class AsseticExampleController extends ActionController implements LocatorAware
     {
 
         $locator = $this->getLocator();
-        /* @var $as \Assetic\Service */
+        /* @var $as \AsseticBundle\Service */
         $as = $locator->get('assetic-service');
 
         /* @var $ac Assetic\Asset\AssetCollection */

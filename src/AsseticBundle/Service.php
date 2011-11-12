@@ -1,11 +1,29 @@
 <?php
-namespace Assetic;
+namespace AsseticBundle;
+
+use Assetic\AssetManager,
+    Assetic\FilterManager,
+    Assetic\Factory,
+    Assetic\AssetWriter;
 
 class Service
 {
     const DEFAULT_ROUTE_NAME = 'default';
 
+    /**
+     * @var string
+     */
     protected $routeName;
+
+    /**
+     * @var string
+     */
+    protected $controllerName;
+
+    /**
+     * @var string
+     */
+    protected $actionName;
 
     /**
      * @var \Assetic\Configuration
@@ -25,11 +43,6 @@ class Service
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
-    }
-
-    public function setRoute($namespace)
-    {
-        $this->namespace = (string) $namespace;
     }
 
     public function setRouteName($routeName)
@@ -107,9 +120,101 @@ class Service
         }
     }
 
+    public function setupResponseContent($content)
+    {
+        $tags = $this->generateTags();
+
+        if (isset($tags['css'])) {
+            $content = str_replace('<head>', '<head>'.$tags['css'], $content);
+        }
+
+        if (isset($tags['js'])) {
+            $content = str_replace('</body>', $tags['js'] . '</body>', $content);
+        }
+
+        return $content;
+    }
+
     public function generateTags()
     {
-        $tags = new TagGenerator($this->configuration->getBaseUrl());
+        #  generate from router
+        $tags = $this->generateTagsForRouter();
+
+        # if can't, ten from controller
+        if (!$tags) {
+            $tags = $this->generateTagsForController();
+        }
+
+        # if can't, ten from all assets
+        if (!$tags) {
+            $tags = $this->generateTagsForAllAssets();
+        }
+
+        return $tags;
+    }
+
+    public function generateTagsForController()
+    {
+        $assetOptions = $this->configuration->getController($this->getControllerName());
+        if (!$assetOptions) {
+            return false;
+        }
+
+        $am = $this->getAssetManager();
+
+        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
+        return $tags->getnerateTagFromOptions($assetOptions);
+    }
+
+    public function generateTagsForRouter()
+    {
+        $assetOptions = $this->configuration->getRoute($this->getRouteName());
+        if (!$assetOptions) {
+            return false;
+        }
+
+        $am = $this->getAssetManager();
+
+        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
+        return $tags->getnerateTagFromOptions($assetOptions);
+    }
+
+    public function generateTagsForAllAssets()
+    {
+        $am = $this->getAssetManager();
+        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
         return $tags->generateTagFromAssetsManager($this->getAssetManager());
+    }
+
+    /**
+     * @param string $controllerName
+     */
+    public function setControllerName($controllerName)
+    {
+        $this->controllerName = $controllerName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerName()
+    {
+        return $this->controllerName;
+    }
+
+    /**
+     * @param string $actionName
+     */
+    public function setActionName($actionName)
+    {
+        $this->actionName = $actionName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActionName()
+    {
+        return $this->actionName;
     }
 }

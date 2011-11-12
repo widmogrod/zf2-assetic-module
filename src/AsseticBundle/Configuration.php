@@ -1,5 +1,5 @@
 <?php
-namespace Assetic;
+namespace AsseticBundle;
 
 use Zend\Stdlib;
 
@@ -12,6 +12,10 @@ class Configuration
     protected $webPath;
 
     protected $baseUrl;
+
+    protected $modules = array();
+
+    protected $controllers = array();
 
     public function __construct(array $config)
     {
@@ -77,7 +81,22 @@ class Configuration
                 : $default;
     }
 
-    protected $modules;
+    public function setControllers(array $controllers)
+    {
+        $this->controllers = $controllers;
+    }
+
+    public function getControllers()
+    {
+        return $this->controllers;
+    }
+
+    public function getController($name, $default = null)
+    {
+        return array_key_exists($name, $this->controllers)
+                ? $this->controllers[$name]
+                : $default;
+    }
 
     public function setModules(array $modules)
     {
@@ -106,10 +125,10 @@ class Configuration
         return (null === $this->baseUrl) ? '/' : $this->baseUrl;
     }
 
-
     protected function processArray($config)
     {
-        foreach ($config as $key => $value) {
+        foreach ($config as $key => $value)
+        {
             $setter = $this->assembleSetterNameFromConfigKey($key);
             $this->{$setter}($value);
         }
@@ -128,44 +147,5 @@ class Configuration
             );
         }
         return $setter;
-    }
-
-    protected function assembleGetterNameFromConfigKey($key)
-    {
-        $parts = explode('_', $key);
-        $parts = array_map('ucfirst', $parts);
-        $getter = 'get' . implode('', $parts);
-        if (!method_exists($this, $getter)) {
-            throw new \BadMethodCallException(
-                'The configuration key "' . $key . '" does not '
-                . 'have a matching ' . $getter . ' getter method '
-                . 'which must be defined'
-            );
-        }
-        return $getter;
-    }
-
-    public function __set($key, $value)
-    {
-        $setter = $this->assembleSetterNameFromConfigKey($key);
-        $this->{$setter}($value);
-    }
-
-    public function __get($key)
-    {
-        $getter = $this->assembleGetterNameFromConfigKey($key);
-        return $this->{$getter}();
-    }
-
-    public function __isset($key)
-    {
-        $getter = $this->assembleGetterNameFromConfigKey($key);
-        return !is_null($this->{$getter}());
-    }
-
-    public function __unset($key)
-    {
-        $setter = $this->assembleSetterNameFromConfigKey($key);
-        $this->{$setter}(null);
     }
 }

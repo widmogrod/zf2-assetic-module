@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetic;
+namespace AsseticBundle;
 
 use Zend\Config\Config,
     Zend\Module\Manager,
@@ -47,8 +47,6 @@ class Module
         );
     }
 
-
-
     public function getConfig($env = null)
     {
         return new Config(include __DIR__ . '/configs/module.config.php');
@@ -62,7 +60,7 @@ class Module
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/library/assetic/src/' . __NAMESPACE__,
+                    'Assetic' => __DIR__ . '/library/assetic/src/Assetic',
                 ),
             ),
         ));
@@ -78,16 +76,15 @@ class Module
         $this->locator = $app->getLocator();
 
         // post
-        $app->events()->attach('route', array($this, 'currentRouteName'), -200);
+//        $app->events()->attach('route', array($this, 'currentRouteName'), -200);
         $app->events()->attach('dispatch', array($this, 'renderAssets'), -2000);
     }
 
-    public function currentRouteName(\Zend\Mvc\MvcEvent $e)
-    {
-        /* @var $router \Zend\Mvc\Router\Http\TreeRouteStack */
-        $router = $e->getRouter();
-//        $this->_currentRouteName = $router->getCurrentRouteName();
-    }
+//    public function currentRouteName(\Zend\Mvc\MvcEvent $e)
+//    {
+//
+//        $this->_currentRouteName = $router->getMatchedRouteName();
+//    }
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
     {
@@ -97,27 +94,21 @@ class Module
             $e->setResponse($response);
         }
 
-        /* $var $as \Assetic\Service */
+        $router = $e->getRouteMatch();
+
+        /* $var $as \AsseticBundle\Service */
         $as = $this->locator->get('assetic-service');
-//        $as->setRouteName($this->_currentRouteName);
+
+        $as->setRouteName($router->getMatchedRouteName());
+        $as->setControllerName($router->getParam('controller'));
+        $as->setActionName($router->getParam('action'));
+
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
 
-
-
         $content = $response->getContent();
-        $tags = $as->generateTags();
-
-        // @todo fix this temporary solution
-
-        if (isset($tags['css'])) {
-            $content = str_replace('<head>', '<head>'.$tags['css'], $content);
-        }
-
-        if (isset($tags['js'])) {
-            $content = str_replace('</body>', $tags['js'] . '</body>', $content);
-        }
-
+        $content = $as->setupResponseContent($content);
         $response->setContent($content);
+
         return $response;
     }
 }

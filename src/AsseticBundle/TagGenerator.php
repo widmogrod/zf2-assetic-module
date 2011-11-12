@@ -1,17 +1,43 @@
 <?php
-namespace Assetic;
+namespace AsseticBundle;
 
-use Assetic\Asset\AssetInterface;
+use Assetic\AssetManager,
+    Assetic\Asset\AssetInterface;
 
 class TagGenerator
 {
     private $baseUrl;
 
+    private $assetManager;
+
     private static $type;
 
-    public function __construct($dir)
+    public function __construct($dir, AssetManager $am)
     {
         $this->baseUrl = rtrim($dir, '/\\');
+        $this->assetManager = $am;
+    }
+
+    public function getnerateTagFromOptions(array $options)
+    {
+        $result = array();
+        while($assetAlias = array_shift($options))
+        {
+            $assetAlias = ltrim($assetAlias, '@');
+
+            /** @var $asset \Assetic\Asset\AssetInterface */
+            $asset = $this->assetManager->get($assetAlias);
+
+            $tag = $this->generateTag($asset);
+            if (!isset($result[self::$type])) {
+                $result[self::$type] = array();
+            }
+            $result[self::$type][] = $tag;
+        }
+
+        return array_map(function($tags){
+            return implode("\n", $tags);
+        }, $result);
     }
 
     public function generateTagFromAssetsManager(AssetManager $am)
