@@ -145,11 +145,6 @@ class Service
             $tags = $this->generateTagsForRouter();
         }
 
-        # if can't, ten from all assets
-        if (!$tags) {
-            $tags = $this->generateTagsForAllAssets();
-        }
-
         return $tags;
     }
 

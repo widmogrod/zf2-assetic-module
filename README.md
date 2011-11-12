@@ -17,7 +17,7 @@ Simplest way:
 
 # How to use _AsseticBundle_
 
-1. open and add to your module.config.php following section:
+Open and add to your module.config.php following section:
 
 ```
 (...)
@@ -27,23 +27,14 @@ Simplest way:
 
             (...)
 
+            // configuration namespace
             assetic-configuration' => array(
                 'parameters' => array(
                     'config' => array(
-                        'routers' => array(
-                            // when router 'default' will be used then this set of asset will be loaded
-                            'default' => array(
-                                '@base_css',
-                                '@base_js',
-                            ),
-
-                            // when router 'home' will be used then this set of asset will be loaded
-                            'home' => array(
-                                '@base_css',
-                                '@home_css',
-                                '@base_js',
-                            ),
-                        ),
+                        /*
+                         * When controller name will be found in this section then fallowing assets will be loaded:
+                         * INFO: assets with names prepended by '@' are alias for specific configuration resource.
+                         */
                         'controllers' => array(
                             // when 'error' controller will be loaded then
                             'error' => array(
@@ -51,18 +42,50 @@ Simplest way:
                                 '@error_css',
                             ),
                         ),
+
+                        /*
+                         * When route will be mached then following assets will be loaded:
+                         * INFO: assets with names prepended by '@' are alias for specific configuration resource.
+                         */
+                        'routers' => array(
+                            /*
+                             * when router 'default' will be used then this set of asset will be loaded
+                             */
+                            'default' => array(
+                                '@base_css',
+                                '@base_js',
+                            ),
+
+                            /*
+                             * when router 'home' will be used then this set of asset will be loaded
+                             */
+                            'home' => array(
+                                '@base_css',
+                                '@home_css',
+                                '@base_js',
+                            ),
+                        ),
+
+                        /*
+                         * In this configuration section, you can define which js, css, resources module have.
+                         */
                         'modules' => array(
-                            // application moodule assets configuration
+
+                            /*
+                             * application moodule assets configuration
+                             */
                             'application' => array(
-                                // module root path for yout css and js files
+                                # module root path for yout css and js files
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
                                     'base_css' => array(
                                         'assets' => array(
-                                            // relative to 'root_path'
-                                            'css/reset.css'
-                                            'css/base.css'
-                                        )
+                                            # relative to 'root_path'
+                                            'css/my/reset.css'
+                                            'css/*.css'
+                                        ),
+                                        'filters' => array(),
+                                        'options' => array(),
                                     ),
                                     'base_js' => array(
                                         'assets' => array(
@@ -87,11 +110,16 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   1. use assets from 'controller' configuration
   2. if 'controller' not exists, use assets from 'route' configuration
-  3. if 'route' not exists, load all assets
+  3. if 'route' not exists, don't load assets
 
 # Projects using _AsseticBundle_
 
   * [zf2-twitter-bootstrap-module](https://github.com/widmogrod/zf2-twitter-bootstrap-module)
 
+# TODO
+
+  * setup assets by view helpers
+  * more examples
+  * add cache for assets
 
 P.S. Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
