@@ -111,13 +111,71 @@ class Service
                 $filters = isset($options['filters']) ? $options['filters'] : array();
                 $options = isset($options['options']) ? $options['options'] : array();
                 $options['output'] = isset($options['output']) ? $options['output'] : $name;
+
+                $filters = $this->initFilters($filters);
+
                 $asset = $factory->createAsset($assets, $filters, $options);
-                $this->assetManager->set($name, $asset);
+
+                # allow to move all files 1:1 to new directory
+                # its particulary usefull when this assets are images.
+                if (isset($options['move_raw']) && $options['move_raw'])
+                {
+                    /** @var $asset \Assetic\Asset\AssetCollection */
+                    foreach($asset as $key => $value)
+                    {
+                        $name = md5($value->getSourceRoot().$value->getSourcePath());
+                        $value->setTargetPath($value->getSourcePath());
+                        $this->assetManager->set($name, $value);
+                    }
+                } else {
+                    $this->assetManager->set($name, $asset);
+                }
             }
 
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
         }
+    }
+
+    private function initFilters(array $filters)
+    {
+        $result = array();
+
+        $fm = $this->getFilterManager();
+
+        foreach($filters as $alias => $options)
+        {
+            $option = null;
+            if (is_array($options))
+            {
+                if (!isset($options['name'])) {
+                    throw new \InvalidArgumentException(
+                        'Filter "'.$alias.'" required option "name"'
+                    );
+                }
+
+                $name = $options['name'];
+                $option = isset($options['option']) ?: null;
+            } elseif (is_string($options)) {
+                $name = $options;
+            }
+
+            if (is_numeric($alias)) {
+                $alias = $name;
+            }
+
+            if ($fm->has($alias)) {
+                continue;
+            }
+
+            $filter = new $name($option);
+
+            $fm->set($alias, $filter);
+
+            $result[] = $alias;
+        }
+
+        return $result;
     }
 
     public function setupResponseContent($content)
