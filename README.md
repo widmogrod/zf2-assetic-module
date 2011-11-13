@@ -31,7 +31,7 @@ return array(
             (...)
 
             // configuration namespace
-            assetic-configuration' => array(
+            'assetic-configuration' => array(
                 'parameters' => array(
                     'config' => array(
                         /*
@@ -84,7 +84,7 @@ return array(
                                     'base_css' => array(
                                         'assets' => array(
                                             # relative to 'root_path'
-                                            'css/my/reset.css'
+                                            'css/my/reset.css',
                                             'css/*.css'
                                         ),
                                         'filters' => array(),
