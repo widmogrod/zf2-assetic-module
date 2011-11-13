@@ -19,7 +19,7 @@ Simplest way:
 
 Open and add to your module.config.php following section:
 
-```
+``` php
 (...)
 
     'di' => array(
@@ -111,6 +111,42 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
   1. use assets from 'controller' configuration
   2. if 'controller' not exists, use assets from 'route' configuration
   3. if 'route' not exists, don't load assets
+
+# Default layout example
+
+``` php
+<?php echo $this->plugin('doctype')->setDoctype(\Zend\View\Helper\Doctype::HTML5); ?>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php
+        echo $this->plugin('HeadTitle');
+        echo $this->plugin('HeadMeta');
+        echo $this->plugin('HeadLink');
+        echo $this->plugin('HeadStyle');
+        echo $this->plugin('HeadScript');
+    ?>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+
+    </div>
+    <div id="wrapper">
+        <div id="main">
+            <?php echo $this->raw('content') ?>
+        </div>
+    </div>
+    <div id="footer">
+
+    </div>
+</div>
+<?php
+    echo $this->plugin('InlineScript');
+?>
+</body>
+</html>
+```
 
 # Projects using _AsseticBundle_
 
