@@ -3,6 +3,8 @@
 AsseticBundle is module for ZF2 allowing asset managment depended of route-name, controller-alias-name (di).
 Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
+*P.S.* Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
+
 # Requirements
 
   * Zend Framework 2 (https://github.com/zendframework/zf2)
@@ -113,7 +115,24 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
   2. if 'controller' not exists, use assets from 'route' configuration
   3. if 'route' not exists, don't load assets
 
-# Default layout example
+
+# Projects using _AsseticBundle_
+
+  * [zf2-twitter-bootstrap-module](https://github.com/widmogrod/zf2-twitter-bootstrap-module)
+
+# Project plan
+
+  * Done
+     * setup assets by view helpers
+
+  * Todo
+     * add cache for assets
+     * more examples
+     * better description
+
+# Additional staff
+
+## Layout .phtml example
 
 ``` php
 <?php echo $this->plugin('doctype')->setDoctype(\Zend\View\Helper\Doctype::HTML5); ?>
@@ -148,22 +167,3 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 </body>
 </html>
 ```
-
-# Projects using _AsseticBundle_
-
-  * [zf2-twitter-bootstrap-module](https://github.com/widmogrod/zf2-twitter-bootstrap-module)
-
-# Project plan.
-
-## Done
-
-  * setup assets by view helpers
-
-## Todo
-
-  * add cache for assets
-  * more examples
-  * better description
-
-
-*P.S.* Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
