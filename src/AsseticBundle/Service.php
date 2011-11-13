@@ -89,6 +89,9 @@ class Service
 
     public function initLoadedModules(array $loadedModules)
     {
+        /*
+         * TODO: Add cache mechanism using file modification date.
+         */
         $moduleConfiguration = $this->configuration->getModules();
         foreach($loadedModules as $moduleName => $module)
         {
@@ -114,13 +117,13 @@ class Service
 
                 $filters = $this->initFilters($filters);
 
+                /** @var $asset \Assetic\Asset\AssetCollection */
                 $asset = $factory->createAsset($assets, $filters, $options);
 
                 # allow to move all files 1:1 to new directory
                 # its particulary usefull when this assets are images.
                 if (isset($options['move_raw']) && $options['move_raw'])
                 {
-                    /** @var $asset \Assetic\Asset\AssetCollection */
                     foreach($asset as $key => $value)
                     {
                         $name = md5($value->getSourceRoot().$value->getSourcePath());

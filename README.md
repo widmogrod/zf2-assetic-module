@@ -28,7 +28,7 @@ return array(
     'di' => array(
         'instance' => array(
 
-            (...)
+            // (...)
 
             // configuration namespace
             'assetic-configuration' => array(
@@ -101,10 +101,10 @@ return array(
                         ),
                     ),
                 ),
-            ),
+            )
 
-        (...)
-
+        //(...)
+?>
 ```
 
 # Which configuration will be used
