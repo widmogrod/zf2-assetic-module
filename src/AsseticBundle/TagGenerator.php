@@ -12,10 +12,10 @@ class TagGenerator
 
     private static $type;
 
-    public function __construct($dir, AssetManager $am)
+    public function __construct($dir, AssetManager $assetManager)
     {
         $this->baseUrl = rtrim($dir, '/\\');
-        $this->assetManager = $am;
+        $this->assetManager = $assetManager;
     }
 
     public function getnerateTagFromOptions(array $options)

@@ -65,7 +65,7 @@ class Module
         $this->locator = $app->getLocator();
 
         # post dispatch action
-        $app->events()->attach('dispatch', array($this, 'renderAssets'), -2000);
+        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
@@ -91,10 +91,19 @@ class Module
 
         # setup response content (attache stylesheet's nad scripts)
         # @todo allow to setup view helpers.
-        $content = $response->getContent();
-        $content = $as->setupResponseContent($content);
-        $response->setContent($content);
+//        $content = $response->getContent();
+//        $content = $as->setupResponseContent($content);
+//        $response->setContent($content);
 
-        return $response;
+        try {
+            $as->setupViewHelpers($this->locator->get('view'));
+        } catch(\Exception $e) {
+            \Zend\Debug::dump($e->getMessage());
+            \Zend\Debug::dump($e->getFile());
+            \Zend\Debug::dump($e->getLine());
+        }
+
+
+//        return $response;
     }
 }

@@ -178,6 +178,55 @@ class Service
         return $result;
     }
 
+    public function setupViewHelpers(\Zend\View\PhpRenderer $view)
+    {
+        #  generate from controller
+        $result = $this->setupViewHelperForController($view);
+
+        # if can't, ten from router
+        if (!$result) {
+            $result = $this->setupViewHelpersForRouter($view);
+        }
+
+        return $result;
+    }
+
+    public function setupViewHelpersForRouter(\Zend\View\PhpRenderer $view)
+    {
+        $assetOptions = $this->configuration->getController($this->getControllerName());
+        if (!$assetOptions) {
+            return false;
+        }
+
+        $viewSetup = new ViewHelperSetup(
+            $this->configuration->getBaseUrl(),
+            $view,
+            $this->getAssetManager()
+        );
+
+        $viewSetup->setupFromOptions($assetOptions);
+
+        return true;
+    }
+
+    public function setupViewHelperForController(\Zend\View\PhpRenderer $view)
+    {
+        $assetOptions = $this->configuration->getController($this->getControllerName());
+        if (!$assetOptions) {
+            return false;
+        }
+
+        $viewSetup = new ViewHelperSetup(
+            $this->configuration->getBaseUrl(),
+            $view,
+            $this->getAssetManager()
+        );
+
+        $viewSetup->setupFromOptions($assetOptions);
+
+        return true;
+    }
+
     public function setupResponseContent($content)
     {
         $tags = $this->generateTags();
