@@ -20,8 +20,9 @@ Simplest way:
 Open and add to your module.config.php following section:
 
 ``` php
-(...)
-
+<?php
+// module.config.php
+return array(
     'di' => array(
         'instance' => array(
 
@@ -152,10 +153,17 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   * [zf2-twitter-bootstrap-module](https://github.com/widmogrod/zf2-twitter-bootstrap-module)
 
-# TODO
+# Project plan.
+
+## Done
 
   * setup assets by view helpers
-  * more examples
-  * add cache for assets
 
-P.S. Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
+## Todo
+
+  * add cache for assets
+  * more examples
+  * better description
+
+
+*P.S.* Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
