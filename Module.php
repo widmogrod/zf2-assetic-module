@@ -9,7 +9,10 @@ use Zend\Module\Manager,
 
 class Module
 {
-    protected $_currentRouteName;
+    /**
+     * @var \Zend\Di\Di
+     */
+    protected $locator;
 
     /**
      * @var \Zend\Module\Manager
@@ -55,8 +58,6 @@ class Module
         ));
     }
 
-    protected $locator;
-
     public function initAssetsListner(\Zend\EventManager\Event $e)
     {
         /* @var $app \Zend\Mvc\Application */
@@ -88,22 +89,6 @@ class Module
 
         # init assets for modules
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
-
-        # setup response content (attache stylesheet's nad scripts)
-        # @todo allow to setup view helpers.
-//        $content = $response->getContent();
-//        $content = $as->setupResponseContent($content);
-//        $response->setContent($content);
-
-        try {
-            $as->setupViewHelpers($this->locator->get('view'));
-        } catch(\Exception $e) {
-            \Zend\Debug::dump($e->getMessage());
-            \Zend\Debug::dump($e->getFile());
-            \Zend\Debug::dump($e->getLine());
-        }
-
-
-//        return $response;
+        $as->setupViewHelpers($this->locator->get('view'));
     }
 }

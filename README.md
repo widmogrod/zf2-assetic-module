@@ -34,6 +34,17 @@ return array(
             'assetic-configuration' => array(
                 'parameters' => array(
                     'config' => array(
+
+                        /*
+                         * Enable cache
+                         */
+                        'cacheEnabled' => true,
+
+                        /*
+                         * Cache dir
+                         */
+                        'cachePath' => __DIR__ . '/../../../data/cache',
+
                         /*
                          * When controller name will be found in this section then fallowing assets will be loaded:
                          * INFO: assets with names prepended by '@' are alias for specific configuration resource.
@@ -122,13 +133,13 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
 # Project plan
 
+  * Todo
+     * more examples & better description
+
   * Done
      * setup assets by view helpers
-
-  * Todo
      * add cache for assets
-     * more examples
-     * better description
+
 
 # Additional staff
 

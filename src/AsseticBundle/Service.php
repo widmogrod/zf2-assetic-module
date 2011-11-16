@@ -4,7 +4,10 @@ namespace AsseticBundle;
 use Assetic\AssetManager,
     Assetic\FilterManager,
     Assetic\Factory,
-    Assetic\AssetWriter;
+    Assetic\AssetWriter,
+    Assetic\Asset\AssetInterface,
+    Assetic\Asset\AssetCache,
+    Assetic\Cache\FilesystemCache;
 
 class Service
 {
@@ -128,16 +131,27 @@ class Service
                     {
                         $name = md5($value->getSourceRoot().$value->getSourcePath());
                         $value->setTargetPath($value->getSourcePath());
+                        $value = $this->cache($value);
                         $this->assetManager->set($name, $value);
                     }
                 } else {
+                    $asset = $this->cache($asset);
                     $this->assetManager->set($name, $asset);
                 }
             }
 
+//            FilesystemCache
+
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
         }
+    }
+
+    private function cache(AssetInterface $asset)
+    {
+        return $this->configuration->getCacheEnabled()
+            ? new AssetCache($asset, new FilesystemCache($this->configuration->getCachePath()))
+            : $asset;
     }
 
     private function initFilters(array $filters)

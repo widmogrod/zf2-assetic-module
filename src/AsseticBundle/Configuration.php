@@ -11,6 +11,10 @@ class Configuration
 
     protected $webPath;
 
+    protected $cachePath;
+
+    protected $cacheEnabled = false;
+
     protected $baseUrl;
 
     protected $modules = array();
@@ -62,6 +66,34 @@ class Configuration
         }
 
         return $this->webPath;
+    }
+
+    public function setCachePath($path)
+    {
+        if (!is_dir($path)) {
+            throw new \RuntimeException('Directory do not exists: '.$path);
+        }
+
+        if (!is_writable($path)) {
+            throw new \RuntimeException('Directory is not writable: '.$path);
+        }
+
+        $this->cachePath = $path;
+    }
+
+    public function getCachePath()
+    {
+        return $this->cachePath;
+    }
+
+    public function setCacheEnabled($cacheEnabled)
+    {
+        $this->cacheEnabled = (bool) $cacheEnabled;
+    }
+
+    public function getCacheEnabled()
+    {
+        return $this->cacheEnabled;
     }
 
     public function setRoutes(array $routes)
