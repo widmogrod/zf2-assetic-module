@@ -40,7 +40,7 @@ class ViewHelperSetup
 
     public function setupHelper(AssetInterface $asset)
     {
-        return static::helper($this->baseUrl . '/' . $asset->getTargetPath());
+        return static::helper((empty($this->baseUrl) ? '' : $this->baseUrl . '/') . $asset->getTargetPath());
     }
 
     protected function helper($path)
