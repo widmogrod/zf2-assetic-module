@@ -25,7 +25,7 @@ class Module implements AutoloaderProvider
 
         # pre bootstrap
         $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListner'), 200);
+        $events->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListener'), 200);
     }
 
     public function getProvides()
@@ -56,7 +56,7 @@ class Module implements AutoloaderProvider
         );
     }
 
-    public function initAssetsListner(\Zend\EventManager\Event $e)
+    public function initAssetsListener(\Zend\EventManager\Event $e)
     {
         /* @var $app \Zend\Mvc\Application */
         $app = $e->getParam('application');
