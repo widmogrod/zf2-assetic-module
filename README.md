@@ -135,6 +135,7 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   * Todo
      * more examples & better description
+     * add ?timestamp url query parameter
 
   * Done
      * setup assets by view helpers
