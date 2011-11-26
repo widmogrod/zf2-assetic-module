@@ -3,11 +3,11 @@
 namespace AsseticBundle;
 
 use Zend\Module\Manager,
-    Zend\Loader\AutoloaderFactory,
     Zend\Http\Response,
-    Zend\EventManager\StaticEventManager;
+    Zend\EventManager\StaticEventManager,
+    Zend\Module\Consumer\AutoloaderProvider;
 
-class Module
+class Module implements AutoloaderProvider
 {
     /**
      * @var \Zend\Di\Di
@@ -21,8 +21,6 @@ class Module
 
     public function init(Manager $moduleManager)
     {
-        $this->initAutoloader();
-
         $this->moduleManager = $moduleManager;
 
         # pre bootstrap
@@ -44,9 +42,9 @@ class Module
         return include __DIR__ . '/configs/module.config.php';
     }
 
-    public function initAutoloader()
+    public function getAutoloaderConfig()
     {
-        AutoloaderFactory::factory(array(
+        return array(
             'Zend\Loader\ClassMapAutoloader' => array(
                 __DIR__ . '/autoload_classmap.php',
             ),
@@ -55,7 +53,7 @@ class Module
                     'Assetic' => __DIR__ . '/library/assetic/src/Assetic',
                 ),
             ),
-        ));
+        );
     }
 
     public function initAssetsListner(\Zend\EventManager\Event $e)
