@@ -26,7 +26,6 @@ class ViewHelperSetup
 
     public function setupFromOptions(array $options)
     {
-        $result = array();
         while($assetAlias = array_shift($options))
         {
             $assetAlias = ltrim($assetAlias, '@');
@@ -40,13 +39,25 @@ class ViewHelperSetup
 
     public function setupHelper(AssetInterface $asset)
     {
-        return static::helper((empty($this->baseUrl) ? '' : $this->baseUrl . '/') . $asset->getTargetPath());
+        $path = (empty($this->baseUrl) ? '' : $this->baseUrl . '/');
+        $path .= $asset->getTargetPath();
+
+        return $this->helper($path, $asset->getLastModified());
     }
 
-    protected function helper($path)
+    protected function helper($path, $lastModified = null)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
+        // $extension = empty($extension) ? substr(strrchr($path,'_'), 1) : $extension;
         $extension = strtolower($extension);
+
+        if (null !== $lastModified)
+        {
+            $path = strpos($path, '?')
+                ? sprintf('%s&%s', $path, $lastModified)
+                : sprintf('%s?%s', $path, $lastModified);
+        }
+
         switch($extension)
         {
             case 'js':

@@ -92,9 +92,6 @@ class Service
 
     public function initLoadedModules(array $loadedModules)
     {
-        /*
-         * TODO: Add cache mechanism using file modification date.
-         */
         $moduleConfiguration = $this->configuration->getModules();
         foreach($loadedModules as $moduleName => $module)
         {

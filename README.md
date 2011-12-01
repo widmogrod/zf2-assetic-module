@@ -135,11 +135,11 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   * Todo
      * more examples & better description
-     * add ?timestamp url query parameter
 
   * Done
      * setup assets by view helpers
      * add cache for assets
+     * add ?timestamp url query parameter (now path is appended by ?1233213123)
 
 
 # Additional staff
