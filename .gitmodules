@@ -1,3 +1,3 @@
-[submodule "library/assetic"]
-	path = library/assetic
+[submodule "vendor/assetic"]
+	path = vendor/assetic
 	url = git://github.com/kriswallsmith/assetic.git
