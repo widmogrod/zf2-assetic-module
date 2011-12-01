@@ -50,7 +50,7 @@ class Module implements AutoloaderProvider
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    'Assetic' => __DIR__ . '/library/assetic/src/Assetic',
+                    'Assetic' => __DIR__ . '/vendor/assetic/src/Assetic',
                 ),
             ),
         );
