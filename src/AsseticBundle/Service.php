@@ -207,7 +207,7 @@ class Service
 
     public function setupViewHelpersForRouter(\Zend\View\PhpRenderer $view)
     {
-        $assetOptions = $this->configuration->getController($this->getControllerName());
+        $assetOptions = $this->configuration->getRoute($this->getRouteName());
         if (!$assetOptions) {
             return false;
         }
