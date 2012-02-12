@@ -169,9 +169,10 @@ class Service
                 }
 
                 $name = $options['name'];
-                $option = isset($options['option']) ?: null;
+                $option = isset($options['option']) ?$options['option']: null;
             } elseif (is_string($options)) {
                 $name = $options;
+                unset($options);
             }
 
             if (is_numeric($alias)) {
@@ -181,8 +182,12 @@ class Service
             if ($fm->has($alias)) {
                 continue;
             }
-
-            $filter = new $name($option);
+            $filter = new $name(); 
+            if(is_array($option))
+            {
+                call_user_func_array(array($filter, '__construct'), $option); 
+            }
+            
 
             $fm->set($alias, $filter);
 
