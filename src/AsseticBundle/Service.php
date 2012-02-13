@@ -29,7 +29,7 @@ class Service
     protected $actionName;
 
     /**
-     * @var \Assetic\Configuration
+     * @var \AsseticBundle\Configuration
      */
     protected $configuration;
 
@@ -182,7 +182,7 @@ class Service
             if ($fm->has($alias)) {
                 continue;
             }
-            $filter = new $name(); 
+            $filter = new $name($option);
             if(is_array($option))
             {
                 call_user_func_array(array($filter, '__construct'), $option); 

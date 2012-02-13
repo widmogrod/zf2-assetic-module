@@ -46,6 +46,24 @@ return array(
                         'cachePath' => __DIR__ . '/../../../data/cache',
 
                         /*
+                         * Debug on (used via \Assetic\Factory\AssetFactory::setDebug)
+                         *
+                         * @optional
+                         */
+                        'debug' => false,
+
+                        /*
+                         * Defaine base URL which will prepend your resources adress.
+                         *
+                         * @example
+                         * <link href="http://resources.example.com/witter_bootstrap_css.css?1320257242" media="screen" rel="stylesheet" type="text/css">
+                         *
+                         * @optional
+                         * @default null
+                         */
+                        'baseUrl' => 'http://resources.example.com/',
+
+                        /*
                          * When controller name will be found in this section then fallowing assets will be loaded:
                          * INFO: assets with names prepended by '@' are alias for specific configuration resource.
                          */
@@ -78,6 +96,13 @@ return array(
                                 '@home_css',
                                 '@base_js',
                             ),
+
+                            /*
+                             * when router 'quizapp' will be used then this set of asset will be loaded
+                             */
+                            'home' => array(
+                                '@quiz_admin_js',
+                            ),
                         ),
 
                         /*
@@ -86,12 +111,16 @@ return array(
                         'modules' => array(
 
                             /*
-                             * application moodule assets configuration
+                             * Application moodule - assets configuration
                              */
                             'application' => array(
+
                                 # module root path for yout css and js files
                                 'root_path' => __DIR__ . '/../assets',
+
+                                # collection od assets
                                 'collections' => array(
+
                                     'base_css' => array(
                                         'assets' => array(
                                             # relative to 'root_path'
@@ -101,6 +130,7 @@ return array(
                                         'filters' => array(),
                                         'options' => array(),
                                     ),
+
                                     'base_js' => array(
                                         'assets' => array(
                                             'http://code.jquery.com/jquery-1.5.2.min.js', // global
@@ -109,12 +139,60 @@ return array(
                                     ),
                                 ),
                             ),
+
+                            /*
+                             * Quiz module - example configuration
+                             */
+                            'quiz' => array(
+
+                                'root_path' => __DIR__ . '/../../modules/Quiz/assets',
+
+                                'collections' => array(
+
+                                    /*
+                                     * If You want move not only CSS, files but also images relative to CSS resource
+                                     * You must set option flag 'move_raw' to true.
+                                     */
+                                    'quiz_app_images' => array(
+                                        'assets' => array(
+                                            'images/*.png',
+                                            'images/*.gif',
+                                        ),
+                                        'options' => array(
+                                            'move_raw' => true,
+                                        )
+                                    ),
+
+                                    'quiz_admin_js' => array(
+                                        'assets' => array(
+                                            'js/jquery.min.js',
+                                            'http://html5shim.googlecode.com/svn/trunk/html5.js',
+                                            '@twitter_bootstrap_scrollspy_js',
+                                            '@twitter_bootstrap_modal_js',
+                                            '@twitter_bootstrap_dropdown_js',
+                                            'js/admin.js',
+                                        ),
+
+                                        /*
+                                         * If Your assets collection is using a @reference its required to defain
+                                         * a output filename for this collection.
+                                         *
+                                         * Without it, \AsseticBundle\ViewHelperSetup can't determinate
+                                         * what kind of content is't is: ie. *.js or *.css; and how to setup view helpers.
+                                         */
+                                        'options' => array(
+                                            'output' => 'quiz_admin.js'
+                                        )
+                                    )
+                                ),
+                            ),
                         ),
                     ),
                 ),
             )
 
         //(...)
+        )))
 ?>
 ```
 

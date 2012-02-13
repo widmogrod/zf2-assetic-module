@@ -40,11 +40,8 @@ class ViewHelperSetup
     public function setupHelper(AssetInterface $asset)
     {
         $path = (empty($this->baseUrl) ? '' : $this->baseUrl . '/');
-        
-        $helperBasePath = $this->view->plugin('basePath');
         $path .= $asset->getTargetPath();
-        $basePath=$helperBasePath();
-        return $this->helper($basePath.$path, $asset->getLastModified());
+        return $this->helper($path, $asset->getLastModified());
     }
 
     protected function helper($path, $lastModified = null)
