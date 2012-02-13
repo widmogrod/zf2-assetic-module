@@ -100,7 +100,7 @@ return array(
                             /*
                              * when router 'quizapp' will be used then this set of asset will be loaded
                              */
-                            'home' => array(
+                            'quizapp' => array(
                                 '@quiz_admin_js',
                             ),
                         ),
