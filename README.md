@@ -79,7 +79,7 @@ return array(
                          * When route will be mached then following assets will be loaded:
                          * INFO: assets with names prepended by '@' are alias for specific configuration resource.
                          */
-                        'routers' => array(
+                        'routes' => array(
                             /*
                              * when router 'default' will be used then this set of asset will be loaded
                              */
