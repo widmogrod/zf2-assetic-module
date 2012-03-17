@@ -87,6 +87,6 @@ class Module implements AutoloaderProvider
 
         # init assets for modules
         $as->initLoadedModules($this->moduleManager->getLoadedModules());
-        $as->setupViewHelpers($this->locator->get('view'));
+        $as->setupViewHelpers($this->locator->get('Zend\View\Renderer\PhpRenderer'));
     }
 }

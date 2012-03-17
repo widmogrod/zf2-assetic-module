@@ -244,7 +244,7 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
     </div>
     <div id="wrapper">
         <div id="main">
-            <?php echo $this->raw('content') ?>
+            <?php echo $this->content ?>
         </div>
     </div>
     <div id="footer">

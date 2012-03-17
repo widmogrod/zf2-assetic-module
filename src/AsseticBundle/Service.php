@@ -197,7 +197,7 @@ class Service
         return $result;
     }
 
-    public function setupViewHelpers(\Zend\View\PhpRenderer $view)
+    public function setupViewHelpers(\Zend\View\Renderer $view)
     {
         #  generate from controller
         $result = $this->setupViewHelperForController($view);
@@ -210,7 +210,7 @@ class Service
         return $result;
     }
 
-    public function setupViewHelpersForRouter(\Zend\View\PhpRenderer $view)
+    public function setupViewHelpersForRouter(\Zend\View\Renderer $view)
     {
         $assetOptions = $this->configuration->getRoute($this->getRouteName());
         if (!$assetOptions) {
@@ -228,7 +228,7 @@ class Service
         return true;
     }
 
-    public function setupViewHelperForController(\Zend\View\PhpRenderer $view)
+    public function setupViewHelperForController(\Zend\View\Renderer $view)
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
         if (!$assetOptions) {

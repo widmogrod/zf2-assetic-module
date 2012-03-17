@@ -5,7 +5,7 @@
  
 namespace AsseticBundle;
 
-use Zend\View\PhpRenderer,
+use Zend\View\Renderer,
     Assetic\AssetManager,
     Assetic\Asset\AssetInterface;
 
@@ -17,7 +17,7 @@ class ViewHelperSetup
 
     private $assetManager;
 
-    public function __construct($dir, PhpRenderer $view, AssetManager $assetManager)
+    public function __construct($dir, Renderer $view, AssetManager $assetManager)
     {
         $this->baseUrl = rtrim($dir, '/\\');
         $this->view = $view;
