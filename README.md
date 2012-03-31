@@ -3,11 +3,11 @@
 AsseticBundle is module for ZF2 allowing asset managment depended of route-name, controller-alias-name (di).
 Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
-*P.S.* Sory for my english. If You wish to help me with this project or correct my english description - You are welcome :)
+*P.S.* Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
 
 # Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2)
+  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on **release-2.0.0beta3**.
 
 # Installation
 
