@@ -24,8 +24,9 @@ class Module implements AutoloaderProvider
         $this->moduleManager = $moduleManager;
 
         # pre bootstrap
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListener'), 200);
+        $events       = $moduleManager->events();
+        $sharedEvents = $events->getSharedCollections();
+        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListener'), 200);
     }
 
     public function getProvides()
