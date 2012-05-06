@@ -213,6 +213,8 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   * Todo
      * more examples & better description
+     * filter support
+     * rewrite initViewHelpers - add event handler
 
   * Done
      * setup assets by view helpers
