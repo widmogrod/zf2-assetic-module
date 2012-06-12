@@ -7,7 +7,8 @@ use Assetic\AssetManager,
     Assetic\AssetWriter,
     Assetic\Asset\AssetInterface,
     Assetic\Asset\AssetCache,
-    Assetic\Cache\FilesystemCache;
+    Assetic\Cache\FilesystemCache,
+    Zend\View\Renderer\RendererInterface as Renderer;
 
 class Service
 {
@@ -32,6 +33,11 @@ class Service
      * @var \AsseticBundle\Configuration
      */
     protected $configuration;
+
+    /**
+     * @var array of \AsseticBundle\View\StrategyInterface
+     */
+    protected $strategy = array();
 
     /**
      * @var \Assetic\AssetManager
@@ -90,6 +96,38 @@ class Service
         return $this->filterManager;
     }
 
+    /**
+     * @param string $controllerName
+     */
+    public function setControllerName($controllerName)
+    {
+        $this->controllerName = $controllerName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerName()
+    {
+        return $this->controllerName;
+    }
+
+    /**
+     * @param string $actionName
+     */
+    public function setActionName($actionName)
+    {
+        $this->actionName = $actionName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActionName()
+    {
+        return $this->actionName;
+    }
+
     public function initLoadedModules(array $loadedModules)
     {
         $moduleConfiguration = $this->configuration->getModules();
@@ -137,8 +175,6 @@ class Service
                 }
             }
 
-//            FilesystemCache
-
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
         }
@@ -182,12 +218,11 @@ class Service
             if ($fm->has($alias)) {
                 continue;
             }
+
             $filter = new $name($option);
-            if(is_array($option))
-            {
+            if(is_array($option)) {
                 call_user_func_array(array($filter, '__construct'), $option); 
             }
-            
 
             $fm->set($alias, $filter);
 
@@ -197,145 +232,98 @@ class Service
         return $result;
     }
 
-    public function setupViewHelpers(\Zend\View\Renderer $view)
+    public function setupRenderer(Renderer $renderer)
     {
         #  generate from controller
-        $result = $this->setupViewHelperForController($view);
+        $result = $this->setupRendererForController($renderer);
 
         # if can't, ten from router
         if (!$result) {
-            $result = $this->setupViewHelpersForRouter($view);
+            $result = $this->setupRendererForRouter($renderer);
         }
 
         return $result;
     }
 
-    public function setupViewHelpersForRouter(\Zend\View\Renderer $view)
+    public function setupRendererForRouter(Renderer $renderer)
     {
         $assetOptions = $this->configuration->getRoute($this->getRouteName());
         if (!$assetOptions) {
             return false;
         }
 
-        $viewSetup = new ViewHelperSetup(
-            $this->configuration->getBaseUrl(),
-            $view,
-            $this->getAssetManager()
-        );
-
-        $viewSetup->setupFromOptions($assetOptions);
-
+        $this->setupRendererFromOptions($renderer, $assetOptions);
         return true;
     }
 
-    public function setupViewHelperForController(\Zend\View\Renderer $view)
+    public function setupRendererForController(Renderer $renderer)
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
         if (!$assetOptions) {
             return false;
         }
 
-        $viewSetup = new ViewHelperSetup(
-            $this->configuration->getBaseUrl(),
-            $view,
-            $this->getAssetManager()
-        );
-
-        $viewSetup->setupFromOptions($assetOptions);
-
+        $this->setupRendererFromOptions($renderer, $assetOptions);
         return true;
     }
 
-    public function setupResponseContent($content)
+    public function setupRendererFromOptions(Renderer $renderer, array $options)
     {
-        $tags = $this->generateTags();
-
-        if (isset($tags['css'])) {
-            $content = str_replace('<head>', '<head>'.$tags['css'], $content);
+        if (!$this->hasStrategyForRenderer($renderer)) {
+            throw new \Exception(sprintf(
+                'no strategy defined for renderer "%s"',
+                $this->getRendererName($renderer)
+            ));
+            return;
         }
 
-        if (isset($tags['js'])) {
-            $content = str_replace('</body>', $tags['js'] . '</body>', $content);
+        /** @var $strategy \AsseticBundle\View\StrategyInterface */
+        $strategy = $this->getStrategyForRenderer($renderer);
+        while($assetAlias = array_shift($options))
+        {
+            $assetAlias = ltrim($assetAlias, '@');
+
+            /** @var $asset \Assetic\Asset\AssetInterface */
+            $asset = $this->assetManager->get($assetAlias);
+            $strategy->setupAsset($asset);
         }
-
-        return $content;
-    }
-
-    public function generateTags()
-    {
-        #  generate from controller
-        $tags = $this->generateTagsForController();
-
-        # if can't, ten from router
-        if (!$tags) {
-            $tags = $this->generateTagsForRouter();
-        }
-
-        return $tags;
-    }
-
-    public function generateTagsForController()
-    {
-        $assetOptions = $this->configuration->getController($this->getControllerName());
-        if (!$assetOptions) {
-            return false;
-        }
-
-        $am = $this->getAssetManager();
-
-        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
-        return $tags->getnerateTagFromOptions($assetOptions);
-    }
-
-    public function generateTagsForRouter()
-    {
-        $assetOptions = $this->configuration->getRoute($this->getRouteName());
-        if (!$assetOptions) {
-            return false;
-        }
-
-        $am = $this->getAssetManager();
-
-        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
-        return $tags->getnerateTagFromOptions($assetOptions);
-    }
-
-    public function generateTagsForAllAssets()
-    {
-        $am = $this->getAssetManager();
-        $tags = new TagGenerator($this->configuration->getBaseUrl(), $am);
-        return $tags->generateTagFromAssetsManager($this->getAssetManager());
     }
 
     /**
-     * @param string $controllerName
+     * @param \Zend\View\Renderer\RendererInterface $renderer
      */
-    public function setControllerName($controllerName)
+    public function hasStrategyForRenderer(Renderer $renderer)
     {
-        $this->controllerName = $controllerName;
+        $rendererName = $this->getRendererName($renderer);
+        return !!$this->configuration->getStrategyNameForRenderer($rendererName);
     }
 
     /**
-     * @return string
+     * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @return \AsseticBundle\View\StrategyInterface|null
      */
-    public function getControllerName()
+    public function getStrategyForRenderer(Renderer $renderer)
     {
-        return $this->controllerName;
+        if (!$this->hasStrategyForRenderer($renderer)) {
+            return null;
+        }
+
+        $rendererName = $this->getRendererName($renderer);
+        if (!isset($this->strategy[$rendererName]))
+        {
+            $strategyName = $this->configuration->getStrategyNameForRenderer($rendererName);
+            $this->strategy[$rendererName] = new $strategyName();
+        }
+
+        /** @var $strategy \AsseticBundle\View\StrategyInterface */
+        $strategy = $this->strategy[$rendererName];
+        $strategy->setBaseUrl($this->configuration->getBaseUrl());
+        $strategy->setRenderer($renderer);
+        return $strategy;
     }
 
-    /**
-     * @param string $actionName
-     */
-    public function setActionName($actionName)
+    protected function getRendererName(Renderer $renderer)
     {
-        $this->actionName = $actionName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getActionName()
-    {
-        return $this->actionName;
+        return get_class($renderer);
     }
 }

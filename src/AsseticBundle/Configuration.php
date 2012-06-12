@@ -21,14 +21,18 @@ class Configuration
 
     protected $controllers = array();
 
-    public function __construct(array $config)
+    protected $strategyForRenderer = array();
+
+    public function __construct($config)
     {
         if (!is_null($config)) {
-            if (is_array($config) || $config instanceof \Traversable) {
+            if (is_array($config)) {
                 $this->processArray($config);
+            } elseif ($config instanceof \Traversable) {
+                $this->processArray(\Zend\Stdlib\ArrayUtils::iteratorToArray($config));
             } else {
                 throw new \InvalidArgumentException(
-                    'Parameter to \\Zend\\Stdlib\\Configuration\'s '
+                    'Parameter to \\AsseticBundle\\Configuration\'s '
                     . 'constructor must be an array or implement the '
                     . '\\Traversable interface'
                 );
@@ -154,7 +158,7 @@ class Configuration
 
     public function getBaseUrl()
     {
-        return (null === $this->baseUrl) ? '/' : $this->baseUrl;
+        return rtrim($this->baseUrl, '/') . '/';
     }
 
     protected function processArray($config)
@@ -179,5 +183,17 @@ class Configuration
             );
         }
         return $setter;
+    }
+
+    public function setStrategyForRenderer(array $strategyForRenderer)
+    {
+        $this->strategyForRenderer = array_flip($strategyForRenderer);
+    }
+
+    public function getStrategyNameForRenderer($rendererName, $default = null)
+    {
+        return array_key_exists($rendererName, $this->strategyForRenderer)
+            ? $this->strategyForRenderer[$rendererName]
+            : $default;
     }
 }

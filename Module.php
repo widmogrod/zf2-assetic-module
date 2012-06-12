@@ -2,31 +2,58 @@
 
 namespace AsseticBundle;
 
-use Zend\Module\Manager,
+use Zend\ModuleManager\ModuleManager,
     Zend\Http\Response,
+    Zend\EventManager\Event,
     Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+    Zend\ModuleManager\Feature\InitProviderInterface,
+    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
+    Zend\ModuleManager\Feature\ConfigProviderInterface,
+    Zend\ModuleManager\Feature\BootstrapListenerInterface;
 
-class Module implements AutoloaderProvider
+class Module implements InitProviderInterface, AutoloaderProviderInterface, ConfigProviderInterface, BootstrapListenerInterface
 {
     /**
-     * @var \Zend\Di\Di
+     * @var \Zend\ServiceManager\ServiceManager
      */
-    protected $locator;
+    protected $service;
 
     /**
-     * @var \Zend\Module\Manager
+     * @var \Zend\ModuleManager\ModuleManager $manager
      */
     protected $moduleManager;
 
-    public function init(Manager $moduleManager)
-    {
-        $this->moduleManager = $moduleManager;
+    /**
+     * @var array
+     */
+    protected $loadedModules;
 
-        # pre bootstrap
-        $events       = $moduleManager->events();
-        $sharedEvents = $events->getSharedCollections();
-        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initAssetsListener'), 200);
+    /**
+     * Initialize workflow
+     *
+     * @param  \Zend\ModuleManager\ModuleManager $manager
+     * @return void
+     */
+    public function init($manager = null)
+    {
+        $this->moduleManager = $manager;
+    }
+
+    /**
+     * Listen to the bootstrap event
+     *
+     * @return array
+     */
+    public function onBootstrap(Event $e)
+    {
+        /**
+         * @var $app \Zend\Mvc\Application
+         * @var $e \Zend\Mvc\MvcEvent
+         */
+        $app = $e->getApplication();
+        $this->service = $app->getServiceManager();
+
+        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
     public function getProvides()
@@ -57,17 +84,6 @@ class Module implements AutoloaderProvider
         );
     }
 
-    public function initAssetsListener(\Zend\EventManager\Event $e)
-    {
-        /* @var $app \Zend\Mvc\Application */
-        $app = $e->getParam('application');
-
-        $this->locator = $app->getLocator();
-
-        # post dispatch action
-        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
-    }
-
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
     {
         $response = $e->getResponse();
@@ -78,8 +94,8 @@ class Module implements AutoloaderProvider
 
         $router = $e->getRouteMatch();
 
-        /* $var $as \AsseticBundle\Service */
-        $as = $this->locator->get('assetic');
+        /** @var $as \AsseticBundle\Service */
+        $as = $this->service->get('AsseticService');
 
         # setup service
         $as->setRouteName($router->getMatchedRouteName());
@@ -87,7 +103,20 @@ class Module implements AutoloaderProvider
         $as->setActionName($router->getParam('action'));
 
         # init assets for modules
-        $as->initLoadedModules($this->moduleManager->getLoadedModules());
-        $as->setupViewHelpers($this->locator->get('Zend\View\Renderer\PhpRenderer'));
+        $as->initLoadedModules($this->getLoadedModules());
+        $as->setupRenderer($this->getRenderer());
+    }
+
+    private function getLoadedModules()
+    {
+        if (null === $this->loadedModules) {
+            $this->loadedModules = $this->moduleManager->getLoadedModules();
+        }
+        return $this->loadedModules;
+    }
+
+    private function getRenderer()
+    {
+        return $this->service->get('ViewRenderer');
     }
 }
