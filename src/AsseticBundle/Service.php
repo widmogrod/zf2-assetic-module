@@ -8,7 +8,8 @@ use Assetic\AssetManager,
     Assetic\Asset\AssetInterface,
     Assetic\Asset\AssetCache,
     Assetic\Cache\FilesystemCache,
-    Zend\View\Renderer\RendererInterface as Renderer;
+    Zend\View\Renderer\RendererInterface as Renderer,
+    AsseticBundle\View\StrategyInterface;
 
 class Service
 {
@@ -274,7 +275,6 @@ class Service
                 'no strategy defined for renderer "%s"',
                 $this->getRendererName($renderer)
             ));
-            return;
         }
 
         /** @var $strategy \AsseticBundle\View\StrategyInterface */
@@ -311,8 +311,24 @@ class Service
         $rendererName = $this->getRendererName($renderer);
         if (!isset($this->strategy[$rendererName]))
         {
-            $strategyName = $this->configuration->getStrategyNameForRenderer($rendererName);
-            $this->strategy[$rendererName] = new $strategyName();
+            $strategyClass = $this->configuration->getStrategyNameForRenderer($rendererName);
+            if (!class_exists($strategyClass, true)) {
+                throw new \AsseticBundle\Exception\InvalidArgumentException(sprintf(
+                    'strategy class "%s" dosen\'t exists',
+                    $strategyClass
+                ));
+            }
+
+            $instance = new $strategyClass();
+
+            if (!($instance instanceof StrategyInterface)) {
+                throw new \AsseticBundle\Exception\DomainException(sprintf(
+                     'strategy class "%s" is not instanceof "AsseticBundle\View\StrategyInterface"',
+                     $strategyClass
+                ));
+            }
+
+            $this->strategy[$rendererName] = $instance;
         }
 
         /** @var $strategy \AsseticBundle\View\StrategyInterface */
