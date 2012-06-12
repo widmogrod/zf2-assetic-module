@@ -21,7 +21,7 @@ class Configuration
 
     protected $controllers = array();
 
-    protected $strategyForRenderer = array();
+    protected $rendererToStrategy = array();
 
     public function __construct($config)
     {
@@ -185,15 +185,15 @@ class Configuration
         return $setter;
     }
 
-    public function setStrategyForRenderer(array $strategyForRenderer)
+    public function setRendererToStrategy(array $strategyForRenderer)
     {
-        $this->strategyForRenderer = array_flip($strategyForRenderer);
+        $this->rendererToStrategy = $strategyForRenderer;
     }
 
     public function getStrategyNameForRenderer($rendererName, $default = null)
     {
-        return array_key_exists($rendererName, $this->strategyForRenderer)
-            ? $this->strategyForRenderer[$rendererName]
+        return array_key_exists($rendererName, $this->rendererToStrategy)
+            ? $this->rendererToStrategy[$rendererName]
             : $default;
     }
 }
