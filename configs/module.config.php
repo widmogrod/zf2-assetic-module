@@ -1,8 +1,7 @@
 <?php
 return array(
-
-    'service_manager' => array(
-        'aliases' => array(
+    'service_manager'       => array(
+        'aliases'   => array(
             'AsseticService'       => 'AsseticBundle\Service',
         ),
         'factories' => array(
@@ -13,13 +12,15 @@ return array(
     ),
 
     'assetic_configuration' => array(
-        'debug' => false,
-        'webPath' => __DIR__ . '/../../../public/assets',
-        'baseUrl' => '/assets',
-        'strategyForRenderer' => array(
-            'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
+        'debug'              => false,
+        'webPath'            => __DIR__ . '/../../../public/assets',
+        'baseUrl'            => '/assets',
+        'rendererToStrategy' => array(
+            'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
+            'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',
+            'Zend\View\Renderer\JsonRenderer' => 'AsseticBundle\View\NoneStrategy',
         ),
-        'routes' => array(),
-        'modules' => array(),
+        'routes'             => array(),
+        'modules'            => array(),
     ),
 );
