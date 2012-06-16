@@ -2,7 +2,7 @@
 
 namespace AsseticBundle;
 
-use Zend\ModuleManager\ModuleManager,
+use Zend\ModuleManager\ModuleManagerInterface,
     Zend\Http\Response,
     Zend\EventManager\Event,
     Zend\EventManager\StaticEventManager,
@@ -31,10 +31,10 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
     /**
      * Initialize workflow
      *
-     * @param  \Zend\ModuleManager\ModuleManager $manager
+     * @param  \Zend\ModuleManager\ModuleManagerInterface $manager
      * @return void
      */
-    public function init($manager = null)
+    public function init(ModuleManagerInterface $manager)
     {
         $this->moduleManager = $manager;
     }
