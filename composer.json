@@ -19,6 +19,9 @@
     "autoload": {
         "psr-0": {
             "AsseticBundle": "src"
-        }
+        },
+        "classmap": [
+            "./"
+        ]
     }
 }
