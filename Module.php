@@ -2,7 +2,7 @@
 
 namespace AsseticBundle;
 
-use Zend\ModuleManager\ModuleManager,
+use Zend\ModuleManager\ModuleManagerInterface,
     Zend\Http\Response,
     Zend\EventManager\Event,
     Zend\EventManager\StaticEventManager,
@@ -11,7 +11,9 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\ModuleManager\Feature\BootstrapListenerInterface;
 
-class Module implements InitProviderInterface, AutoloaderProviderInterface, ConfigProviderInterface, BootstrapListenerInterface
+class Module implements
+    InitProviderInterface, AutoloaderProviderInterface,
+    ConfigProviderInterface, BootstrapListenerInterface
 {
     /**
      * @var \Zend\ServiceManager\ServiceManager
@@ -31,10 +33,10 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
     /**
      * Initialize workflow
      *
-     * @param  \Zend\ModuleManager\ModuleManager $manager
+     * @param  ModuleManagerInterface $manager
      * @return void
      */
-    public function init($manager = null)
+    public function init(ModuleManagerInterface $manager)
     {
         $this->moduleManager = $manager;
     }
@@ -46,14 +48,9 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      */
     public function onBootstrap(Event $e)
     {
-        /**
-         * @var $app \Zend\Mvc\Application
-         * @var $e \Zend\Mvc\MvcEvent
-         */
         $app = $e->getApplication();
+        $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
         $this->service = $app->getServiceManager();
-
-        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
     public function getProvides()
@@ -65,11 +62,21 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
         );
     }
 
+    /**
+     * Returns configuration to merge with application configuration
+     * 
+     * @return array|\Traversable
+     */
     public function getConfig($env = null)
     {
         return include __DIR__ . '/configs/module.config.php';
     }
 
+    /**
+     * Return an array for passing to Zend\Loader\AutoloaderFactory.
+     *
+     * @return array
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -78,7 +85,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    'Assetic' => __DIR__ . '/vendor/assetic/src/Assetic',
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
         );
