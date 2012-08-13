@@ -11,15 +11,4 @@ return array(
             'Assetic\FilterManager' => 'AsseticBundle\SimpleFactory',
         ),
     ),
-
-    'assetic_configuration' => array(
-        'debug' => false,
-        'webPath' => __DIR__ . '/../../../public/assets',
-        'baseUrl' => '/assets',
-        'strategyForRenderer' => array(
-            'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
-        ),
-        'routes' => array(),
-        'modules' => array(),
-    ),
-);
+);    

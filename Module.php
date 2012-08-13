@@ -4,7 +4,7 @@ namespace AsseticBundle;
 
 use Zend\ModuleManager\ModuleManager,
     Zend\Http\Response,
-    Zend\EventManager\Event,
+    Zend\EventManager\EventInterface,
     Zend\EventManager\StaticEventManager,
     Zend\ModuleManager\Feature\InitProviderInterface,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
@@ -34,7 +34,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      * @param  \Zend\ModuleManager\ModuleManager $manager
      * @return void
      */
-    public function init($manager = null)
+    public function init(\Zend\ModuleManager\ModuleManagerInterface $manager)
     {
         $this->moduleManager = $manager;
     }
@@ -44,16 +44,16 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      *
      * @return array
      */
-    public function onBootstrap(Event $e)
+    public function onBootstrap(EventInterface $e)
     {
         /**
          * @var $app \Zend\Mvc\Application
          * @var $e \Zend\Mvc\MvcEvent
          */
         $app = $e->getApplication();
+        $events = $app->getEventManager();
         $this->service = $app->getServiceManager();
-
-        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
+        $events->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
     public function getProvides()
