@@ -19,7 +19,33 @@ return array(
         'strategyForRenderer' => array(
             'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
         ),
-        'routes' => array(),
-        'modules' => array(),
+        'routes' => array(
+            'application' => array(
+                '@base_css',
+                '@base_js',
+            ),
+            'home' => array(
+                '@base_css',
+            ),
+        ),
+        'modules' => array(
+            'application' => array(
+                'root_path' => '/Users/cel/Desktop/ZendSkeletonApplication/module/Application/assets',
+                'collections' => array(
+                    'base_css' => array(
+                        'assets' => array(
+                            'css/global.css',
+                            'css/*.css',
+                        ),
+                    ),
+                    'base_js' => array(
+                        'assets' => array(
+                            'http://code.jquery.com/jquery-1.5.2.min.js',
+                            'js/test.js',
+                        ),
+                    ),
+                ),
+            ),
+        ),
     ),
 );
