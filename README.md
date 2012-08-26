@@ -49,13 +49,13 @@ Open and add to your module.config.php following section:
 
 This example show how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
 
-1. after install skeleton application move resources from public/ to module/Application/assets
-``` mkdir module/Application/assets ```
-``` mv public/css to module/Application/assets ```
-``` mv public/js to module/Application/assets ```
-``` mv public/images to module/Application/assets ```
+1. After install skeleton application move resources from public/ to module/Application/assets
+  * ``` mkdir module/Application/assets ```
+  * ``` mv public/css to module/Application/assets ```
+  * ``` mv public/js to module/Application/assets ```
+  * ``` mv public/images to module/Application/assets ```
 
-2. add assetic configuration to ```module/Application/config/module.config.php```
+2. add this configuration to ```module/Application/config/module.config.php```
 ```php
 <?php
 return array(
@@ -119,7 +119,7 @@ return array(
 ?>
 ```
 
-3. update head section in file ```module/Application/view/layout/layout.phtml```
+3. update "head" tag in layout file ```module/Application/view/layout/layout.phtml```
 ```
   <head>
     <meta charset="utf-8">
@@ -132,6 +132,8 @@ return array(
     ?>
   </head>
 ```
+
+4. refresh site and have fun!
 
 ## Complex configuration example
 
