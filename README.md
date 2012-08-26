@@ -23,9 +23,8 @@ Simplest way:
 
       * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
       * assetic configuration namespace was change from:
-        ```php
-        <?php
-        return array(
+        ```
+        array(
             'di' => array(
                 'instance' => array(
                     'assetic-configuration' => array(
@@ -36,13 +35,10 @@ Simplest way:
                 )
             )
         );
-        ?>
         ```
         to:
-        ```php
-        <?php
-        return array('assetic_configuration' => array(/* configuration */))
-        ?>
+        ```
+        array('assetic_configuration' => array(/* configuration */))
         ```
 
 # How to use _AsseticBundle_
