@@ -17,46 +17,61 @@ Simplest way:
   2. git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive
   3. open my/project/folder/configs/application.config.php and add 'AsseticBundle' to your 'modules' parameter.
 
+# Changes
+
+  * 2012-08-26:
+
+      * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
+      * assetic configuration namespace was change from:
+        ``` php
+        <?php
+        return array(
+            'di' => array(
+                'instance' => array(
+                    'assetic-configuration' => array(
+                        'parameters' => array(
+                            'config' => array(/* configuration */)
+                        )
+                    )
+                )
+            )
+        );
+        ?>
+        ```
+        to:
+        ``` php
+        <?php
+        return array('assetic_configuration' => array(/* configuration */))
+        ?>
+        ```
+
 # How to use _AsseticBundle_
 
 Open and add to your module.config.php following section:
 
-*NOTCE*: Configuration namespace was change
-from:
-``` php
-<?php
-return array(
-    'di' => array(
-        'instance' => array(
-            'assetic-configuration' => array(
-                'parameters' => array(
-                    'config' => array(/* configuration */)
-                )
-            )
-        )
-    )
-);
-?>
-```
-to:
-``` php
-<?php
-return array('assetic_configuration' => array(/* configuration */))
-?>
-```
+## Complex configuration example
+
 ``` php
 <?php
 // module.config.php
 return array(
     'assetic_configuration' => array(
-            'webPath'            => __DIR__ . '/../../../public/assets',
-            'baseUrl'            => '/assets',
+
+            /**
+             * Map how given view renderer instance will be interpreted by AsseticBundle.
+             * Those are default options.
+             */
             'rendererToStrategy' => array(
                 'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
                 'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',
                 'Zend\View\Renderer\JsonRenderer' => 'AsseticBundle\View\NoneStrategy',
             ),
 
+            /**
+             * Define location, where assets should be move.
+             * This is default option. You should create this directory by hand.
+             */
+            'webPath' => __DIR__ . '/../../../public/assets',
 
             /*
              * Enable cache
@@ -84,7 +99,7 @@ return array(
              * @optional
              * @default null
              */
-            'baseUrl' => 'http://resources.example.com/',
+             'baseUrl' => '/assets',
 
             /*
              * When controller name will be found in this section then fallowing assets will be loaded:
