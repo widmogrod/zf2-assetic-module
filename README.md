@@ -43,8 +43,6 @@ Simplest way:
 
 # How to use _AsseticBundle_
 
-Open and add to your module.config.php following section:
-
 ## Simple configuration example
 
 This example show how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
@@ -55,7 +53,7 @@ This example show how to convert "ZF2 Skeleton Application" to load assets via A
   * ``` mv public/js to module/Application/assets ```
   * ``` mv public/images to module/Application/assets ```
 
-2. add this configuration to ```module/Application/config/module.config.php```
+2. Add configuration below to ```module/Application/config/module.config.php```
 ```php
 <?php
 return array(
