@@ -45,6 +45,94 @@ Simplest way:
 
 Open and add to your module.config.php following section:
 
+## Simple configuration example
+
+This example show how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
+
+1. after install skeleton application move resources from public/ to module/Application/assets
+``` mkdir module/Application/assets ```
+``` mv public/css to module/Application/assets ```
+``` mv public/js to module/Application/assets ```
+``` mv public/images to module/Application/assets ```
+
+2. add assetic configuration to ```module/Application/config/module.config.php```
+```php
+<?php
+return array(
+    /* ... */
+
+    'assetic_configuration' => array(
+        'routes' => array(
+            'home' => array(
+                '@base_css',
+                '@base_js',
+            ),
+        ),
+
+        'modules' => array(
+            /*
+             * Application moodule - assets configuration
+             */
+            'application' => array(
+
+                # module root path for yout css and js files
+                'root_path' => __DIR__ . '/../assets',
+
+                # collection od assets
+                'collections' => array(
+
+                    'base_css' => array(
+                        'assets' => array(
+                            'css/bootstrap-responsive.min.css',
+                            'css/style.css',
+                            'css/bootstrap.min.css'
+                        ),
+                        'filters' => array(
+                            'CssRewriteFilter' => array(
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            )
+                        ),
+                        'options' => array(),
+                    ),
+
+                    'base_js' => array(
+                        'assets' => array(
+                            'js/html5.js',
+                            'js/jquery-1.7.2.min.js'
+                        )
+                    ),
+
+                    'base_images' => array(
+                        'assets' => array(
+                            'images/*.png',
+                            'images/*.ico',
+                        ),
+                        'options' => array(
+                            'move_raw' => true,
+                        )
+                    ),
+                ),
+            ),
+        )
+    )
+);
+?>
+```
+
+3. update head section in file ```module/Application/view/layout/layout.phtml```
+```
+  <head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?php
+    echo $this->plugin('HeadLink');
+    echo $this->plugin('HeadStyle');
+    echo $this->plugin('HeadScript');
+    ?>
+  </head>
+```
+
 ## Complex configuration example
 
 ``` php
