@@ -1,25 +1,24 @@
 <?php
-return array(
-
-    'service_manager' => array(
-        'aliases' => array(
+return [
+    'service_manager' => [
+        'aliases' => [
             'AsseticService'       => 'AsseticBundle\Service',
-        ),
-        'factories' => array(
+        ],
+        'factories' => [
             'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
             'Assetic\AssetManager'  => 'AsseticBundle\SimpleFactory',
             'Assetic\FilterManager' => 'AsseticBundle\SimpleFactory',
-        ),
-    ),
+        ],
+    ],
 
-    'assetic_configuration' => array(
+    'assetic_configuration' => [
         'debug' => false,
-        'webPath' => __DIR__ . '/../../../public/assets',
+        'webPath' => __DIR__ . '/../../../../../../public/assets',
         'baseUrl' => '/assets',
-        'strategyForRenderer' => array(
+        'strategyForRenderer' => [
             'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
-        ),
-        'routes' => array(),
-        'modules' => array(),
-    ),
-);
+        ],
+        'routes' => [],
+        'modules' => [],
+    ],
+];

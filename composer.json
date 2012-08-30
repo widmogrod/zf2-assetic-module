@@ -2,7 +2,7 @@
     "name": "demonkoryu/zf2-assetic-module",
     "type": "library",
     "description": "Complete integration of Assetic for Zend Framework 2",
-    "keywords": ["assetic", "assets", "resources", "css", "js", "less"],
+    "keywords": ["assetic", "assets", "resources", "css", "js", "sass", "scss"],
     "homepage": "https://github.com/demonkoryu/zf2-assetic-module",
     "license": "MIT",
     "authors": [
@@ -14,11 +14,13 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.0",
+        "kriswallsmith/assetic": "dev-master"
     },
     "autoload": {
         "psr-0": {
-            "AsseticBundle": "src"
+            "AsseticBundle": ["", "AsseticBundle/src"]
         }
-    }
+    },
+    "target-dir": "AsseticBundle"
 }

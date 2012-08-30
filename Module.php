@@ -5,8 +5,10 @@ namespace AsseticBundle;
 use Zend\ModuleManager\ModuleManager,
     Zend\Http\Response,
     Zend\EventManager\Event,
+    Zend\EventManager\EventInterface,
     Zend\EventManager\StaticEventManager,
     Zend\ModuleManager\Feature\InitProviderInterface,
+    Zend\ModuleManager\ModuleManagerInterface,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\ModuleManager\Feature\BootstrapListenerInterface;
@@ -34,7 +36,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      * @param  \Zend\ModuleManager\ModuleManager $manager
      * @return void
      */
-    public function init($manager = null)
+    public function init(ModuleManagerInterface $manager)
     {
         $this->moduleManager = $manager;
     }
@@ -44,7 +46,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      *
      * @return array
      */
-    public function onBootstrap(Event $e)
+    public function onBootstrap(EventInterface $e) 
     {
         /**
          * @var $app \Zend\Mvc\Application
@@ -53,35 +55,35 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
         $app = $e->getApplication();
         $this->service = $app->getServiceManager();
 
-        $app->events()->attach('dispatch', array($this, 'renderAssets'), 32);
+        $app->getEventManager()->attach('dispatch', [$this, 'renderAssets'], 32);
     }
 
     public function getProvides()
     {
-        return array(
-            __NAMESPACE__ => array(
+        return [
+            __NAMESPACE__ => [
                 'version' => '0.1.0'
-            ),
-        );
+            ],
+        ];
     }
 
     public function getConfig($env = null)
     {
-        return include __DIR__ . '/configs/module.config.php';
+        return include __DIR__ . '/config/module.config.php';
     }
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
                 __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    'Assetic' => __DIR__ . '/vendor/assetic/src/Assetic',
-                ),
-            ),
-        );
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+                ],
+            ],
+        ];
     }
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
