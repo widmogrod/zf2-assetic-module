@@ -15,12 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/assetic": "1.0.x-dev"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "master"
-        }
+        "kriswallsmith/assetic": "v1.0.3"
     },
     "autoload": {
         "psr-0": {
