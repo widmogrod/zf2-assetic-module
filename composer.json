@@ -13,15 +13,9 @@
             "role": "Developer"
         }
     ],
-    "suggest": {
-        "twig/twig": "Assetic provides the integration with the Twig templating engine",
-        "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
-        "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
-        "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris"
-    },
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/assetic": "dev-master"
+        "kriswallsmith/assetic": "1.0.x-dev"
     },
     "extra": {
         "branch-alias": {
