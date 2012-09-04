@@ -34,32 +34,32 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 # Changes
 
-  * 2012-09-04:
-     * composer support added, now is recommended way of installation
-     * remove vendor direcotry
-     * new installation process
+### 2012-09-04:
+  * composer support added, now is recommended way of installation
+  * remove vendor direcotry
+  * new installation process
 
-  * 2012-08-26:
+### 2012-08-26:
 
-      * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
-      * assetic configuration namespace was change from:
-        ```
-        array(
-            'di' => array(
-                'instance' => array(
-                    'assetic-configuration' => array(
-                        'parameters' => array(
-                            'config' => array(/* configuration */)
-                        )
+  * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
+  * assetic configuration namespace was change from:
+    ```
+    array(
+        'di' => array(
+            'instance' => array(
+                'assetic-configuration' => array(
+                    'parameters' => array(
+                        'config' => array(/* configuration */)
                     )
                 )
             )
-        );
-        ```
-        to:
-        ```
-        array('assetic_configuration' => array(/* configuration */))
-        ```
+        )
+    );
+    ```
+    to:
+    ```
+    array('assetic_configuration' => array(/* configuration */))
+    ```
 
 # How to use _AsseticBundle_
 
@@ -76,7 +76,7 @@ This example show how to convert "ZF2 Skeleton Application" to load assets via A
   mv public/images module/Application/assets
   ```
 
-2. Add configuration below to ```module/Application/config/module.config.php```
+2. Add to module configuration file `module/Application/config/module.config.php` configuration fragment placed below:
 ```php
 <?php
 return array(
@@ -140,8 +140,8 @@ return array(
 ?>
 ```
 
-3. update "head" tag in layout file ```module/Application/view/layout/layout.phtml```
-```
+3. update "head" tag in layout file `module/Application/view/layout/layout.phtml`
+```html
   <head>
     <meta charset="utf-8">
     <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
