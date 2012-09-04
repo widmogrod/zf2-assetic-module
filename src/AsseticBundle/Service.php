@@ -216,16 +216,14 @@ class Service
                 $alias = $name;
             }
 
-            if ($fm->has($alias)) {
-                continue;
-            }
+            if (!$fm->has($alias)) {
+                $filter = new $name($option);
+                if(is_array($option)) {
+                    call_user_func_array(array($filter, '__construct'), $option);
+                }
 
-            $filter = new $name($option);
-            if(is_array($option)) {
-                call_user_func_array(array($filter, '__construct'), $option); 
+                $fm->set($alias, $filter);
             }
-
-            $fm->set($alias, $filter);
 
             $result[] = $alias;
         }
