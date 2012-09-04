@@ -7,7 +7,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 # Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.0rc2*.
+  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.0rc6*.
 
 # Installation
 
