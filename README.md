@@ -28,9 +28,9 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Installation without composer:
 
-  1. cd my/project/folder
-  2. git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive
-  3. open my/project/folder/configs/application.config.php and add 'AsseticBundle' to your 'modules' parameter.
+  1. ``cd my/project/folder``
+  2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
+  3. open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 # Changes
 
