@@ -1,5 +1,4 @@
 <?php
-
 namespace AsseticBundle;
 
 use Zend\ModuleManager\ModuleManager,
@@ -61,7 +60,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
     {
         return array(
             __NAMESPACE__ => array(
-                'version' => '0.1.0'
+                'version' => '0.9.1'
             ),
         );
     }
@@ -74,11 +73,9 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
-            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/',
                     'Assetic' => __DIR__ . '/vendor/assetic/src/Assetic',
                 ),
             ),

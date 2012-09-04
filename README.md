@@ -11,13 +11,33 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 # Installation
 
-Simplest way:
+## Composer installation
+
+  1. `cd my/project/directory`
+  2. create a `composer.json` file with following content:
+
+     ```json
+     {
+         "require": {
+             "widmogrod/zf2-assetic-module": "dev-master"
+         }
+     }
+     ```
+  3. run `php composer.phar install`
+  4. pen my/project/folder/configs/application.config.php and add 'AsseticBundle' to your 'modules' parameter.
+
+## Installation without composer:
 
   1. cd my/project/folder
   2. git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive
   3. open my/project/folder/configs/application.config.php and add 'AsseticBundle' to your 'modules' parameter.
 
 # Changes
+
+  * 2012-09-04:
+     * composer support added, now is recommended way of installation
+     * remove vendor direcotry
+     * new installation process
 
   * 2012-08-26:
 
