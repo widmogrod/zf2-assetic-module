@@ -65,7 +65,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Simple configuration example
 
-This example show how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
+This example shows how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
 
 1. After install skeleton application move resources from public/ to module/Application/assets
   ```bash
