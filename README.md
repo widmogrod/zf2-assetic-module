@@ -353,9 +353,10 @@ _AsseticBundle_ resolve which configuration will be used to setup and load asset
 
   * Todo
      * more examples & better description
-     * add composer installation
+     * create fork of ZendSkeletonApplication using _AsseticBundle_
 
   * Done
+     * add composer installation
      * setup assets by view helpers
      * add cache for assets
      * add ?timestamp url query parameter (now path is appended by ?1233213123)
