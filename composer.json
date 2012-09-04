@@ -19,8 +19,8 @@
     },
     "autoload": {
         "psr-0": {
-            "AsseticBundle\\": "src/",
-            "AsseticBundle\\Module" : "./Module.php"
-        }
+            "AsseticBundle": "src"
+        },
+        "classmap" : ["./"]
     }
 }
