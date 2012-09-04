@@ -13,7 +13,7 @@ return array(
 
     'assetic_configuration' => array(
         'debug'              => false,
-        'webPath'            => __DIR__ . '/../../../public/assets',
+        'webPath'            => 'public/assets', //
         'baseUrl'            => '/assets',
         'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
