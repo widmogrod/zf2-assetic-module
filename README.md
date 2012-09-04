@@ -36,7 +36,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ### 2012-09-04:
   * composer support added, now is recommended way of installation
-  * remove vendor direcotry
+  * remove vendor directory
   * new installation process
 
 ### 2012-08-26:
