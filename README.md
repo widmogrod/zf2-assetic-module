@@ -1,6 +1,6 @@
 # Introduction
 
-AsseticBundle is module for ZF2 allowing asset managment depended of route-name, controller-alias-name (di).
+AsseticBundle is module for ZF2 allowing asset managment dependent on route-name, controller-alias-name (di).
 Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 *P.S.* Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
@@ -14,7 +14,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Composer installation
 
   1. `cd my/project/directory`
-  2. create a `composer.json` file with following content:
+  2. Create a `composer.json` file with following content:
 
      ```json
      {
@@ -23,14 +23,14 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
          }
      }
      ```
-  3. run `php composer.phar install`
-  4. pen my/project/folder/configs/application.config.php and add 'AsseticBundle' to your 'modules' parameter.
+  3. Run `php composer.phar install`
+  4. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Installation without composer:
 
   1. ``cd my/project/folder``
   2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
-  3. open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
+  3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 # Changes
 
@@ -67,7 +67,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 This example shows how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
 
-1. After install skeleton application move resources from public/ to module/Application/assets
+1. After installing skeleton application, move resources from public/ to module/Application/assets
   ```bash
   cd to/your/project/dir
   mkdir module/Application/assets
@@ -76,7 +76,7 @@ This example shows how to convert "ZF2 Skeleton Application" to load assets via 
   mv public/images module/Application/assets
   ```
 
-2. Add to module configuration file `module/Application/config/module.config.php` configuration fragment placed below:
+2. Edit the module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
 ```php
 <?php
 return array(
@@ -140,7 +140,7 @@ return array(
 ?>
 ```
 
-3. update "head" tag in layout file `module/Application/view/layout/layout.phtml`
+3. Update "head" tag in layout file `module/Application/view/layout/layout.phtml`
 ```html
   <head>
     <meta charset="utf-8">
@@ -154,7 +154,7 @@ return array(
   </head>
 ```
 
-4. refresh site and have fun!
+4. Refresh site and have fun!
 
 ## Complex configuration example
 
@@ -221,12 +221,12 @@ return array(
             ),
 
             /*
-             * When route will be mached then following assets will be loaded:
+             * If the following routes are matched then the corresponding assets will be loaded:
              * INFO: assets with names prepended by '@' are alias for specific configuration resource.
              */
             'routes' => array(
                 /*
-                 * when router 'default' will be used then this set of asset will be loaded
+                 * when router 'default' will be used then this set of assets will be loaded
                  */
                 'default' => array(
                     '@base_css',
@@ -251,7 +251,7 @@ return array(
             ),
 
             /*
-             * In this configuration section, you can define which js, css, resources module have.
+             * In this configuration section, you can define which js, and css resources the module has.
              */
             'modules' => array(
 
@@ -295,7 +295,7 @@ return array(
                     'collections' => array(
 
                         /*
-                         * If You want move not only CSS, files but also images relative to CSS resource
+                         * If You want to move not only CSS files, but also images relative to CSS resource
                          * You must set option flag 'move_raw' to true.
                          */
                         'quiz_app_images' => array(
@@ -319,7 +319,7 @@ return array(
                             ),
 
                             /*
-                             * If Your assets collection is using a @reference its required to defain
+                             * If Your assets collection is using a @reference its required to define
                              * a output filename for this collection.
                              *
                              * Without it, \AsseticBundle\ViewHelperSetup can't determinate
@@ -341,11 +341,11 @@ return array(
 
 # Which configuration will be used
 
-_AsseticBundle_ resolve which configuration will be used to setup and load assets using this algoritm:
+_AsseticBundle_ uses the following algorithm to determine the configuration to use when loading assets:
 
-  1. use assets from 'controller' configuration
-  2. if 'controller' not exists, use assets from 'route' configuration
-  3. if 'route' not exists, don't load assets
+  1. Use assets from 'controller' configuration
+  2. If 'controller' not exists, use assets from 'route' configuration
+  3. If 'route' not exists, don't load assets
 
 
 # Projects using _AsseticBundle_
