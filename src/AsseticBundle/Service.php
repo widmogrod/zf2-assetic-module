@@ -233,37 +233,43 @@ class Service
 
     public function setupRenderer(Renderer $renderer)
     {
-        #  generate from controller
-        $result = $this->setupRendererForController($renderer);
+        $config = $this->getControllerConfig();
 
-        # if can't, ten from router
-        if (!$result) {
-            $result = $this->setupRendererForRouter($renderer);
+        if (count($config) == 0) {
+            $config = $this->getRouterConfig();
         }
 
-        return $result;
+        //If we don't have any assets listed by now, or if we are mixing in
+        //the default assets, then merge in the default assets to the config array
+        $defaultConfig = $this->getDefaultConfig();
+        if (count($config) == 0 || isset($defaultConfig['options']['mixin']) && $defaultConfig['options']['mixin']) {
+            $config = array_merge($config, $defaultConfig['assets']);
+        }
+
+        if (count($config) > 0) {
+            $this->setupRendererFromOptions($renderer, $config);
+            return true;
+        }
+
+        return false;
     }
 
-    public function setupRendererForRouter(Renderer $renderer)
+    public function getDefaultConfig()
+    {
+        $defaultDefinition = $this->configuration->getDefault();
+        return $defaultDefinition? $defaultDefinition: array();
+    }
+
+    public function getRouterConfig()
     {
         $assetOptions = $this->configuration->getRoute($this->getRouteName());
-        if (!$assetOptions) {
-            return false;
-        }
-
-        $this->setupRendererFromOptions($renderer, $assetOptions);
-        return true;
+        return $assetOptions? $assetOptions: array();
     }
 
-    public function setupRendererForController(Renderer $renderer)
+    public function getControllerConfig()
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
-        if (!$assetOptions) {
-            return false;
-        }
-
-        $this->setupRendererFromOptions($renderer, $assetOptions);
-        return true;
+        return $assetOptions? $assetOptions: array();
     }
 
     public function setupRendererFromOptions(Renderer $renderer, array $options)
