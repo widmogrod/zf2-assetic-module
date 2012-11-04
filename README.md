@@ -251,6 +251,23 @@ return array(
             ),
 
             /*
+            * The default assets to load.
+            * If the mixin option is true, then the listed assets will be merged with any controler / route
+            * specific assets. If it is false, the default assets will only be used when no routes or controllers
+            * match
+            */
+            'default' => array(
+                'assets' => array(
+                    '@base_css',
+                    '@base_js',
+                ),
+
+                'options' => array(
+                    'mixin' => true,
+                ),
+            ),
+
+            /*
              * In this configuration section, you can define which js, and css resources the module has.
              */
             'modules' => array(
