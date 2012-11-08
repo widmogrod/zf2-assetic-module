@@ -5,6 +5,8 @@ use Zend\Stdlib;
 
 class Configuration
 {
+    protected $default = array();
+
     protected $routes = array();
 
     protected $debug = false;
@@ -98,6 +100,24 @@ class Configuration
     public function getCacheEnabled()
     {
         return $this->cacheEnabled;
+    }
+
+    public function setDefault(array $default)
+    {
+        if (!isset($default['assets'])) {
+            $default['assets'] = array();
+        }
+
+        if (!isset($default['options'])) {
+            $default['options'] = array();
+        }
+
+        $this->default = $default;
+    }
+
+    public function getDefault()
+    {
+        return $this->default;
     }
 
     public function setRoutes(array $routes)
