@@ -14,7 +14,7 @@ class ServiceFactory implements FactoryInterface
     {
         $configuration = $serviceLocator->get('Configuration');
 
-        $asseticConfig = new Configuration($configuration['assetic_configuration']);
+        $asseticConfig = new Configuration($configuration['assetic_configuration'], $serviceLocator);
         $asseticAssetManager = $serviceLocator->get('Assetic\AssetManager');
         $asseticFilterManager = $serviceLocator->get('Assetic\FilterManager');
 
