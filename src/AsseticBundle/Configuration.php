@@ -25,8 +25,15 @@ class Configuration
 
     protected $rendererToStrategy = array();
 
-    public function __construct($config)
+    /**
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
+    public function __construct($config, $serviceLocator)
     {
+        $this->serviceLocator = $serviceLocator;
+
         if (!is_null($config)) {
             if (is_array($config)) {
                 $this->processArray($config);
@@ -173,6 +180,15 @@ class Configuration
 
     public function setBaseUrl($baseUrl)
     {
+
+        //Try to resolve the base URL according to Zend (if Applicable)
+        $zendBaseUrl = "";
+        try{
+            $zendBaseUrl = $this->serviceLocator->get('Request')->getBasePath();
+        } catch(\Exception $e){}
+
+        $baseUrl = str_ireplace("@zfBaseUrl", $zendBaseUrl, $baseUrl);
+
         $this->baseUrl = $baseUrl;
     }
 

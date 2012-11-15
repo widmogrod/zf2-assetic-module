@@ -199,6 +199,7 @@ return array(
 
             /*
              * Defaine base URL which will prepend your resources adress.
+             * If present, the @zfBaseUrl string will be replaced with the baseURL as supplied by the framework.
              *
              * @example
              * <link href="http://resources.example.com/witter_bootstrap_css.css?1320257242" media="screen" rel="stylesheet" type="text/css">
@@ -206,7 +207,7 @@ return array(
              * @optional
              * @default null
              */
-             'baseUrl' => '/assets',
+             'baseUrl' => '@zfBaseUrl/assets',
 
             /*
              * When controller name will be found in this section then fallowing assets will be loaded:
