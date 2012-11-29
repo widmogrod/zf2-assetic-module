@@ -45,7 +45,11 @@ class ViewHelperStrategy extends AbstractStrategy
         switch (true)
         {
             case ($renderer instanceof PhpRenderer):
-                $renderer->plugin('InlineScript')->appendFile($path);
+                if (strpos($path, "head_")) {
+                    $renderer->plugin('HeadScript')->appendFile($path);
+                } else {
+                    $renderer->plugin('InlineScript')->appendFile($path);
+                }
                 break;
         }
     }
