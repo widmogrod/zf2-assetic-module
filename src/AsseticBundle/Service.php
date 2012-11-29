@@ -346,4 +346,14 @@ class Service
     {
         return get_class($renderer);
     }
+
+    /**
+     * Gets the service configuration.
+     *
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 }
