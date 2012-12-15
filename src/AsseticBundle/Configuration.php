@@ -184,7 +184,11 @@ class Configuration
         //Try to resolve the base URL according to Zend (if Applicable)
         $zendBaseUrl = "";
         try{
-            $zendBaseUrl = $this->serviceLocator->get('Request')->getBasePath();
+            /** @var $request RequestInterface */
+            $request = $this->serviceLocator->get('Request');
+            if (method_exists($request, 'getBasePath'))
+                $zendBaseUrl = $request->getBasePath();
+
         } catch(\Exception $e){}
 
         $baseUrl = str_ireplace("@zfBaseUrl", $zendBaseUrl, $baseUrl);
