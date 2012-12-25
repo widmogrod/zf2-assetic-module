@@ -152,5 +152,6 @@ class Service extends \PHPUnit_Framework_TestCase
         $assetManager = $this->object->getAssetManager();
         $this->assertTrue($assetManager->has('base_css'));
         $this->assertTrue($assetManager->has('base_js'));
+        $this->assertFalse($assetManager->has('base_images'));
     }
 }
