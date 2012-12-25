@@ -29,6 +29,48 @@ class Service extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->defaultOptions = array(
+            'routes' => array(
+                'home' => array(
+                    '@base_css',
+                    '@base_js',
+                ),
+            ),
+            'modules' => array(
+                'application' => array(
+                    # module root path for yout css and js files
+                    'root_path' => TEST_ASSETS_DIR,
+                    # collection od assets
+                    'collections' => array(
+                        'base_css' => array(
+                            'assets' => array(
+                                'css/global.css',
+                            ),
+                            'filters' => array(
+                                'CssRewriteFilter' => array(
+                                    'name' => 'Assetic\Filter\CssRewriteFilter'
+                                )
+                            ),
+                            'options' => array(),
+                        ),
+                        'base_js' => array(
+                            'assets' => array(
+                                'js/test.js',
+                            )
+                        ),
+                        'base_images' => array(
+                            'assets' => array(
+                                'images/*.png',
+                            ),
+                            'options' => array(
+                                'move_raw' => true,
+                            )
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->configuration = new AsseticBundle\Configuration($this->defaultOptions);
         $this->object = new AsseticBundle\Service($this->configuration);
     }
