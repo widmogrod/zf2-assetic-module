@@ -3,3 +3,4 @@
 .composer.lock
 composer.lock
 vendor/*
+.idea

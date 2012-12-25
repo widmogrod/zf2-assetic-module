@@ -17,7 +17,8 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
         "kriswallsmith/assetic": "1.0.*",
-        "leafo/lessphp": "0.3.*"
+        "leafo/lessphp": "0.3.*",
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-0": {
