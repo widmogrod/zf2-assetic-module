@@ -5,12 +5,20 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\ModuleManagerInterface,
     Zend\Http\Response,
     Zend\EventManager\EventInterface,
+    Zend\ServiceManager\ServiceLocatorInterface,
     Zend\ModuleManager\Feature\InitProviderInterface,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
+    Zend\ModuleManager\Feature\ServiceProviderInterface,
     Zend\ModuleManager\Feature\BootstrapListenerInterface;
 
-class Module implements InitProviderInterface, AutoloaderProviderInterface, ConfigProviderInterface, BootstrapListenerInterface
+class Module
+    implements
+        InitProviderInterface,
+        AutoloaderProviderInterface,
+        ConfigProviderInterface,
+        BootstrapListenerInterface,
+        ServiceProviderInterface
 {
     /**
      * @var array
@@ -47,6 +55,26 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
     {
         return include __DIR__ . '/configs/module.config.php';
     }
+
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'initializers' => array(
+                function($object, ServiceLocatorInterface $serviceManager) {
+                    if ($object instanceof AsseticBundleServiceAwareInterface) {
+                        $object->setAsseticBundleService($serviceManager->get('AsseticService'));
+                    }
+                }
+            ),
+        );
+    }
+
 
     public function getAutoloaderConfig()
     {
