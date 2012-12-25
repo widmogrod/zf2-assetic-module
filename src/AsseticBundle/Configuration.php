@@ -5,7 +5,10 @@ use Zend\Stdlib;
 
 class Configuration
 {
-    protected $default = array();
+    protected $default = array(
+        'assets' => array(),
+        'options' => array(),
+    );
 
     protected $routes = array();
 
@@ -34,7 +37,7 @@ class Configuration
     {
         $this->serviceLocator = $serviceLocator;
 
-        if (!is_null($config)) {
+        if (nul !== $config) {
             if (is_array($config)) {
                 $this->processArray($config);
             } elseif ($config instanceof \Traversable) {
