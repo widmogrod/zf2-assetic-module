@@ -14,7 +14,7 @@ return array(
     'assetic_configuration' => array(
         'debug'              => false,
         'webPath'            => 'public/assets', //
-        'baseUrl'            => '@zfBaseUrl/assets',
+        'baseUrl'            => '/assets',
         'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',

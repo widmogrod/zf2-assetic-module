@@ -109,4 +109,118 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
         $this->assertEquals($expected, $this->object->getDefault());
     }
+
+    public function testSetRouters() {
+        $expected = array(
+            'home' => array(
+                'name' => 'value',
+            ),
+        );
+        $result = $this->object->setRoutes($expected);
+        $this->assertNull($result);
+        $this->assertEquals($expected, $this->object->getRoutes());
+    }
+
+    public function testGetRoutes() {
+        $expected = array();
+        $result = $this->object->getRoutes();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetRouter() {
+        $result = $this->object->getRoute('test');
+        $this->assertNull($result);
+
+        $expected = '123';
+        $result = $this->object->getRoute('test', $expected);
+        $this->assertEquals($expected, $result);
+
+        $expected = array(
+            'name' => 'value',
+        );
+        $routers = array(
+            'home' => $expected,
+        );
+        $this->object->setRoutes($routers);
+        $result = $this->object->getRoute('home');
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetControllers() {
+        $expected = array();
+        $result = $this->object->getControllers();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetController() {
+        $controllerName = 'some';
+        $result = $this->object->getController($controllerName);
+        $this->assertNull($result);
+
+        $expected = '123';
+        $result = $this->object->getController($controllerName, $expected);
+        $this->assertEquals($expected, $result);
+
+        $expected = array(
+            'name' => 'value',
+        );
+        $data = array(
+            $controllerName => $expected,
+        );
+        $this->object->setControllers($data);
+        $result = $this->object->getController($controllerName);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetModules() {
+        $expected = array();
+        $result = $this->object->getModules();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetModule() {
+        $moduleName = 'some-module';
+        $result = $this->object->getModule($moduleName);
+        $this->assertNull($result);
+
+        $expected = '123';
+        $result = $this->object->getModule($moduleName, $expected);
+        $this->assertEquals($expected, $result);
+
+        $expected = array(
+            'name' => 'value',
+        );
+        $data = array(
+            $moduleName => $expected,
+        );
+        $this->object->setControllers($data);
+        $result = $this->object->getModule($moduleName);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testSetRendererToStrategy() {
+        $data = array();
+        $result = $this->object->setRendererToStrategy($data);
+        $this->assertNull($result);
+    }
+
+    public function testGetStrategyNameForRenderer() {
+        $strategyName = 'some-module';
+        $result = $this->object->getStrategyNameForRenderer($strategyName);
+        $this->assertNull($result);
+
+        $expected = '123';
+        $result = $this->object->getStrategyNameForRenderer($strategyName, $expected);
+        $this->assertEquals($expected, $result);
+
+        $expected = array(
+            'name' => 'value',
+        );
+        $data = array(
+            $strategyName => $expected,
+        );
+        $this->object->setControllers($data);
+        $result = $this->object->getStrategyNameForRenderer($strategyName);
+        $this->assertEquals($expected, $result);
+    }
 }

@@ -2,6 +2,7 @@
 namespace AsseticBundle;
 
 use Zend\Stdlib;
+use AsseticBundle\Exception;
 
 class Configuration
 {
@@ -28,24 +29,15 @@ class Configuration
 
     protected $rendererToStrategy = array();
 
-    /**
-     * @var \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    public function __construct($config, $serviceLocator = null)
+    public function __construct($config = null)
     {
-        if (null === $serviceLocator) {
-            $this->serviceLocator = $serviceLocator;
-        }
-
         if (null !== $config) {
             if (is_array($config)) {
                 $this->processArray($config);
             } elseif ($config instanceof \Traversable) {
-                $this->processArray(\Zend\Stdlib\ArrayUtils::iteratorToArray($config));
+                $this->processArray(Stdlib\ArrayUtils::iteratorToArray($config));
             } else {
-                throw new \InvalidArgumentException(
+                throw new Exception\InvalidArgumentException(
                     'Parameter to \\AsseticBundle\\Configuration\'s '
                     . 'constructor must be an array or implement the '
                     . '\\Traversable interface'
@@ -67,11 +59,11 @@ class Configuration
     public function setWebPath($path)
     {
         if (!is_dir($path)) {
-            throw new \RuntimeException('Directory do not exists: '.$path);
+            throw new Exception\RuntimeException('Directory do not exists: '.$path);
         }
 
         if (!is_writable($path)) {
-            throw new \RuntimeException('Directory is not writable: '.$path);
+            throw new Exception\RuntimeException('Directory is not writable: '.$path);
         }
 
         $this->webPath = $path;
@@ -80,7 +72,7 @@ class Configuration
     public function getWebPath()
     {
         if (null === $this->webPath) {
-            throw new \RuntimeException('Web path is not set');
+            throw new Exception\RuntimeException('Web path is not set');
         }
 
         return $this->webPath;
@@ -89,11 +81,11 @@ class Configuration
     public function setCachePath($path)
     {
         if (!is_dir($path)) {
-            throw new \RuntimeException('Directory do not exists: '.$path);
+            throw new Exception\RuntimeException('Directory do not exists: '.$path);
         }
 
         if (!is_writable($path)) {
-            throw new \RuntimeException('Directory is not writable: '.$path);
+            throw new Exception\RuntimeException('Directory is not writable: '.$path);
         }
 
         $this->cachePath = $path;
@@ -176,7 +168,7 @@ class Configuration
         return $this->modules;
     }
 
-    public function getModule($name, $default)
+    public function getModule($name, $default = null)
     {
         return array_key_exists($name, $this->modules)
                 ? $this->modules[$name]
@@ -185,23 +177,6 @@ class Configuration
 
     public function setBaseUrl($baseUrl)
     {
-        if (null === $this->serviceLocator) {
-            $this->baseUrl = $baseUrl;
-            return;
-        }
-
-        // Try to resolve the base URL according to Zend (if Applicable)
-        $zendBaseUrl = "";
-        try{
-            /** @var $request RequestInterface */
-            $request = $this->serviceLocator->get('Request');
-            if (method_exists($request, 'getBasePath'))
-                $zendBaseUrl = $request->getBasePath();
-
-        } catch(\Exception $e){}
-
-        $baseUrl = str_ireplace("@zfBaseUrl", $zendBaseUrl, $baseUrl);
-
         $this->baseUrl = $baseUrl;
     }
 
@@ -225,7 +200,7 @@ class Configuration
         $parts = array_map('ucfirst', $parts);
         $setter = 'set' . implode('', $parts);
         if (!method_exists($this, $setter)) {
-            throw new \BadMethodCallException(
+            throw new Exception\BadMethodCallException(
                 'The configuration key "' . $key . '" does not '
                 . 'have a matching ' . $setter . ' setter method '
                 . 'which must be defined'

@@ -5,7 +5,6 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\ModuleManagerInterface,
     Zend\Http\Response,
     Zend\EventManager\EventInterface,
-    Zend\EventManager\StaticEventManager,
     Zend\ModuleManager\Feature\InitProviderInterface,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
@@ -36,7 +35,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
      */
     public function init(ModuleManagerInterface $manager)
     {
-        $this->moduleManager = $manager;
+        $this->loadedModules = $manager->getLoadedModules();
     }
 
     /**
@@ -56,16 +55,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
         $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
-    public function getProvides()
-    {
-        return array(
-            __NAMESPACE__ => array(
-                'version' => '0.9.1'
-            ),
-        );
-    }
-
-    public function getConfig($env = null)
+    public function getConfig()
     {
         return include __DIR__ . '/configs/module.config.php';
     }
@@ -75,8 +65,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/',
-                    'Assetic' => __DIR__ . '/vendor/assetic/src/Assetic',
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/'
                 ),
             ),
         );
@@ -90,10 +79,12 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
             $e->setResponse($response);
         }
 
+        $sm = $e->getApplication()->getServiceManager();
+
         $router = $e->getRouteMatch();
 
         /** @var $as \AsseticBundle\Service */
-        $as = $this->service->get('AsseticService');
+        $as = $sm->get('AsseticService');
 
         # setup service
         $as->setRouteName($router->getMatchedRouteName());
@@ -101,20 +92,7 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
         $as->setActionName($router->getParam('action'));
 
         # init assets for modules
-        $as->initLoadedModules($this->getLoadedModules());
-        $as->setupRenderer($this->getRenderer());
-    }
-
-    private function getLoadedModules()
-    {
-        if (null === $this->loadedModules) {
-            $this->loadedModules = $this->moduleManager->getLoadedModules();
-        }
-        return $this->loadedModules;
-    }
-
-    private function getRenderer()
-    {
-        return $this->service->get('ViewRenderer');
+        $as->initLoadedModules($this->loadedModules);
+        $as->setupRenderer($sm->get('ViewRenderer'));
     }
 }
