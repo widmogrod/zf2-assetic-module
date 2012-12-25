@@ -38,9 +38,8 @@ class Service extends \PHPUnit_Framework_TestCase
             ),
             'modules' => array(
                 'application' => array(
-                    # module root path for yout css and js files
                     'root_path' => TEST_ASSETS_DIR,
-                    # collection od assets
+                    'webPath' => TEST_CACHE_DIR,
                     'collections' => array(
                         'base_css' => array(
                             'assets' => array(
