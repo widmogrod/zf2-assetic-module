@@ -6,11 +6,14 @@ php:
  - 5.4
 
 before_install:
- - cp tests/phpunit.xml.dist tests/phpunit.xml
- - composer install --dev
+ - composer install
+
+before_script:
+ - cd tests
+ - cp phpunit.xml.dist phpunit.xml
 
 script:
- - ./vendor/bin/phpunit tests/
+ - ../vendor/bin/phpunit
 
 notifications:
   email: "widmogrod@gmail.com"
