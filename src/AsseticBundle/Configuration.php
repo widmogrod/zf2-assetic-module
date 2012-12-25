@@ -33,11 +33,13 @@ class Configuration
      */
     protected $serviceLocator;
 
-    public function __construct($config, $serviceLocator)
+    public function __construct($config, $serviceLocator = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        if (null === $serviceLocator) {
+            $this->serviceLocator = $serviceLocator;
+        }
 
-        if (nul !== $config) {
+        if (null !== $config) {
             if (is_array($config)) {
                 $this->processArray($config);
             } elseif ($config instanceof \Traversable) {
@@ -183,8 +185,12 @@ class Configuration
 
     public function setBaseUrl($baseUrl)
     {
+        if (null === $this->serviceLocator) {
+            $this->baseUrl = $baseUrl;
+            return;
+        }
 
-        //Try to resolve the base URL according to Zend (if Applicable)
+        // Try to resolve the base URL according to Zend (if Applicable)
         $zendBaseUrl = "";
         try{
             /** @var $request RequestInterface */

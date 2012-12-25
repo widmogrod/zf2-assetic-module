@@ -7,7 +7,7 @@
          stopOnFailure="false">
 
     <testsuites>
-        <testsuite name="data-grid library">
+        <testsuite name="AsseticBundle src">
             <directory suffix=".php">./AsseticBundleTest/</directory>
         </testsuite>
     </testsuites>
