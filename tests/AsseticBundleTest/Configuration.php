@@ -35,4 +35,78 @@ class Configuration extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {}
+
+    public function testIsDebug() {
+        $this->assertFalse($this->object->isDebug());
+    }
+
+    public function testSetDebug() {
+        $expected = true;
+        $this->assertNull($this->object->setDebug($expected));
+        $this->assertEquals($expected, $this->object->isDebug());
+    }
+
+    public function testSetWebPath() {
+        $result = $this->object->setWebPath(TEST_ASSETS_DIR);
+        $this->assertNull($result);
+        $this->assertEquals(TEST_ASSETS_DIR, $this->object->getWebPath());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testSetWebPathFailure() {
+        $this->object->setWebPath('non existing path');
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testGetWebPathFailure() {
+        $this->object->getWebPath();
+    }
+
+    public function testSetCachePath() {
+        $result = $this->object->setCachePath(TEST_CACHE_DIR);
+        $this->assertNull($result);
+        $this->assertEquals(TEST_CACHE_DIR, $this->object->getCachePath());
+    }
+
+    public function testGetCachePath() {
+        $result = $this->object->getCachePath();
+        $this->assertNull($result);
+    }
+
+    public function testGetCacheEnabled() {
+        $this->assertFalse($this->object->getCacheEnabled());
+    }
+
+    public function testSetCacheEnabled() {
+        $expected = true;
+        $this->assertNull($this->object->setCacheEnabled($expected));
+        $this->assertEquals($expected, $this->object->getCacheEnabled());
+    }
+
+    public function testGetDefault() {
+        $expected = array(
+            'assets' => array(),
+            'options' => array(),
+        );
+        $this->assertEquals($expected, $this->object->getDefault());
+    }
+
+    public function testSetDefault() {
+        $options = array(
+            'test' => array(),
+        );
+        $expected = array(
+            'test' => array(),
+            'assets' => array(),
+            'options' => array(),
+        );
+
+        $result = $this->object->setDefault($options);
+        $this->assertNull($result);
+        $this->assertEquals($expected, $this->object->getDefault());
+    }
 }
