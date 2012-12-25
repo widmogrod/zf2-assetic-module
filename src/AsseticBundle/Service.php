@@ -65,10 +65,6 @@ class Service
         return (null === $this->routeName) ? self::DEFAULT_ROUTE_NAME : $this->routeName;
     }
 
-    /**
-     * @Zend\Di\Definition\Annotation\Inject
-     * @Required
-     */
     public function setAssetManager(AssetManager $assetManager)
     {
         $this->assetManager = $assetManager;
@@ -200,7 +196,7 @@ class Service
             if (is_array($options))
             {
                 if (!isset($options['name'])) {
-                    throw new \InvalidArgumentException(
+                    throw new Exception\InvalidArgumentException(
                         'Filter "'.$alias.'" required option "name"'
                     );
                 }
@@ -275,7 +271,7 @@ class Service
     public function setupRendererFromOptions(Renderer $renderer, array $options)
     {
         if (!$this->hasStrategyForRenderer($renderer)) {
-            throw new \Exception(sprintf(
+            throw new Exception\InvalidArgumentException(sprintf(
                 'no strategy defined for renderer "%s"',
                 $this->getRendererName($renderer)
             ));
@@ -317,7 +313,7 @@ class Service
         {
             $strategyClass = $this->configuration->getStrategyNameForRenderer($rendererName);
             if (!class_exists($strategyClass, true)) {
-                throw new \AsseticBundle\Exception\InvalidArgumentException(sprintf(
+                throw new Exception\InvalidArgumentException(sprintf(
                     'strategy class "%s" dosen\'t exists',
                     $strategyClass
                 ));
@@ -326,7 +322,7 @@ class Service
             $instance = new $strategyClass();
 
             if (!($instance instanceof StrategyInterface)) {
-                throw new \AsseticBundle\Exception\DomainException(sprintf(
+                throw new Exception\DomainException(sprintf(
                      'strategy class "%s" is not instanceof "AsseticBundle\View\StrategyInterface"',
                      $strategyClass
                 ));
