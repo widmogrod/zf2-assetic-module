@@ -22,10 +22,6 @@ class ServiceFactory implements FactoryInterface
         $asseticService->setAssetManager($asseticAssetManager);
         $asseticService->setFilterManager($asseticFilterManager);
 
-        $strategies = isset($configuration['assetic_configuration']['strategies'])
-            ? $configuration['assetic_configuration']['strategies']
-            : array();
-
         return $asseticService;
     }
 }

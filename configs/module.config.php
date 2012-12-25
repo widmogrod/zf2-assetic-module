@@ -6,14 +6,16 @@ return array(
         ),
         'factories' => array(
             'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
-            'Assetic\AssetManager'  => 'AsseticBundle\SimpleFactory',
-            'Assetic\FilterManager' => 'AsseticBundle\SimpleFactory',
+        ),
+        'invokables' => array(
+            'Assetic\AssetManager' => 'Assetic\AssetManager',
+            'Assetic\FilterManager' => 'Assetic\FilterManager',
         ),
     ),
 
     'assetic_configuration' => array(
         'debug'              => false,
-        'webPath'            => 'public/assets', //
+        'webPath'            => 'public/assets',
         'baseUrl'            => '/assets',
         'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
