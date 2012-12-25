@@ -15,7 +15,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
 
     /**
      * Test configuration.
-     * 
+     *
      * @var array
      */
     protected $testConfig = array();

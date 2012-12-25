@@ -1,17 +1,19 @@
-# Introduction
+# AsseticBundle [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
+
+## Introduction
 
 AsseticBundle is module for ZF2 allowing asset managment dependent on route-name, controller-alias-name (di).
 Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 *P.S.* Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
 
-# Requirements
+## Requirements
 
   * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.0rc6*.
 
 # Installation
 
-## Composer installation
+### Composer installation
 
   1. `cd my/project/directory`
   2. Create a `composer.json` file with following content:
@@ -26,20 +28,20 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Run `php composer.phar install`
   4. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
-## Installation without composer:
+### Installation without composer:
 
   1. ``cd my/project/folder``
   2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
-# Changes
+## Changes
 
-### 2012-09-04:
+#### 2012-09-04:
   * composer support added, now is recommended way of installation
   * remove vendor directory
   * new installation process
 
-### 2012-08-26:
+#### 2012-08-26:
 
   * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
   * assetic configuration namespace was change from:
@@ -61,9 +63,9 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
     array('assetic_configuration' => array(/* configuration */))
     ```
 
-# How to use _AsseticBundle_
+## How to use _AsseticBundle_
 
-## Simple configuration example
+### Simple configuration example
 
 This example shows how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
 
@@ -156,7 +158,7 @@ return array(
 
 4. Refresh site and have fun!
 
-## Complex configuration example
+### Complex configuration example
 
 ``` php
 <?php
@@ -357,7 +359,7 @@ return array(
 ?>
 ```
 
-# Which configuration will be used
+## Which configuration will be used
 
 _AsseticBundle_ uses the following algorithm to determine the configuration to use when loading assets:
 
@@ -366,11 +368,11 @@ _AsseticBundle_ uses the following algorithm to determine the configuration to u
   3. If 'route' not exists, don't load assets
 
 
-# Projects using _AsseticBundle_
+## Projects using _AsseticBundle_
 
   * [zf2-twitter-bootstrap-module](https://github.com/widmogrod/zf2-twitter-bootstrap-module)
 
-# Project plan
+## Project plan
 
   * Todo
      * more examples & better description
@@ -385,9 +387,9 @@ _AsseticBundle_ uses the following algorithm to determine the configuration to u
      * filter support
 
 
-# Additional staff
+### Additional staff
 
-## Layout .phtml example
+### Layout .phtml example
 
 ``` php
 <?php echo $this->plugin('doctype')->setDoctype(\Zend\View\Helper\Doctype::HTML5); ?>
