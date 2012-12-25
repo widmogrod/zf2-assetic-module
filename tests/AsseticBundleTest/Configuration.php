@@ -193,7 +193,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $data = array(
             $moduleName => $expected,
         );
-        $this->object->setControllers($data);
+        $this->object->setModules($data);
         $result = $this->object->getModule($moduleName);
         $this->assertEquals($expected, $result);
     }
@@ -219,7 +219,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $data = array(
             $strategyName => $expected,
         );
-        $this->object->setControllers($data);
+        $this->object->setRendererToStrategy($data);
         $result = $this->object->getStrategyNameForRenderer($strategyName);
         $this->assertEquals($expected, $result);
     }

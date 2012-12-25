@@ -13,16 +13,6 @@ use Zend\ModuleManager\ModuleManager,
 class Module implements InitProviderInterface, AutoloaderProviderInterface, ConfigProviderInterface, BootstrapListenerInterface
 {
     /**
-     * @var \Zend\ServiceManager\ServiceManager
-     */
-    protected $service;
-
-    /**
-     * @var \Zend\ModuleManager\ModuleManager $manager
-     */
-    protected $moduleManager;
-
-    /**
      * @var array
      */
     protected $loadedModules;
@@ -50,8 +40,6 @@ class Module implements InitProviderInterface, AutoloaderProviderInterface, Conf
          * @var $e \Zend\Mvc\MvcEvent
          */
         $app = $e->getApplication();
-        $this->service = $app->getServiceManager();
-
         $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
     }
 
