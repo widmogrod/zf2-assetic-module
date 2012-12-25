@@ -9,7 +9,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.0rc6*.
+  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.*.
 
 # Installation
 
@@ -35,6 +35,9 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Changes
+
+#### 2012-12-25:
+  * create tests environment.
 
 #### 2012-09-04:
   * composer support added, now is recommended way of installation
