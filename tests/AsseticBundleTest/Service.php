@@ -30,6 +30,7 @@ class Service extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->defaultOptions = array(
+            'webPath' => TEST_PUBLIC_DIR,
             'routes' => array(
                 'home' => array(
                     '@base_css',
@@ -37,9 +38,8 @@ class Service extends \PHPUnit_Framework_TestCase
                 ),
             ),
             'modules' => array(
-                'application' => array(
+                'test_application' => array(
                     'root_path' => TEST_ASSETS_DIR,
-                    'webPath' => TEST_CACHE_DIR,
                     'collections' => array(
                         'base_css' => array(
                             'assets' => array(
@@ -142,5 +142,15 @@ class Service extends \PHPUnit_Framework_TestCase
     public function testGetActionName() {
         $value = $this->object->getActionName();
         $this->assertNull($value);
+    }
+
+    public function testInitLoadedModules() {
+        $loadModules = array(
+            'test_application' => 'test_application',
+        );
+        $this->object->initLoadedModules($loadModules);
+        $assetManager = $this->object->getAssetManager();
+        $this->assertTrue($assetManager->has('base_css'));
+        $this->assertTrue($assetManager->has('base_js'));
     }
 }
