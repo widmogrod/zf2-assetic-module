@@ -44,7 +44,8 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
   * new configuration option "basePath"
   * composer is now recommended way of installation.
-  * Case insesitive module name in configuration required. Issue #36
+  * fix issue #36: Case insesitive module name in configuration required
+  * fix issue #30: Possible Assets may apply where they are not wanted
 
 #### 2012-12-25:
   * wrote tests
