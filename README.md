@@ -108,7 +108,9 @@ return array(
     'assetic_configuration' => array(
         'routes' => array(
             'home' => array(
-                '@base_css',
+                // Is disabled because 'default' option key will mix with this configuration section
+                // and provide @base_css assets.
+                // '@base_css',
                 '@base_js',
             ),
         ),
