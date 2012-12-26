@@ -81,9 +81,21 @@ class Service extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {}
 
-    public function testSetRouterName() {
-        $result = $this->object->setRouteName('some+name');
+    /**
+     * @param string $routeName
+     * @dataProvider getRoutesNamesProvider
+     */
+    public function testSetRouterName($routeName) {
+        $result = $this->object->setRouteName($routeName);
         $this->assertNull($result);
+        $this->assertEquals($routeName, $this->object->getRouteName());
+    }
+
+    public function getRoutesNamesProvider() {
+        return array(
+            'simple' => array('some'),
+            'chained' => array('some/route/more'),
+        );
     }
 
     public function testGetRouterName() {

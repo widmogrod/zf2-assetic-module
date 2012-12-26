@@ -57,7 +57,7 @@ class Service
 
     public function setRouteName($routeName)
     {
-        $this->routeName = basename($routeName);
+        $this->routeName = $routeName;
     }
 
     public function getRouteName()
