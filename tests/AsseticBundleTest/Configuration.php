@@ -207,7 +207,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetModule() {
-        $moduleName = 'some-module';
+        $moduleName = 'SomeModule';
         $result = $this->object->getModule($moduleName);
         $this->assertNull($result);
 
@@ -219,7 +219,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
             'name' => 'value',
         );
         $data = array(
-            $moduleName => $expected,
+            strtoupper($moduleName) => $expected,
         );
         $this->object->setModules($data);
         $result = $this->object->getModule($moduleName);

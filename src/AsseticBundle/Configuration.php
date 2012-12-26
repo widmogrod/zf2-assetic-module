@@ -232,7 +232,15 @@ class Configuration
 
     public function setModules(array $modules)
     {
-        $this->modules = $modules;
+        $this->modules = array();
+        foreach ($modules as $name => $options) {
+            $this->addModule($name, $options);
+        }
+    }
+
+    public function addModule($name, array $options) {
+        $name = strtolower($name);
+        $this->modules[$name] = $options;
     }
 
     public function getModules()
@@ -242,6 +250,7 @@ class Configuration
 
     public function getModule($name, $default = null)
     {
+        $name = strtolower($name);
         return array_key_exists($name, $this->modules)
                 ? $this->modules[$name]
                 : $default;
