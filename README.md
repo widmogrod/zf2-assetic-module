@@ -10,7 +10,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Requirements
 
   * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.***.
-  * [Assetic[(https://github.com/kriswallsmith/assetic)
+  * [Assetic](https://github.com/kriswallsmith/assetic)
   * PHP 5.3 or gather
 
 ## Installation
@@ -110,6 +110,15 @@ return array(
             'home' => array(
                 '@base_css',
                 '@base_js',
+            ),
+        ),
+
+        'default' => array(
+            'assets' => array(
+                '@base_css',
+            ),
+            'options' => array(
+                'mixin' => true
             ),
         ),
 
