@@ -154,4 +154,24 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertTrue($assetManager->has('base_js'));
         $this->assertFalse($assetManager->has('base_images'));
     }
+
+    public function testGetRendererName() {
+        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+        $name = $this->object->getRendererName($renderer);
+        $this->assertEquals(get_class($renderer), $name);
+    }
+
+    public function testHasStrategyForRenderer() {
+        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+        $value = $this->object->hasStrategyForRenderer($renderer);
+        $this->assertFalse($value);
+
+        $this->object->getConfiguration()->addRendererToStrategy(
+            get_class($renderer),
+            'AsseticBundle\View\NoneStrategy'
+        );
+
+        $value = $this->object->hasStrategyForRenderer($renderer);
+        $this->assertTrue($value);
+    }
 }

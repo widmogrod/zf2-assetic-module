@@ -235,10 +235,10 @@ class Service
             $config = $this->getRouterConfig();
         }
 
-        //If we don't have any assets listed by now, or if we are mixing in
-        //the default assets, then merge in the default assets to the config array
+        // If we don't have any assets listed by now, or if we are mixing in
+        // the default assets, then merge in the default assets to the config array
         $defaultConfig = $this->getDefaultConfig();
-        if (count($config) == 0 || isset($defaultConfig['options']['mixin']) && $defaultConfig['options']['mixin']) {
+        if (count($config) == 0 || isset($defaultConfig['options']['mixin'])) {
             $config = array_merge($config, $defaultConfig['assets']);
         }
 
@@ -299,6 +299,8 @@ class Service
     }
 
     /**
+     * Get strategy to setup assets for given $renderer.
+     *
      * @param \Zend\View\Renderer\RendererInterface $renderer
      * @return \AsseticBundle\View\StrategyInterface|null
      */
@@ -338,7 +340,13 @@ class Service
         return $strategy;
     }
 
-    protected function getRendererName(Renderer $renderer)
+    /**
+     * Get renderer name from $renderer object.
+     *
+     * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @return string
+     */
+    public function getRendererName(Renderer $renderer)
     {
         return get_class($renderer);
     }

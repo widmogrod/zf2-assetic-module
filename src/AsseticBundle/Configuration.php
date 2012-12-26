@@ -214,6 +214,11 @@ class Configuration
         $this->rendererToStrategy = $strategyForRenderer;
     }
 
+    public function addRendererToStrategy($rendererClass, $strategyClass)
+    {
+        $this->rendererToStrategy[$rendererClass] = $strategyClass;
+    }
+
     public function getStrategyNameForRenderer($rendererName, $default = null)
     {
         return array_key_exists($rendererName, $this->rendererToStrategy)

@@ -223,4 +223,9 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $result = $this->object->getStrategyNameForRenderer($strategyName);
         $this->assertEquals($expected, $result);
     }
+
+    public function testAddRendererToStrategy() {
+        $value = $this->object->addRendererToStrategy('a', 'b');
+        $this->assertNull($value);
+    }
 }
