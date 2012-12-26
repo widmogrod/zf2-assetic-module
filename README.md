@@ -220,7 +220,7 @@ return array(
              * @optional
              * @default autodetect by ZF2
              */
-            'baseUrl' => 'auto',
+            'baseUrl' => null,
 
             /*
              * When controller name will be found in this section then fallowing assets will be loaded:

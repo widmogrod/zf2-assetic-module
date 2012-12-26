@@ -161,7 +161,7 @@ class Service
                 {
                     foreach($asset as $key => $value)
                     {
-                        $name = md5($value->getSourceRoot().$value->getSourcePath());
+                        $name = md5($value->getSourceRoot() . $value->getSourcePath());
                         $value->setTargetPath($value->getSourcePath());
                         $value = $this->cache($value);
                         $this->assetManager->set($name, $value);
