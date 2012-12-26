@@ -336,6 +336,7 @@ class Service
         /** @var $strategy \AsseticBundle\View\StrategyInterface */
         $strategy = $this->strategy[$rendererName];
         $strategy->setBaseUrl($this->configuration->getBaseUrl());
+        $strategy->setBasePath($this->configuration->getBasePath());
         $strategy->setRenderer($renderer);
         return $strategy;
     }

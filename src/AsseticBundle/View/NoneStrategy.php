@@ -1,5 +1,4 @@
 <?php
-
 namespace AsseticBundle\View;
 
 use Assetic\Asset\AssetInterface;

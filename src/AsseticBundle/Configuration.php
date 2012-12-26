@@ -6,27 +6,99 @@ use AsseticBundle\Exception;
 
 class Configuration
 {
+    /**
+     * Debug option that is passed to Assetic.
+     *
+     * @var bool
+     */
+    protected $debug = false;
+
+    /**
+     * Full path to public directory where assets will be generated.
+     *
+     * @var string
+     */
+    protected $webPath;
+
+    /**
+     * Full path to cache directory.
+     *
+     * @var string
+     */
+    protected $cachePath;
+
+    /**
+     * Is cache enabled.
+     *
+     * @var bool
+     */
+    protected $cacheEnabled = false;
+
+    /**
+     * The base url.
+     *
+     * By default this value is set from "\Zend\Http\PhpEnvironment\Request::getBaseUrl()"
+     *
+     * Example:
+     * <code>
+     * http://example.com/
+     * </code>
+     *
+     * @var string|null
+     */
+    protected $baseUrl;
+
+    /**
+     * The base path.
+     *
+     * By default this value is set from "\Zend\Http\PhpEnvironment\Request::getBasePath()"
+     *
+     * Example:
+     * <code>
+     * <baseUrl>/~jdo/
+     * </code>
+     *
+     * @var string|null
+     */
+    protected $basePath;
+
+    /**
+     * Default options.
+     *
+     * @var array
+     */
     protected $default = array(
         'assets' => array(),
         'options' => array(),
     );
 
+    /**
+     * Map of routes names and assets configuration.
+     *
+     * @var array
+     */
     protected $routes = array();
 
-    protected $debug = false;
-
-    protected $webPath;
-
-    protected $cachePath;
-
-    protected $cacheEnabled = false;
-
-    protected $baseUrl;
-
+    /**
+     * Map of modules names and assets configuration.
+     *
+     * @var array
+     */
     protected $modules = array();
 
+    /**
+     * Map of controllers names and assets configuration.
+     *
+     * @var array
+     */
     protected $controllers = array();
 
+    /**
+     * Map of strategies that will be choose to setup Assetic\AssetInterface
+     * for particular Zend\View\Renderer\RendererInterface
+     *
+     * @var array
+     */
     protected $rendererToStrategy = array();
 
     public function __construct($config = null)
@@ -175,14 +247,42 @@ class Configuration
                 : $default;
     }
 
+    public function detectBaseUrl()
+    {
+        return (null === $this->baseUrl || 'auto' === $this->baseUrl);
+    }
+
     public function setBaseUrl($baseUrl)
     {
+        if (null !== $baseUrl && 'auto' !== $baseUrl) {
+            $baseUrl = rtrim($baseUrl, '/') . '/';
+        }
         $this->baseUrl = $baseUrl;
     }
 
     public function getBaseUrl()
     {
-        return rtrim($this->baseUrl, '/') . '/';
+        return $this->baseUrl;
+    }
+
+    /**
+     * @param null|string $basePath
+     */
+    public function setBasePath($basePath)
+    {
+        if (null !== $basePath) {
+            $basePath = trim($basePath, '/');
+            $basePath = $basePath . '/';
+        }
+        $this->basePath = $basePath;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath;
     }
 
     protected function processArray($config)

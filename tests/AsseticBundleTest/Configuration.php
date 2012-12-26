@@ -52,6 +52,34 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertEquals(TEST_ASSETS_DIR, $this->object->getWebPath());
     }
 
+    public function getBaseUrl() {
+        $result = $this->object->getBaseUrl();
+        $this->assertNull($result);
+    }
+
+    public function testSetBaseUrl() {
+        $url = '/http://example.com';
+        $expected = $url . '/';
+
+        $result = $this->object->setBaseUrl($url);
+        $this->assertNull($result);
+        $this->assertEquals($expected, $this->object->getBaseUrl());
+    }
+
+    public function getBasePath() {
+        $result = $this->object->getBasePath();
+        $this->assertNull($result);
+    }
+
+    public function testSetBasePath() {
+        $url = '/~/jone/assets';
+        $expected = trim($url,'/') . '/';
+
+        $result = $this->object->setBasePath($url);
+        $this->assertNull($result);
+        $this->assertEquals($expected, $this->object->getBasePath());
+    }
+
     /**
      * @expectedException \RuntimeException
      */

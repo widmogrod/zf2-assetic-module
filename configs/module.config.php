@@ -15,8 +15,15 @@ return array(
 
     'assetic_configuration' => array(
         'debug'              => false,
+        // Relative to application root dir.
+        // Path where generated assets will be moved.
         'webPath'            => 'public/assets',
-        'baseUrl'            => '/assets',
+        // The base URL. When null then will be auto detected by ZF2.
+        'baseUrl'            => null,
+        // The base path.
+        // Related path to the base URL.
+        // Indicate where asset are and from where will
+        'basePath'           => 'assets',
         'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',

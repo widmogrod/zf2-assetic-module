@@ -99,16 +99,16 @@ class Module
 
         $router = $e->getRouteMatch();
 
-        /** @var $as \AsseticBundle\Service */
-        $as = $sm->get('AsseticService');
+        /** @var $asseticService \AsseticBundle\Service */
+        $asseticService = $sm->get('AsseticService');
 
         # setup service
-        $as->setRouteName($router->getMatchedRouteName());
-        $as->setControllerName($router->getParam('controller'));
-        $as->setActionName($router->getParam('action'));
+        $asseticService->setRouteName($router->getMatchedRouteName());
+        $asseticService->setControllerName($router->getParam('controller'));
+        $asseticService->setActionName($router->getParam('action'));
 
         # init assets for modules
-        $as->initLoadedModules($this->loadedModules);
-        $as->setupRenderer($sm->get('ViewRenderer'));
+        $asseticService->initLoadedModules($this->loadedModules);
+        $asseticService->setupRenderer($sm->get('ViewRenderer'));
     }
 }

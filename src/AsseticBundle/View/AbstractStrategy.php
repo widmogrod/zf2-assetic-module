@@ -1,16 +1,16 @@
 <?php
-
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer,
-    Assetic\Asset\AssetInterface;
+    Zend\View\Renderer\RendererInterface as Renderer;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
     protected $renderer;
 
     protected $baseUrl;
+
+    protected $basePath;
 
     public function setRenderer(Renderer $renderer)
     {
@@ -33,5 +33,15 @@ abstract class AbstractStrategy implements StrategyInterface
     public function getBaseUrl()
     {
         return $this->baseUrl;
+    }
+
+    public function setBasePath($basePath)
+    {
+        $this->basePath = $basePath;
+    }
+
+    public function getBasePath()
+    {
+        return $this->basePath;
     }
 }

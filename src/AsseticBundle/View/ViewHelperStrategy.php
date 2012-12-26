@@ -1,9 +1,7 @@
 <?php
-
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer,
     Zend\View\Renderer\PhpRenderer,
     Assetic\Asset\AssetInterface;
 
@@ -11,8 +9,8 @@ class ViewHelperStrategy extends AbstractStrategy
 {
     public function setupAsset(AssetInterface $asset)
     {
-        $path = $this->getBaseUrl() . $asset->getTargetPath();
-        return $this->helper($path, $asset->getLastModified());
+        $path = $this->getBaseUrl() . $this->getBasePath() .  $asset->getTargetPath();
+        $this->helper($path, $asset->getLastModified());
     }
 
     protected function helper($path, $lastModified = null)

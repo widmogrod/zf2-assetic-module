@@ -37,6 +37,10 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Changes
 
 #### 2012-12-25:
+  * update description how to merge
+  * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
+
+#### 2012-12-25:
   * wrote tests
   * add travis-ci
   * remove old code
@@ -51,29 +55,29 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
   * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
   * assetic configuration namespace was change from:
-    ```
-    array(
-        'di' => array(
-            'instance' => array(
-                'assetic-configuration' => array(
-                    'parameters' => array(
-                        'config' => array(/* configuration */)
-                    )
+``` php
+array(
+    'di' => array(
+        'instance' => array(
+            'assetic-configuration' => array(
+                'parameters' => array(
+                    'config' => array(/* configuration */)
                 )
             )
         )
-    );
-    ```
-    to:
-    ```
-    array('assetic_configuration' => array(/* configuration */))
-    ```
+    )
+);
+```
+to:
+``` php
+array('assetic_configuration' => array(/* configuration */));
+```
 
 ## How to use _AsseticBundle_
 
-### Simple configuration example
+### ZF2 Skeleton Application - migration to _AsseticBundle_
 
-This example shows how to convert "ZF2 Skeleton Application" to load assets via AsseticBundle.
+This example shows how to convert "ZF2 Skeleton Application" to load assets via _AsseticBundle_.
 
 1. After installing skeleton application, move resources from public/ to module/Application/assets
   ```bash
@@ -82,6 +86,8 @@ This example shows how to convert "ZF2 Skeleton Application" to load assets via 
   mv public/css module/Application/assets
   mv public/js module/Application/assets
   mv public/images module/Application/assets
+  mkdir public/assets
+  chmod 777 public/assets
   ```
 
 2. Edit the module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
@@ -127,7 +133,8 @@ return array(
                     'base_js' => array(
                         'assets' => array(
                             'js/html5.js',
-                            'js/jquery-1.7.2.min.js'
+                            'js/jquery.min.js',
+                            'js/bootstrap.min.js',
                         )
                     ),
 
@@ -145,21 +152,20 @@ return array(
         )
     )
 );
-?>
 ```
 
 3. Update "head" tag in layout file `module/Application/view/layout/layout.phtml`
-```html
-  <head>
+```
+<head>
     <meta charset="utf-8">
     <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
     <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
     <?php
-    echo $this->plugin('HeadLink');
-    echo $this->plugin('HeadStyle');
-    echo $this->plugin('HeadScript');
+        echo $this->plugin('HeadLink');
+        echo $this->plugin('HeadStyle');
+        echo $this->plugin('HeadScript');
     ?>
-  </head>
+</head>
 ```
 
 4. Refresh site and have fun!
@@ -206,16 +212,15 @@ return array(
             'debug' => false,
 
             /*
-             * Defaine base URL which will prepend your resources adress.
-             * If present, the @zfBaseUrl string will be replaced with the baseURL as supplied by the framework.
+             * Define base URL which will prepend your resources address
              *
              * @example
-             * <link href="http://resources.example.com/witter_bootstrap_css.css?1320257242" media="screen" rel="stylesheet" type="text/css">
+             * <link href="http://resources.example.com/twitter_bootstrap_css.css?1320257242" media="screen" rel="stylesheet" type="text/css">
              *
              * @optional
-             * @default null
+             * @default autodetect by ZF2
              */
-             'baseUrl' => '@zfBaseUrl/assets',
+            'baseUrl' => 'auto',
 
             /*
              * When controller name will be found in this section then fallowing assets will be loaded:
@@ -260,11 +265,11 @@ return array(
             ),
 
             /*
-            * The default assets to load.
-            * If the mixin option is true, then the listed assets will be merged with any controler / route
-            * specific assets. If it is false, the default assets will only be used when no routes or controllers
-            * match
-            */
+             * The default assets to load.
+             * If the "mixin" option is true, then the listed assets will be merged with any controller / route
+             * specific assets. If it is false, the default assets will only be used when no routes or controllers
+             * match
+             */
             'default' => array(
                 'assets' => array(
                     '@base_css',

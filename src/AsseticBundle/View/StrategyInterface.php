@@ -13,5 +13,8 @@ interface StrategyInterface
     public function setBaseUrl($baseUrl);
     public function getBaseUrl();
 
+    public function setBasePath($basePath);
+    public function getBasePath();
+
     public function setupAsset(AssetInterface $asset);
 }

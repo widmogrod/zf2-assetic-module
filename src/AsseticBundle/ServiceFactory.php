@@ -14,9 +14,18 @@ class ServiceFactory implements FactoryInterface
     {
         $configuration = $serviceLocator->get('Configuration');
 
-        $asseticConfig = new Configuration($configuration['assetic_configuration'], $serviceLocator);
+        $asseticConfig = new Configuration($configuration['assetic_configuration']);
         $asseticAssetManager = $serviceLocator->get('Assetic\AssetManager');
         $asseticFilterManager = $serviceLocator->get('Assetic\FilterManager');
+
+        // inject base url & path
+        if ($asseticConfig->detectBaseUrl()) {
+            /** @var $request \Zend\Http\PhpEnvironment\Request */
+            $request = $serviceLocator->get('Request');
+            if (method_exists($request, 'getBaseUrl')) {
+                $asseticConfig->setBaseUrl($request->getBaseUrl());
+            }
+        }
 
         $asseticService = new Service($asseticConfig);
         $asseticService->setAssetManager($asseticAssetManager);
