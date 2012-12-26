@@ -39,7 +39,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Changes
 
-#### 2012-12-25:
+#### 2012-12-26:
   * update description how to merge
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
   * new configuration option "basePath"
