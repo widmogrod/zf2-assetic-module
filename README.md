@@ -9,26 +9,29 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.*.
+  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.***.
+  * [Assetic[(https://github.com/kriswallsmith/assetic)
+  * PHP 5.3 or gather
 
-# Installation
+## Installation
 
 ### Composer installation
 
   1. `cd my/project/directory`
   2. Create a `composer.json` file with following content:
 
-     ```json
-     {
-         "require": {
-             "widmogrod/zf2-assetic-module": "dev-master"
-         }
-     }
-     ```
+``` json
+{
+    "require": {
+        "widmogrod/zf2-assetic-module": "dev-master"
+    }
+}
+```
+
   3. Run `php composer.phar install`
   4. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
-### Installation without composer:
+### Installation without composer (DEPRECATED)
 
   1. ``cd my/project/folder``
   2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
@@ -39,6 +42,8 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 #### 2012-12-25:
   * update description how to merge
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
+  * new configuration option "basePath"
+  * composer is now recommended way of installation.
 
 #### 2012-12-25:
   * wrote tests
@@ -55,6 +60,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
   * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
   * assetic configuration namespace was change from:
+
 ``` php
 array(
     'di' => array(
@@ -68,7 +74,9 @@ array(
     )
 );
 ```
+
 to:
+
 ``` php
 array('assetic_configuration' => array(/* configuration */));
 ```
