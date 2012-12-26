@@ -174,4 +174,36 @@ class Service extends \PHPUnit_Framework_TestCase
         $value = $this->object->hasStrategyForRenderer($renderer);
         $this->assertTrue($value);
     }
+
+    public function testGetStrategyForRendererNull() {
+        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+        $value = $this->object->getStrategyForRenderer($renderer);
+        $this->assertNull($value);
+    }
+
+//    /**
+//     * @expectedException AsseticBundle\Exception\InvalidArgumentException
+//     */
+//    public function testGetStrategyForRendererFailure() {
+//        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+//
+//        $this->object->getConfiguration()->addRendererToStrategy(
+//            get_class($renderer),
+//            'AsseticBundle\View\NonExisting'
+//        );
+//
+//        $this->object->getStrategyForRenderer($renderer);
+//    }
+
+    public function testGetStrategyForRendererSuccess() {
+        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+
+        $this->object->getConfiguration()->addRendererToStrategy(
+            get_class($renderer),
+            'AsseticBundle\View\NoneStrategy'
+        );
+
+        $value = $this->object->getStrategyForRenderer($renderer);
+        $this->assertInstanceOf('AsseticBundle\View\StrategyInterface', $value);
+    }
 }
