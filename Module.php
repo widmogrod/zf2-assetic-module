@@ -21,9 +21,9 @@ class Module
         ServiceProviderInterface
 {
     /**
-     * @var array
+     * @var ModuleManagerInterface
      */
-    protected $loadedModules;
+    protected $moduleManager;
 
     /**
      * Initialize workflow
@@ -33,7 +33,7 @@ class Module
      */
     public function init(ModuleManagerInterface $manager)
     {
-        $this->loadedModules = $manager->getLoadedModules();
+        $this->moduleManager = $manager;
     }
 
     /**
@@ -108,7 +108,7 @@ class Module
         $asseticService->setActionName($router->getParam('action'));
 
         # init assets for modules
-        $asseticService->initLoadedModules($this->loadedModules);
+        $asseticService->initLoadedModules($this->moduleManager->getLoadedModules());
         $asseticService->setupRenderer($sm->get('ViewRenderer'));
     }
 }
