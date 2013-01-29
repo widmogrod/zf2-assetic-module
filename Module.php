@@ -10,7 +10,9 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\ModuleManager\Feature\ServiceProviderInterface,
-    Zend\ModuleManager\Feature\BootstrapListenerInterface;
+    Zend\ModuleManager\Feature\BootstrapListenerInterface,
+    Zend\Mvc\MvcEvent,
+    Zend\Mvc\Application;
 
 class Module
     implements
@@ -49,6 +51,7 @@ class Module
          */
         $app = $e->getApplication();
         $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
+        $app->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), 32);
     }
 
     public function getConfig()
@@ -89,6 +92,22 @@ class Module
 
     public function renderAssets(\Zend\Mvc\MvcEvent $e)
     {
+        if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
+            $error = $e->getError();
+            $e->getName();
+            if ($error
+                && !in_array($error, array(
+                    Application::ERROR_CONTROLLER_NOT_FOUND,
+                    Application::ERROR_CONTROLLER_INVALID,
+                    Application::ERROR_ROUTER_NO_MATCH
+                ))
+            )
+            {
+                // break if not an acceptable error
+                return;
+            }
+        }
+
         $response = $e->getResponse();
         if (!$response) {
             $response = new Response();
@@ -97,15 +116,17 @@ class Module
 
         $sm = $e->getApplication()->getServiceManager();
 
-        $router = $e->getRouteMatch();
 
-        /** @var $asseticService \AsseticBundle\Service */
+        /* @var $asseticService \AsseticBundle\Service */
         $asseticService = $sm->get('AsseticService');
 
         # setup service
-        $asseticService->setRouteName($router->getMatchedRouteName());
-        $asseticService->setControllerName($router->getParam('controller'));
-        $asseticService->setActionName($router->getParam('action'));
+        $router = $e->getRouteMatch();
+        if ($router) {
+            $asseticService->setRouteName($router->getMatchedRouteName());
+            $asseticService->setControllerName($router->getParam('controller'));
+            $asseticService->setActionName($router->getParam('action'));
+        }
 
         # init assets for modules
         $asseticService->initLoadedModules($this->moduleManager->getLoadedModules());
