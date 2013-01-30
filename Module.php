@@ -90,13 +90,11 @@ class Module
         );
     }
 
-    public function renderAssets(\Zend\Mvc\MvcEvent $e)
+    public function renderAssets(MvcEvent $e)
     {
         if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
             $error = $e->getError();
-            $e->getName();
-            if ($error
-                && !in_array($error, array(
+            if ($error && !in_array($error, array(
                     Application::ERROR_CONTROLLER_NOT_FOUND,
                     Application::ERROR_CONTROLLER_INVALID,
                     Application::ERROR_ROUTER_NO_MATCH
@@ -117,10 +115,10 @@ class Module
         $sm = $e->getApplication()->getServiceManager();
 
 
-        /* @var $asseticService \AsseticBundle\Service */
+        /** @var $asseticService \AsseticBundle\Service */
         $asseticService = $sm->get('AsseticService');
 
-        # setup service
+        # setup service if a matched route exist
         $router = $e->getRouteMatch();
         if ($router) {
             $asseticService->setRouteName($router->getMatchedRouteName());
