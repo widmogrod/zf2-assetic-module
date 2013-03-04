@@ -172,6 +172,22 @@ class Service
                 }
             }
 
+            // Insert last modified timestamps into the file names
+            foreach ($this->assetManager->getNames() as $name) {
+                $asset = $this->assetManager->get($name);
+
+                $lastModified = $asset->getLastModified();
+                if (null !== $lastModified)
+                {
+                    $path = $asset->getTargetPath();
+                    $ext  = pathinfo($path, PATHINFO_EXTENSION);
+
+                    $path = str_replace($ext, "$lastModified.$ext", $path);
+
+                    $asset->setTargetPath($path);
+                }
+            }
+
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
         }
