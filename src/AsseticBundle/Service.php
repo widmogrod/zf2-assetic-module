@@ -172,19 +172,26 @@ class Service
                 }
             }
 
-            // Insert last modified timestamps into the file names
+            // Insert last modified timestamps into names of JS and CSS files.
             foreach ($this->assetManager->getNames() as $name) {
                 $asset = $this->assetManager->get($name);
 
-                $lastModified = $asset->getLastModified();
-                if (null !== $lastModified)
+                $path = $asset->getTargetPath();
+                $ext  = pathinfo($path, PATHINFO_EXTENSION);
+
+                if ('css' == $ext || 'js' == $ext)
                 {
-                    $path = $asset->getTargetPath();
-                    $ext  = pathinfo($path, PATHINFO_EXTENSION);
+                    $lastModified = $asset->getLastModified();
+                    if (null !== $lastModified)
+                    {
+                        $path = substr_replace(
+                            $path,
+                            "$lastModified.$ext",
+                            -1 * strlen($ext)
+                        );
 
-                    $path = str_replace($ext, "$lastModified.$ext", $path);
-
-                    $asset->setTargetPath($path);
+                        $asset->setTargetPath($path);
+                    }
                 }
             }
 
