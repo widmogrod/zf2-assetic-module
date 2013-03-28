@@ -157,14 +157,22 @@ class Service extends \PHPUnit_Framework_TestCase
     }
 
     public function testInitLoadedModules() {
-        $loadModules = array(
-            'test_application' => 'test_application',
-        );
+        $loadModules = array('test_application' => 'test_application');
         $this->object->initLoadedModules($loadModules);
         $assetManager = $this->object->getAssetManager();
+
         $this->assertTrue($assetManager->has('base_css'));
         $this->assertTrue($assetManager->has('base_js'));
         $this->assertFalse($assetManager->has('base_images'));
+
+        $assetFile = $assetManager->get('base_css')->getTargetPath();
+        $this->assertTrue(
+            (bool) preg_match('/^base_css.\d+.css$/', $assetFile)
+        );
+        $assetFile = $assetManager->get('base_js')->getTargetPath();
+        $this->assertTrue(
+            (bool) preg_match('/^base_js.\d+.js$/', $assetFile)
+        );
     }
 
     public function testGetRendererName() {
