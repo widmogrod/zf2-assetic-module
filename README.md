@@ -40,6 +40,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Changes
 #### 2013-04-01
   * added configurable acceptable errors #54
+  
 #### 2012-12-26:
   * update description how to merge
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
