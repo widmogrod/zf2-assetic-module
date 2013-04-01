@@ -38,7 +38,8 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Changes
-
+#### 2013-04-01
+  * added configurable acceptable errors #54
 #### 2012-12-26:
   * update description how to merge
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
@@ -207,6 +208,21 @@ return array(
                 'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
                 'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',
                 'Zend\View\Renderer\JsonRenderer' => 'AsseticBundle\View\NoneStrategy',
+            ),
+
+            /**
+              * Module is not enabled if an MvcEvent::EVENT_DISPATCH_ERROR event occurs.
+              * However, we may still want our assets for pages with dispatch errors.
+              * So, we can build up a whitelist of errors for the module to be enabled for.
+              */
+            'acceptableErrors' => array(
+                //defaults
+                \Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND,
+                \Zend\Mvc\Application::ERROR_CONTROLLER_INVALID,
+                \Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH,
+
+                //allow assets when authorisation fails when using the BjyAuthorize module
+                \BjyAuthorize\Guard\Route::ERROR,
             ),
 
             /**
