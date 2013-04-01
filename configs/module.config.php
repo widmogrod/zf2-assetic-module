@@ -2,10 +2,12 @@
 return array(
     'service_manager'       => array(
         'aliases'   => array(
+            'AsseticConfiguration' => 'AsseticBundle\Configuration',
             'AsseticService'       => 'AsseticBundle\Service',
         ),
         'factories' => array(
-            'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
+            'AsseticBundle\Configuration' => 'AsseticBundle\ConfigurationFactory',
+            'AsseticBundle\Service'       => 'AsseticBundle\ServiceFactory',
         ),
         'invokables' => array(
             'Assetic\AssetManager' => 'Assetic\AssetManager',
@@ -28,6 +30,11 @@ return array(
             'Zend\View\Renderer\PhpRenderer'  => 'AsseticBundle\View\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',
             'Zend\View\Renderer\JsonRenderer' => 'AsseticBundle\View\NoneStrategy',
+        ),
+        'acceptableErrors' => array(
+            \Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND,
+            \Zend\Mvc\Application::ERROR_CONTROLLER_INVALID,
+            \Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH
         ),
         'routes'             => array(),
         'modules'            => array(),
