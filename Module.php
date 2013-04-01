@@ -92,15 +92,11 @@ class Module
 
     public function renderAssets(MvcEvent $e)
     {
+        $sm     = $e->getApplication()->getServiceManager();
+        $config = $sm->get('AsseticConfiguration');
         if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
             $error = $e->getError();
-            if ($error && !in_array($error, array(
-                    Application::ERROR_CONTROLLER_NOT_FOUND,
-                    Application::ERROR_CONTROLLER_INVALID,
-                    Application::ERROR_ROUTER_NO_MATCH
-                ))
-            )
-            {
+            if ($error && !in_array($error, $config->getAcceptableErrors())) {
                 // break if not an acceptable error
                 return;
             }
@@ -111,9 +107,6 @@ class Module
             $response = new Response();
             $e->setResponse($response);
         }
-
-        $sm = $e->getApplication()->getServiceManager();
-
 
         /** @var $asseticService \AsseticBundle\Service */
         $asseticService = $sm->get('AsseticService');

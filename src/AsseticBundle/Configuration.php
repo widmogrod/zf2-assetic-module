@@ -101,6 +101,8 @@ class Configuration
      */
     protected $rendererToStrategy = array();
 
+    protected $acceptableErrors = array();
+
     public function __construct($config = null)
     {
         if (null !== $config) {
@@ -333,5 +335,15 @@ class Configuration
         return array_key_exists($rendererName, $this->rendererToStrategy)
             ? $this->rendererToStrategy[$rendererName]
             : $default;
+    }
+
+    public function setAcceptableErrors(array $acceptableErrors)
+    {
+        $this->acceptableErrors = $acceptableErrors;
+    }
+
+    public function getAcceptableErrors()
+    {
+        return $this->acceptableErrors;
     }
 }
