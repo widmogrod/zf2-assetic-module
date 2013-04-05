@@ -143,6 +143,7 @@ class Service
             $factory->setDebug($this->configuration->isDebug());
 
             $collections = (array) $conf['collections'];
+
             foreach($collections as $name => $options)
             {
                 $assets  = isset($options['assets']) ? $options['assets'] : array();
@@ -179,7 +180,7 @@ class Service
                 $path = $asset->getTargetPath();
                 $ext  = pathinfo($path, PATHINFO_EXTENSION);
 
-                if ('css' == $ext || 'js' == $ext)
+                if ((!isset($options['move_raw']) || $options['move_raw'] != true) && ('css' == $ext || 'js' == $ext))
                 {
                     $lastModified = $asset->getLastModified();
                     if (null !== $lastModified)
