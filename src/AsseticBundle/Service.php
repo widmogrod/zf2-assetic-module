@@ -241,6 +241,15 @@ class Service
                     call_user_func_array(array($filter, '__construct'), $option);
                 }
 
+                $filterOptions = $options;
+                unset($options['name']);
+                unset($options['option']);
+                foreach ($filterOptions as $key => $value) {
+                    if (method_exists($filter, 'set' .$key)) {
+                        $filter->{'set' .$key}($value);
+                    }
+                }
+
                 $fm->set($alias, $filter);
             }
 
