@@ -166,13 +166,12 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertFalse($assetManager->has('base_images'));
 
         $assetFile = $assetManager->get('base_css')->getTargetPath();
-        $this->assertTrue(
-            (bool) preg_match('/^base_css.\d+.css$/', $assetFile)
-        );
+        $this->assertStringStartsWith('base_css.', $assetFile);
+        $this->assertStringEndsWith('.css', $assetFile);
+        
         $assetFile = $assetManager->get('base_js')->getTargetPath();
-        $this->assertTrue(
-            (bool) preg_match('/^base_js.\d+.js$/', $assetFile)
-        );
+        $this->assertStringStartsWith('base_js.', $assetFile);
+        $this->assertStringEndsWith('.js', $assetFile);
     }
 
     public function testGetRendererName() {
