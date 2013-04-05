@@ -261,7 +261,7 @@ class Service
         // If we don't have any assets listed by now, or if we are mixing in
         // the default assets, then merge in the default assets to the config array
         $defaultConfig = $this->getDefaultConfig();
-        if (count($config) == 0 || isset($defaultConfig['options']['mixin'])) {
+        if (count($config) == 0 || (isset($defaultConfig['options']['mixin']) && $defaultConfig['options']['mixin'])) {
             $config = array_merge($config, $defaultConfig['assets']);
         }
 
