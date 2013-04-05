@@ -226,7 +226,7 @@ class Service
 
                 $name = $options['name'];
                 $option = isset($options['option']) ?$options['option']: null;
-            } elseif (is_string($options)) {
+            } elseif (is_string($options) || is_callable($options)) {
                 $name = $options;
                 unset($options);
             }
@@ -236,11 +236,36 @@ class Service
             }
 
             if (!$fm->has($alias)) {
-                $filter = new $name($option);
-                if(is_array($option)) {
-                    call_user_func_array(array($filter, '__construct'), $option);
+               
+                if(is_callable($name))
+                {
+                    $filter=$name($this);
                 }
-
+                else {
+                    if(!is_array($option)) {
+                            $option=(array)$option;
+                    }
+                    switch (count($option)) {
+                        case 0:
+                            $filter = new $name();
+                            break;
+                        case 1:
+                            $filter = new $name($option[0]);
+                            break;
+                        case 2:
+                            $filter = new $name($option[0],$option[1]);
+                            break;
+                        case 3:
+                            $filter = new $name($option[0],$option[1],$option[2]);
+                            break;
+                        default:
+                            $r = new \ReflectionClass($name);
+                            
+                           $filter = $r->newInstanceArgs($option);
+                    }
+                    
+                }
+                
                 $fm->set($alias, $filter);
             }
 
