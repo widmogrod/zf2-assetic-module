@@ -103,6 +103,11 @@ class Configuration
 
     protected $acceptableErrors = array();
 
+    /**
+     * @var null|integer
+     */
+    protected $umask = null;
+
     public function __construct($config = null)
     {
         if (null !== $config) {
@@ -345,5 +350,24 @@ class Configuration
     public function getAcceptableErrors()
     {
         return $this->acceptableErrors;
+    }
+
+    /**
+     * @return integer|null
+     */
+    public function getUmask()
+    {
+        return $this->umask;
+    }
+
+    /**
+     * @param null|integer $umask
+     */
+    public function setUmask($umask)
+    {
+        $this->umask = null;
+        if (is_int($umask)) {
+            $this->umask = (int) $umask;
+        }
     }
 }

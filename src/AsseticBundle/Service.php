@@ -195,8 +195,16 @@ class Service
                 }
             }
 
+            if (is_int($this->configuration->getUmask())) {
+                $umask = umask($this->configuration->getUmask());
+            }
+
             $writer = new AssetWriter($this->configuration->getWebPath());
             $writer->writeManagerAssets($this->assetManager);
+
+            if (isset($umask)) {
+                umask($umask);
+            }
         }
     }
 
