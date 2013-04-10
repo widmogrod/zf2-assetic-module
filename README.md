@@ -250,6 +250,13 @@ return array(
             'debug' => false,
 
             /*
+             * set Umask
+             * 
+             * @optional
+             */
+            'umask' => null,
+
+            /*
              * Define base URL which will prepend your resources address
              *
              * @example
