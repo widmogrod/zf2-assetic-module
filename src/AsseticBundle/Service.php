@@ -243,13 +243,20 @@ class Service
                 $alias = $name;
             }
 
-            if (!$fm->has($alias)) {
+            $filterId = $alias;
+
+            // remove '?' if the filter is optional
+            if (strpos($filterId, '?') === 0) {
+                $filterId = substr($filterId, 1);
+            };
+
+            if (!$fm->has($filterId)) {
                 $filter = new $name($option);
                 if(is_array($option)) {
                     call_user_func_array(array($filter, '__construct'), $option);
                 }
 
-                $fm->set($alias, $filter);
+                $fm->set($filterId, $filter);
             }
 
             $result[] = $alias;
