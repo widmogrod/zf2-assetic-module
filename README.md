@@ -38,6 +38,12 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Changes
+#### 2013-04-11
+  * optional filters in debug mode
+
+#### 2013-04-10
+  * added configurable umask
+
 #### 2013-04-01
   * added configurable acceptable errors #54
   
@@ -151,6 +157,17 @@ return array(
                             )
                         ),
                         'options' => array(),
+                    ),
+
+                    'lib_css' => array(
+                        'assets' => array(
+                            'css/lib.css'
+                        ),
+                        'filters' => array(
+                            '?CssRewriteFilter' => array( // filter is not active in debug mode
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            )
+                        )
                     ),
 
                     'base_js' => array(
