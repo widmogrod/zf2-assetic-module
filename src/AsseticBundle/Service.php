@@ -79,6 +79,21 @@ class Service
         return $this->assetManager;
     }
 
+    public function getAssetWriter()
+    {
+        if (null === $this->assetWriter)
+        {
+            $this->assetWriter = new AssetWriter($this->configuration->getWebPath());
+        }
+        return $this->assetWriter;
+    }
+
+    public function setAssetWriter($assetWriter)
+    {
+        $this->assetWriter = $assetWriter;
+    }
+
+
     public function setFilterManager(FilterManager $filterManager)
     {
         $this->filterManager = $filterManager;
@@ -199,7 +214,7 @@ class Service
                 $umask = umask($this->configuration->getUmask());
             }
 
-            $writer = new AssetWriter($this->configuration->getWebPath());
+            $writer = $this->getAssetWriter();
             $writer->writeManagerAssets($this->assetManager);
 
             if (isset($umask)) {
