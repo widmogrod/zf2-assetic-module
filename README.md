@@ -40,7 +40,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Changes
 #### 2013-04-21
   * added cache buster strategy
-  * start tagging relices
+  * start tagging releases
 
 #### 2013-04-11
   * optional filters in debug mode
