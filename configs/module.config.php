@@ -3,6 +3,7 @@ return array(
     'service_manager'       => array(
         'aliases'   => array(
             'AsseticConfiguration' => 'AsseticBundle\Configuration',
+            'AsseticCacheBuster'   => 'AsseticBundle\CacheBuster',
             'AsseticService'       => 'AsseticBundle\Service',
         ),
         'factories' => array(
@@ -13,6 +14,7 @@ return array(
         'invokables' => array(
             'Assetic\AssetManager' => 'Assetic\AssetManager',
             'Assetic\FilterManager' => 'Assetic\FilterManager',
+            'AsseticBundle\CacheBuster' => 'AsseticBundle\CacheBuster\LastModified',
         ),
     ),
 

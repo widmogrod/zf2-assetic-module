@@ -15,6 +15,7 @@ class ServiceFactory implements FactoryInterface
         $asseticConfig        = $serviceLocator->get('AsseticConfiguration');
         $asseticAssetManager  = $serviceLocator->get('AsseticAssetManager');
         $asseticAssetWriter   = $serviceLocator->get('AsseticAssetWriter');
+        $asseticCacheBuster   = $serviceLocator->get('AsseticCacheBuster');
         $asseticFilterManager = $serviceLocator->get('AsseticFilterManager');
 
         // inject base url & path
@@ -29,6 +30,7 @@ class ServiceFactory implements FactoryInterface
         $asseticService = new Service($asseticConfig);
         $asseticService->setAssetManager($asseticAssetManager);
         $asseticService->setAssetWriter($asseticAssetWriter);
+        $asseticService->setCacheBusterStrategy($asseticCacheBuster);
         $asseticService->setFilterManager($asseticFilterManager);
 
         return $asseticService;
