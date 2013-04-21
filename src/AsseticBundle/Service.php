@@ -4,6 +4,7 @@ namespace AsseticBundle;
 use Assetic\AssetManager,
     Assetic\FilterManager,
     Assetic\Factory,
+    Assetic\Factory\Worker\WorkerInterface,
     Assetic\AssetWriter,
     Assetic\Asset\AssetInterface,
     Assetic\Asset\AssetCache,
@@ -49,6 +50,11 @@ class Service
      * @var \Assetic\AssetWriter
      */
     protected $assetWriter;
+
+    /**
+     * @var \Assetic\Factory\Worker\WorkerInterface
+     */
+    protected $cacheBusterStrategy;
 
     /**
      * @var \Assetic\FilterManager
@@ -98,6 +104,19 @@ class Service
         $this->assetWriter = $assetWriter;
     }
 
+    public function getCacheBusterStrategy()
+    {
+        if (null === $this->cacheBusterStrategy) {
+            $this->cacheBusterStrategy =  new \AsseticBundle\CacheBuster\LastModifiedStrategy();
+        }
+        return $this->cacheBusterStrategy;
+    }
+
+    public function setCacheBusterStrategy(WorkerInterface $cacheBusterStrategy)
+    {
+        $this->cacheBusterStrategy = $cacheBusterStrategy;
+        return $this;
+    }
 
     public function setFilterManager(FilterManager $filterManager)
     {
@@ -160,6 +179,7 @@ class Service
             $factory = new Factory\AssetFactory($conf['root_path']);
             $factory->setAssetManager($this->getAssetManager());
             $factory->setFilterManager($this->getFilterManager());
+            $factory->addWorker($this->getCacheBusterStrategy());
             $factory->setDebug($this->configuration->isDebug());
 
             $collections = (array) $conf['collections'];
@@ -192,28 +212,6 @@ class Service
                 }
             }
 
-            // Insert last modified timestamps into names of JS and CSS files.
-            foreach ($this->assetManager->getNames() as $name) {
-                $asset = $this->assetManager->get($name);
-
-                $path = $asset->getTargetPath();
-                $ext  = pathinfo($path, PATHINFO_EXTENSION);
-
-                if ('css' == $ext || 'js' == $ext)
-                {
-                    $lastModified = $asset->getLastModified();
-                    if (null !== $lastModified)
-                    {
-                        $path = substr_replace(
-                            $path,
-                            "$lastModified.$ext",
-                            -1 * strlen($ext)
-                        );
-
-                        $asset->setTargetPath($path);
-                    }
-                }
-            }
 
             if (is_int($this->configuration->getUmask())) {
                 $umask = umask($this->configuration->getUmask());
