@@ -8,6 +8,7 @@ return array(
         'factories' => array(
             'AsseticBundle\Configuration' => 'AsseticBundle\ConfigurationFactory',
             'AsseticBundle\Service'       => 'AsseticBundle\ServiceFactory',
+            'Assetic\AssetWriter'         => 'AsseticBundle\WriterFactory',
         ),
         'invokables' => array(
             'Assetic\AssetManager' => 'Assetic\AssetManager',
