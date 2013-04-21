@@ -38,6 +38,9 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Changes
+#### 2013-04-21
+  * added cache buster strategy
+
 #### 2013-04-11
   * optional filters in debug mode
 
@@ -46,7 +49,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 #### 2013-04-01
   * added configurable acceptable errors #54
-  
+
 #### 2012-12-26:
   * update description how to merge
   * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
@@ -268,7 +271,7 @@ return array(
 
             /*
              * set Umask
-             * 
+             *
              * @optional
              */
             'umask' => null,
@@ -440,6 +443,10 @@ _AsseticBundle_ uses the following algorithm to determine the configuration to u
   2. If 'controller' not exists, use assets from 'route' configuration
   3. If 'route' not exists, don't load assets
 
+## Cache Busting
+By default the asset's last modified time is added into to the filename before the extension.
+To change this behaviour a different cache buster strategy must be injected into the service.
+To prevent a cache buster url being used, add the Null cachebuster to the service
 
 ## Projects using _AsseticBundle_
 
