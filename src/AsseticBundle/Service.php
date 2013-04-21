@@ -107,7 +107,7 @@ class Service
     public function getCacheBusterStrategy()
     {
         if (null === $this->cacheBusterStrategy) {
-            $this->cacheBusterStrategy =  new \AsseticBundle\CacheBuster\LastModified();
+            $this->cacheBusterStrategy =  new \AsseticBundle\CacheBuster\LastModifiedStrategy();
         }
         return $this->cacheBusterStrategy;
     }

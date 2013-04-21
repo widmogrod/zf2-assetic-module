@@ -1,14 +1,14 @@
 <?php
 namespace AsseticBundleTest\CacheBuster;
 
-use AsseticBundle\CacheBuster\LastModified,
+use AsseticBundle\CacheBuster\LastModifiedStrategy,
     Assetic\Asset\FileAsset;
 
-class LastModifiedTest extends \PHPUnit_Framework_TestCase
+class LastModifiedStrategyTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->cacheBuster = new LastModified();
+        $this->cacheBuster = new LastModifiedStrategy();
     }
 
     public function testAssetLastModifiedTimestampIsPrependBeforeFileExtension()

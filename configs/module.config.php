@@ -14,7 +14,7 @@ return array(
         'invokables' => array(
             'Assetic\AssetManager' => 'Assetic\AssetManager',
             'Assetic\FilterManager' => 'Assetic\FilterManager',
-            'AsseticBundle\CacheBuster' => 'AsseticBundle\CacheBuster\LastModified',
+            'AsseticBundle\CacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
         ),
     ),
 

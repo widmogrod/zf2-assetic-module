@@ -5,7 +5,7 @@ namespace AsseticBundle\CacheBuster;
 use Assetic\Asset\AssetInterface,
     Assetic\Factory\Worker\WorkerInterface;
 
-class LastModified implements WorkerInterface
+class LastModifiedStrategy implements WorkerInterface
 {
     public function process(AssetInterface $asset)
     {
