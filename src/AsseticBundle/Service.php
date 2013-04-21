@@ -46,6 +46,11 @@ class Service
     protected $assetManager;
 
     /**
+     * @var \Assetic\AssetWriter
+     */
+    protected $assetWriter;
+
+    /**
      * @var \Assetic\FilterManager
      */
     protected $filterManager;
