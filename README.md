@@ -1,4 +1,4 @@
-# AsseticBundle [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.1.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 
 ## Introduction
 
@@ -9,7 +9,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.***.
+  * Zend Framework 2 (https://github.com/zendframework/zf2).
   * [Assetic](https://github.com/kriswallsmith/assetic)
   * PHP 5.3 or gather
 
@@ -23,7 +23,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ``` json
 {
     "require": {
-        "widmogrod/zf2-assetic-module": "dev-master"
+        "widmogrod/zf2-assetic-module": "1.*"
     }
 }
 ```
@@ -40,6 +40,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Changes
 #### 2013-04-21
   * added cache buster strategy
+  * start tagging relices
 
 #### 2013-04-11
   * optional filters in debug mode
