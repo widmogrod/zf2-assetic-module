@@ -1,43 +1,25 @@
 <?php
 namespace AsseticBundle;
 
-use Zend\ModuleManager\ModuleManager,
-    Zend\ModuleManager\ModuleManagerInterface,
-    Zend\Http\Response,
-    Zend\EventManager\EventInterface,
-    Zend\ServiceManager\ServiceLocatorInterface,
-    Zend\ModuleManager\Feature\InitProviderInterface,
-    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
-    Zend\ModuleManager\Feature\ConfigProviderInterface,
-    Zend\ModuleManager\Feature\ServiceProviderInterface,
-    Zend\ModuleManager\Feature\BootstrapListenerInterface,
-    Zend\Mvc\MvcEvent,
-    Zend\Mvc\Application;
+use Zend\Console\Adapter\AdapterInterface;
+use Zend\Console\Console;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\Http\Response;
+use Zend\EventManager\EventInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\Mvc\MvcEvent;
 
-class Module
-    implements
-        InitProviderInterface,
+class Module implements
         AutoloaderProviderInterface,
         ConfigProviderInterface,
         BootstrapListenerInterface,
-        ServiceProviderInterface
+        ServiceProviderInterface,
+        ConsoleUsageProviderInterface
 {
-    /**
-     * @var ModuleManagerInterface
-     */
-    protected $moduleManager;
-
-    /**
-     * Initialize workflow
-     *
-     * @param \Zend\ModuleManager\ModuleManagerInterface $manager
-     * @return void
-     */
-    public function init(ModuleManagerInterface $manager)
-    {
-        $this->moduleManager = $manager;
-    }
-
     /**
      * Listen to the bootstrap event
      *
@@ -46,18 +28,28 @@ class Module
      */
     public function onBootstrap(EventInterface $e)
     {
-        /**
-         * @var $app \Zend\Mvc\Application
-         * @var $e \Zend\Mvc\MvcEvent
-         */
+        /** @var $e \Zend\Mvc\MvcEvent */
         $app = $e->getApplication();
-        $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
-        $app->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), 32);
+        $em = $app->getEventManager();
+        $sm = $app->getServiceManager();
+
+        // Listener have only sense when request is via http.
+        if (!Console::isConsole()) {
+            $em->attach($sm->get('AsseticBundle\Listener'));
+        }
     }
 
+    /**
+     * Returns configuration to merge with application configuration
+     *
+     * @return array|\Traversable
+     */
     public function getConfig()
     {
-        return include __DIR__ . '/configs/module.config.php';
+        return array_merge(
+            include __DIR__ . '/configs/module.config.php',
+            include __DIR__ . '/configs/routes.config.php'
+        );
     }
 
     /**
@@ -69,16 +61,20 @@ class Module
     public function getServiceConfig()
     {
         return array(
-            'initializers' => array(
-                function($object, ServiceLocatorInterface $serviceManager) {
-                    if ($object instanceof AsseticBundleServiceAwareInterface) {
-                        $object->setAsseticBundleService($serviceManager->get('AsseticService'));
-                    }
+            'factories' => array(
+                'AsseticBundle\Configuration' => function (ServiceLocatorInterface $serviceLocator) {
+                    $configuration = $serviceLocator->get('Configuration');
+                    return new Configuration($configuration['assetic_configuration']);
                 }
             ),
         );
     }
 
+    /**
+     * Return an array for passing to Zend\Loader\AutoloaderFactory.
+     *
+     * @return array
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -90,41 +86,32 @@ class Module
         );
     }
 
-    public function renderAssets(MvcEvent $e)
+    /**
+     * Returns an array or a string containing usage information for this module's Console commands.
+     * The method is called with active Zend\Console\Adapter\AdapterInterface that can be used to directly access
+     * Console and send output.
+     *
+     * If the result is a string it will be shown directly in the console window.
+     * If the result is an array, its contents will be formatted to console window width. The array must
+     * have the following format:
+     *
+     *     return array(
+     *                'Usage information line that should be shown as-is',
+     *                'Another line of usage info',
+     *
+     *                '--parameter'        =>   'A short description of that parameter',
+     *                '-another-parameter' =>   'A short description of another parameter',
+     *                ...
+     *            )
+     *
+     * @param AdapterInterface $console
+     * @return array|string|null
+     */
+    public function getConsoleUsage(AdapterInterface $console)
     {
-        $sm     = $e->getApplication()->getServiceManager();
-        $config = $sm->get('AsseticConfiguration');
-        if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
-            $error = $e->getError();
-            if ($error && !in_array($error, $config->getAcceptableErrors())) {
-                // break if not an acceptable error
-                return;
-            }
-        }
-
-        $response = $e->getResponse();
-        if (!$response) {
-            $response = new Response();
-            $e->setResponse($response);
-        }
-
-        /** @var $asseticService \AsseticBundle\Service */
-        $asseticService = $sm->get('AsseticService');
-
-        # setup service if a matched route exist
-        $router = $e->getRouteMatch();
-        if ($router) {
-            $asseticService->setRouteName($router->getMatchedRouteName());
-            $asseticService->setControllerName($router->getParam('controller'));
-            $asseticService->setActionName($router->getParam('action'));
-        }
-
-        # build assets for modules
-        if ($asseticService->getConfiguration()->getBuildOnRequest()) {
-            $asseticService->initLoadedModules($this->moduleManager->getLoadedModules(false));
-        }
-
-        # init assets for modules
-        $asseticService->setupRenderer($sm->get('ViewRenderer'));
+        return array(
+            'assetic setup' => 'Create cache and assets directory with valid permissions.',
+            'assetic build' => 'Build all assets',
+        );
     }
 }
