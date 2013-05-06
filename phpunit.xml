@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="Bootstrap.php"
+<phpunit bootstrap="tests/Bootstrap.php"
          colors="true"
          verbose="true"
          backupGlobals="false"
@@ -8,13 +8,13 @@
 
     <testsuites>
         <testsuite name="src">
-            <directory suffix=".php">./AsseticBundleTest/</directory>
+            <directory suffix=".php">./tests/AsseticBundleTest/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">../src/</directory>
+            <directory suffix=".php">./src/</directory>
         </whitelist>
     </filter>
 </phpunit>
