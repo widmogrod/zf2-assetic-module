@@ -14,6 +14,13 @@ class Configuration
     protected $debug = false;
 
     /**
+     * Should build assets on request.
+     *
+     * @var bool
+     */
+    protected $buildOnRequest = true;
+
+    /**
      * Full path to public directory where assets will be generated.
      *
      * @var string
@@ -369,5 +376,21 @@ class Configuration
         if (is_int($umask)) {
             $this->umask = (int) $umask;
         }
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function setBuildOnRequest($flag)
+    {
+        $this->buildOnRequest = (bool) $flag;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBuildOnRequest()
+    {
+        return $this->buildOnRequest;
     }
 }

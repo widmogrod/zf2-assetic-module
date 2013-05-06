@@ -1,6 +1,7 @@
 <?php
 namespace AsseticBundle;
 
+use Assetic\Asset\AssetCollection;
 use Assetic\AssetManager,
     Assetic\FilterManager,
     Assetic\Factory,
@@ -166,63 +167,31 @@ class Service
 
     public function initLoadedModules(array $loadedModules)
     {
+        $loadedModules = array_change_key_case($loadedModules, CASE_LOWER);
+
         $moduleConfiguration = $this->configuration->getModules();
-        foreach($loadedModules as $moduleName => $module)
+        $moduleConfiguration = array_change_key_case($moduleConfiguration, CASE_LOWER);
+        $moduleConfiguration = array_intersect_key($moduleConfiguration, $loadedModules);
+
+        $umask = $this->configuration->getUmask();
+        if (null !== $umask) {
+            $umask = umask($umask);
+        }
+
+        foreach($moduleConfiguration as $configuration)
         {
-            $moduleName = strtolower($moduleName);
-            if (!isset($moduleConfiguration[$moduleName])) {
-                continue;
-            }
-
-            $conf = (array) $moduleConfiguration[$moduleName];
-
-            $factory = new Factory\AssetFactory($conf['root_path']);
-            $factory->setAssetManager($this->getAssetManager());
-            $factory->setFilterManager($this->getFilterManager());
-            $factory->addWorker($this->getCacheBusterStrategy());
-            $factory->setDebug($this->configuration->isDebug());
-
-            $collections = (array) $conf['collections'];
-            foreach($collections as $name => $options)
-            {
-                $assets  = isset($options['assets']) ? $options['assets'] : array();
-                $filters = isset($options['filters']) ? $options['filters'] : array();
-                $options = isset($options['options']) ? $options['options'] : array();
-                $options['output'] = isset($options['output']) ? $options['output'] : $name;
-
-                $filters = $this->initFilters($filters);
-
-                /** @var $asset \Assetic\Asset\AssetCollection */
-                $asset = $factory->createAsset($assets, $filters, $options);
-
-                # allow to move all files 1:1 to new directory
-                # its particulary usefull when this assets are images.
-                if (isset($options['move_raw']) && $options['move_raw'])
-                {
-                    foreach($asset as $key => $value)
-                    {
-                        $name = md5($value->getSourceRoot() . $value->getSourcePath());
-                        $value->setTargetPath($value->getSourcePath());
-                        $value = $this->cache($value);
-                        $this->assetManager->set($name, $value);
-                    }
-                } else {
-                    $asset = $this->cache($asset);
-                    $this->assetManager->set($name, $asset);
-                }
-            }
-
-
-            if (is_int($this->configuration->getUmask())) {
-                $umask = umask($this->configuration->getUmask());
+            $factory = $this->createAssetFactory($configuration);
+            $collections = (array) $configuration['collections'];
+            foreach ($collections as $name => $options) {
+                $this->prepareCollection($options, $name, $factory);
             }
 
             $writer = $this->getAssetWriter();
             $writer->writeManagerAssets($this->assetManager);
+        }
 
-            if (isset($umask)) {
-                umask($umask);
-            }
+        if (null !== $umask) {
+            umask($umask);
         }
     }
 
@@ -347,6 +316,7 @@ class Service
 
     /**
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @return bool
      */
     public function hasStrategyForRenderer(Renderer $renderer)
     {
@@ -358,6 +328,8 @@ class Service
      * Get strategy to setup assets for given $renderer.
      *
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @throws Exception\DomainException
+     * @throws Exception\InvalidArgumentException
      * @return \AsseticBundle\View\StrategyInterface|null
      */
     public function getStrategyForRenderer(Renderer $renderer)
@@ -416,5 +388,58 @@ class Service
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+
+    /**
+     * @param array $configuration
+     * @return Factory\AssetFactory
+     */
+    public function createAssetFactory($configuration) {
+        $factory = new Factory\AssetFactory($configuration['root_path']);
+        $factory->setAssetManager($this->getAssetManager());
+        $factory->setFilterManager($this->getFilterManager());
+        $factory->addWorker($this->getCacheBusterStrategy());
+        $factory->setDebug($this->configuration->isDebug());
+        return $factory;
+    }
+
+    /**
+     * @param AssetCollection $asset
+     * @return string
+     */
+    public function moveRaw(AssetCollection $asset) {
+        foreach ($asset as $value /** @var $value AssetInterface */) {
+            $name = md5($value->getSourceRoot() . $value->getSourcePath());
+            $value->setTargetPath($value->getSourcePath());
+            $value = $this->cache($value);
+            $this->assetManager->set($name, $value);
+        }
+    }
+
+    /**
+     * @param $options
+     * @param $name
+     * @param $factory
+     */
+    public function prepareCollection($options, $name, $factory) {
+        $assets = isset($options['assets']) ? $options['assets'] : array();
+        $filters = isset($options['filters']) ? $options['filters'] : array();
+        $options = isset($options['options']) ? $options['options'] : array();
+        $options['output'] = isset($options['output']) ? $options['output'] : $name;
+
+        $filters = $this->initFilters($filters);
+
+        /** @var $asset \Assetic\Asset\AssetCollection */
+        $asset = $factory->createAsset($assets, $filters, $options);
+
+        # allow to move all files 1:1 to new directory
+        # its particulary usefull when this assets are images.
+        if (isset($options['move_raw']) && $options['move_raw']) {
+            $this->moveRaw($asset);
+        } else {
+            $asset = $this->cache($asset);
+            $this->assetManager->set($name, $asset);
+        }
     }
 }

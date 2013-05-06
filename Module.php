@@ -30,7 +30,7 @@ class Module
     /**
      * Initialize workflow
      *
-     * @param  \Zend\ModuleManager\ModuleManager $manager
+     * @param \Zend\ModuleManager\ModuleManagerInterface $manager
      * @return void
      */
     public function init(ModuleManagerInterface $manager)
@@ -41,6 +41,7 @@ class Module
     /**
      * Listen to the bootstrap event
      *
+     * @param \Zend\EventManager\EventInterface $e
      * @return array
      */
     public function onBootstrap(EventInterface $e)
@@ -77,7 +78,6 @@ class Module
             ),
         );
     }
-
 
     public function getAutoloaderConfig()
     {
@@ -119,8 +119,12 @@ class Module
             $asseticService->setActionName($router->getParam('action'));
         }
 
+        # build assets for modules
+        if ($asseticService->getConfiguration()->getBuildOnRequest()) {
+            $asseticService->initLoadedModules($this->moduleManager->getLoadedModules(false));
+        }
+
         # init assets for modules
-        $asseticService->initLoadedModules($this->moduleManager->getLoadedModules());
         $asseticService->setupRenderer($sm->get('ViewRenderer'));
     }
 }
