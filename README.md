@@ -14,7 +14,6 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   * PHP 5.3 or gather
 
 ## Installation
-
 ### Composer installation
 
   1. `cd my/project/directory`
@@ -43,7 +42,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backward compatybility. My recomendation is to set this to false on production enviroment.
   * Cleanup, refactoring
 
-For more information I invite you to see (CHANGELOG.md)[https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md]
+For more information I invite you to see [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
 
 ## How to use _AsseticBundle_
 ### ZF2 Skeleton Application - migration to _AsseticBundle_
