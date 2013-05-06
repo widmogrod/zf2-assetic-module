@@ -1,5 +1,16 @@
 <?php
+use Zend\Mvc\Application;
+
 return array(
+    'controllers' => array(
+        'invokables' => array(
+            'AsseticBundle\Controller\Console' => 'AsseticBundle\Controller\ConsoleController',
+        ),
+        'initializers' => array(
+            'AsseticBundleInitializer' => 'AsseticBundle\Initializer\AsseticBundleInitializer',
+        ),
+    ),
+
     'service_manager'       => array(
         'aliases'   => array(
             'AsseticConfiguration' => 'AsseticBundle\Configuration',
@@ -7,19 +18,24 @@ return array(
             'AsseticService'       => 'AsseticBundle\Service',
         ),
         'factories' => array(
-            'AsseticBundle\Configuration' => 'AsseticBundle\ConfigurationFactory',
             'AsseticBundle\Service'       => 'AsseticBundle\ServiceFactory',
             'Assetic\AssetWriter'         => 'AsseticBundle\WriterFactory',
         ),
         'invokables' => array(
-            'Assetic\AssetManager' => 'Assetic\AssetManager',
-            'Assetic\FilterManager' => 'Assetic\FilterManager',
+            'Assetic\AssetManager'      => 'Assetic\AssetManager',
+            'Assetic\FilterManager'     => 'Assetic\FilterManager',
             'AsseticBundle\CacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
+            'AsseticBundle\Listener'    => 'AsseticBundle\Listener',
+        ),
+        'initializers' => array(
+            'AsseticBundleInitializer' => 'AsseticBundle\Initializer\AsseticBundleInitializer',
         ),
     ),
 
     'assetic_configuration' => array(
         'debug'              => false,
+        // Set to true if you're working in development environment
+        'buildOnRequest'     => false,
         // Relative to application root dir.
         // Path where generated assets will be moved.
         'webPath'            => 'public/assets',
@@ -35,9 +51,9 @@ return array(
             'Zend\View\Renderer\JsonRenderer' => 'AsseticBundle\View\NoneStrategy',
         ),
         'acceptableErrors' => array(
-            \Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND,
-            \Zend\Mvc\Application::ERROR_CONTROLLER_INVALID,
-            \Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH
+            Application::ERROR_CONTROLLER_NOT_FOUND,
+            Application::ERROR_CONTROLLER_INVALID,
+            Application::ERROR_ROUTER_NO_MATCH
         ),
         'routes'             => array(),
         'modules'            => array(),
