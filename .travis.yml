@@ -8,11 +8,10 @@ before_install:
  - composer install --dev
 
 before_script:
- - cd tests
  - cp phpunit.xml.dist phpunit.xml
 
 script:
- - ../vendor/bin/phpunit
+ - vendor/bin/phpunit
 
 notifications:
   email: "widmogrod+zf2-assetic-module@gmail.com"
