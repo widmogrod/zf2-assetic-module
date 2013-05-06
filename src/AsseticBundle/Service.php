@@ -84,8 +84,7 @@ class Service
 
     public function getAssetManager()
     {
-        if (null === $this->assetManager)
-        {
+        if (null === $this->assetManager) {
             $this->assetManager = new AssetManager();
         }
         return $this->assetManager;
@@ -93,8 +92,7 @@ class Service
 
     public function getAssetWriter()
     {
-        if (null === $this->assetWriter)
-        {
+        if (null === $this->assetWriter) {
             $this->assetWriter = new AssetWriter($this->configuration->getWebPath());
         }
         return $this->assetWriter;
@@ -108,7 +106,7 @@ class Service
     public function getCacheBusterStrategy()
     {
         if (null === $this->cacheBusterStrategy) {
-            $this->cacheBusterStrategy =  new \AsseticBundle\CacheBuster\LastModifiedStrategy();
+            $this->cacheBusterStrategy = new \AsseticBundle\CacheBuster\LastModifiedStrategy();
         }
         return $this->cacheBusterStrategy;
     }
@@ -126,8 +124,7 @@ class Service
 
     public function getFilterManager()
     {
-        if (null === $this->filterManager)
-        {
+        if (null === $this->filterManager) {
             $this->filterManager = new FilterManager();
         }
         return $this->filterManager;
@@ -165,23 +162,20 @@ class Service
         return $this->actionName;
     }
 
-    public function initLoadedModules(array $loadedModules)
+    /**
+     * Build collection of assets.
+     */
+    public function build()
     {
-        $loadedModules = array_change_key_case($loadedModules, CASE_LOWER);
-
-        $moduleConfiguration = $this->configuration->getModules();
-        $moduleConfiguration = array_change_key_case($moduleConfiguration, CASE_LOWER);
-        $moduleConfiguration = array_intersect_key($moduleConfiguration, $loadedModules);
-
         $umask = $this->configuration->getUmask();
         if (null !== $umask) {
             $umask = umask($umask);
         }
 
-        foreach($moduleConfiguration as $configuration)
-        {
+        $moduleConfiguration = $this->configuration->getModules();
+        foreach ($moduleConfiguration as $configuration) {
             $factory = $this->createAssetFactory($configuration);
-            $collections = (array) $configuration['collections'];
+            $collections = (array)$configuration['collections'];
             foreach ($collections as $name => $options) {
                 $this->prepareCollection($options, $name, $factory);
             }
@@ -208,19 +202,17 @@ class Service
 
         $fm = $this->getFilterManager();
 
-        foreach($filters as $alias => $options)
-        {
+        foreach ($filters as $alias => $options) {
             $option = null;
-            if (is_array($options))
-            {
+            if (is_array($options)) {
                 if (!isset($options['name'])) {
                     throw new Exception\InvalidArgumentException(
-                        'Filter "'.$alias.'" required option "name"'
+                        'Filter "' . $alias . '" required option "name"'
                     );
                 }
 
                 $name = $options['name'];
-                $option = isset($options['option']) ?$options['option']: null;
+                $option = isset($options['option']) ? $options['option'] : null;
             } elseif (is_string($options)) {
                 $name = $options;
                 unset($options);
@@ -239,7 +231,7 @@ class Service
 
             if (!$fm->has($filterId)) {
                 $filter = new $name($option);
-                if(is_array($option)) {
+                if (is_array($option)) {
                     call_user_func_array(array($filter, '__construct'), $option);
                 }
 
@@ -278,19 +270,19 @@ class Service
     public function getDefaultConfig()
     {
         $defaultDefinition = $this->configuration->getDefault();
-        return $defaultDefinition? $defaultDefinition: array();
+        return $defaultDefinition ? $defaultDefinition : array();
     }
 
     public function getRouterConfig()
     {
         $assetOptions = $this->configuration->getRoute($this->getRouteName());
-        return $assetOptions? $assetOptions: array();
+        return $assetOptions ? $assetOptions : array();
     }
 
     public function getControllerConfig()
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
-        return $assetOptions? $assetOptions: array();
+        return $assetOptions ? $assetOptions : array();
     }
 
     public function setupRendererFromOptions(Renderer $renderer, array $options)
@@ -304,8 +296,7 @@ class Service
 
         /** @var $strategy \AsseticBundle\View\StrategyInterface */
         $strategy = $this->getStrategyForRenderer($renderer);
-        while($assetAlias = array_shift($options))
-        {
+        while ($assetAlias = array_shift($options)) {
             $assetAlias = ltrim($assetAlias, '@');
 
             /** @var $asset \Assetic\Asset\AssetInterface */
@@ -339,8 +330,7 @@ class Service
         }
 
         $rendererName = $this->getRendererName($renderer);
-        if (!isset($this->strategy[$rendererName]))
-        {
+        if (!isset($this->strategy[$rendererName])) {
             $strategyClass = $this->configuration->getStrategyNameForRenderer($rendererName);
             if (!class_exists($strategyClass, true)) {
                 throw new Exception\InvalidArgumentException(sprintf(
@@ -353,8 +343,8 @@ class Service
 
             if (!($instance instanceof StrategyInterface)) {
                 throw new Exception\DomainException(sprintf(
-                     'strategy class "%s" is not instanceof "AsseticBundle\View\StrategyInterface"',
-                     $strategyClass
+                    'strategy class "%s" is not instanceof "AsseticBundle\View\StrategyInterface"',
+                    $strategyClass
                 ));
             }
 
@@ -395,7 +385,8 @@ class Service
      * @param array $configuration
      * @return Factory\AssetFactory
      */
-    public function createAssetFactory($configuration) {
+    public function createAssetFactory($configuration)
+    {
         $factory = new Factory\AssetFactory($configuration['root_path']);
         $factory->setAssetManager($this->getAssetManager());
         $factory->setFilterManager($this->getFilterManager());
@@ -408,8 +399,9 @@ class Service
      * @param AssetCollection $asset
      * @return string
      */
-    public function moveRaw(AssetCollection $asset) {
-        foreach ($asset as $value /** @var $value AssetInterface */) {
+    public function moveRaw(AssetCollection $asset)
+    {
+        foreach ($asset as $value/** @var $value AssetInterface */) {
             $name = md5($value->getSourceRoot() . $value->getSourcePath());
             $value->setTargetPath($value->getSourcePath());
             $value = $this->cache($value);
@@ -422,7 +414,8 @@ class Service
      * @param $name
      * @param $factory
      */
-    public function prepareCollection($options, $name, $factory) {
+    public function prepareCollection($options, $name, $factory)
+    {
         $assets = isset($options['assets']) ? $options['assets'] : array();
         $filters = isset($options['filters']) ? $options['filters'] : array();
         $options = isset($options['options']) ? $options['options'] : array();
