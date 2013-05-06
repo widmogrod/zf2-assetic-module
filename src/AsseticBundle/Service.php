@@ -1,9 +1,11 @@
 <?php
 namespace AsseticBundle;
 
+use Assetic\Asset\AssetCollection;
 use Assetic\AssetManager,
     Assetic\FilterManager,
     Assetic\Factory,
+    Assetic\Factory\Worker\WorkerInterface,
     Assetic\AssetWriter,
     Assetic\Asset\AssetInterface,
     Assetic\Asset\AssetCache,
@@ -46,6 +48,16 @@ class Service
     protected $assetManager;
 
     /**
+     * @var \Assetic\AssetWriter
+     */
+    protected $assetWriter;
+
+    /**
+     * @var \Assetic\Factory\Worker\WorkerInterface
+     */
+    protected $cacheBusterStrategy;
+
+    /**
      * @var \Assetic\FilterManager
      */
     protected $filterManager;
@@ -77,6 +89,34 @@ class Service
             $this->assetManager = new AssetManager();
         }
         return $this->assetManager;
+    }
+
+    public function getAssetWriter()
+    {
+        if (null === $this->assetWriter)
+        {
+            $this->assetWriter = new AssetWriter($this->configuration->getWebPath());
+        }
+        return $this->assetWriter;
+    }
+
+    public function setAssetWriter($assetWriter)
+    {
+        $this->assetWriter = $assetWriter;
+    }
+
+    public function getCacheBusterStrategy()
+    {
+        if (null === $this->cacheBusterStrategy) {
+            $this->cacheBusterStrategy =  new \AsseticBundle\CacheBuster\LastModifiedStrategy();
+        }
+        return $this->cacheBusterStrategy;
+    }
+
+    public function setCacheBusterStrategy(WorkerInterface $cacheBusterStrategy)
+    {
+        $this->cacheBusterStrategy = $cacheBusterStrategy;
+        return $this;
     }
 
     public function setFilterManager(FilterManager $filterManager)
@@ -127,53 +167,31 @@ class Service
 
     public function initLoadedModules(array $loadedModules)
     {
+        $loadedModules = array_change_key_case($loadedModules, CASE_LOWER);
+
         $moduleConfiguration = $this->configuration->getModules();
-        foreach($loadedModules as $moduleName => $module)
+        $moduleConfiguration = array_change_key_case($moduleConfiguration, CASE_LOWER);
+        $moduleConfiguration = array_intersect_key($moduleConfiguration, $loadedModules);
+
+        $umask = $this->configuration->getUmask();
+        if (null !== $umask) {
+            $umask = umask($umask);
+        }
+
+        foreach($moduleConfiguration as $configuration)
         {
-            $moduleName = strtolower($moduleName);
-            if (!isset($moduleConfiguration[$moduleName])) {
-                continue;
+            $factory = $this->createAssetFactory($configuration);
+            $collections = (array) $configuration['collections'];
+            foreach ($collections as $name => $options) {
+                $this->prepareCollection($options, $name, $factory);
             }
 
-            $conf = (array) $moduleConfiguration[$moduleName];
-
-            $factory = new Factory\AssetFactory($conf['root_path']);
-            $factory->setAssetManager($this->getAssetManager());
-            $factory->setFilterManager($this->getFilterManager());
-            $factory->setDebug($this->configuration->isDebug());
-
-            $collections = (array) $conf['collections'];
-            foreach($collections as $name => $options)
-            {
-                $assets  = isset($options['assets']) ? $options['assets'] : array();
-                $filters = isset($options['filters']) ? $options['filters'] : array();
-                $options = isset($options['options']) ? $options['options'] : array();
-                $options['output'] = isset($options['output']) ? $options['output'] : $name;
-
-                $filters = $this->initFilters($filters);
-
-                /** @var $asset \Assetic\Asset\AssetCollection */
-                $asset = $factory->createAsset($assets, $filters, $options);
-
-                # allow to move all files 1:1 to new directory
-                # its particulary usefull when this assets are images.
-                if (isset($options['move_raw']) && $options['move_raw'])
-                {
-                    foreach($asset as $key => $value)
-                    {
-                        $name = md5($value->getSourceRoot() . $value->getSourcePath());
-                        $value->setTargetPath($value->getSourcePath());
-                        $value = $this->cache($value);
-                        $this->assetManager->set($name, $value);
-                    }
-                } else {
-                    $asset = $this->cache($asset);
-                    $this->assetManager->set($name, $asset);
-                }
-            }
-
-            $writer = new AssetWriter($this->configuration->getWebPath());
+            $writer = $this->getAssetWriter();
             $writer->writeManagerAssets($this->assetManager);
+        }
+
+        if (null !== $umask) {
+            umask($umask);
         }
     }
 
@@ -212,13 +230,20 @@ class Service
                 $alias = $name;
             }
 
-            if (!$fm->has($alias)) {
+            $filterId = $alias;
+
+            // remove '?' if the filter is optional
+            if (strpos($filterId, '?') === 0) {
+                $filterId = substr($filterId, 1);
+            };
+
+            if (!$fm->has($filterId)) {
                 $filter = new $name($option);
                 if(is_array($option)) {
                     call_user_func_array(array($filter, '__construct'), $option);
                 }
 
-                $fm->set($alias, $filter);
+                $fm->set($filterId, $filter);
             }
 
             $result[] = $alias;
@@ -238,8 +263,8 @@ class Service
         // If we don't have any assets listed by now, or if we are mixing in
         // the default assets, then merge in the default assets to the config array
         $defaultConfig = $this->getDefaultConfig();
-        if (count($config) == 0 || isset($defaultConfig['options']['mixin'])) {
-            $config = array_merge($config, $defaultConfig['assets']);
+        if (count($config) == 0 || (isset($defaultConfig['options']['mixin']) && $defaultConfig['options']['mixin'])) {
+            $config = array_merge($defaultConfig['assets'], $config);
         }
 
         if (count($config) > 0) {
@@ -291,6 +316,7 @@ class Service
 
     /**
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @return bool
      */
     public function hasStrategyForRenderer(Renderer $renderer)
     {
@@ -302,6 +328,8 @@ class Service
      * Get strategy to setup assets for given $renderer.
      *
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     * @throws Exception\DomainException
+     * @throws Exception\InvalidArgumentException
      * @return \AsseticBundle\View\StrategyInterface|null
      */
     public function getStrategyForRenderer(Renderer $renderer)
@@ -360,5 +388,58 @@ class Service
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+
+    /**
+     * @param array $configuration
+     * @return Factory\AssetFactory
+     */
+    public function createAssetFactory($configuration) {
+        $factory = new Factory\AssetFactory($configuration['root_path']);
+        $factory->setAssetManager($this->getAssetManager());
+        $factory->setFilterManager($this->getFilterManager());
+        $factory->addWorker($this->getCacheBusterStrategy());
+        $factory->setDebug($this->configuration->isDebug());
+        return $factory;
+    }
+
+    /**
+     * @param AssetCollection $asset
+     * @return string
+     */
+    public function moveRaw(AssetCollection $asset) {
+        foreach ($asset as $value /** @var $value AssetInterface */) {
+            $name = md5($value->getSourceRoot() . $value->getSourcePath());
+            $value->setTargetPath($value->getSourcePath());
+            $value = $this->cache($value);
+            $this->assetManager->set($name, $value);
+        }
+    }
+
+    /**
+     * @param $options
+     * @param $name
+     * @param $factory
+     */
+    public function prepareCollection($options, $name, $factory) {
+        $assets = isset($options['assets']) ? $options['assets'] : array();
+        $filters = isset($options['filters']) ? $options['filters'] : array();
+        $options = isset($options['options']) ? $options['options'] : array();
+        $options['output'] = isset($options['output']) ? $options['output'] : $name;
+
+        $filters = $this->initFilters($filters);
+
+        /** @var $asset \Assetic\Asset\AssetCollection */
+        $asset = $factory->createAsset($assets, $filters, $options);
+
+        # allow to move all files 1:1 to new directory
+        # its particulary usefull when this assets are images.
+        if (isset($options['move_raw']) && $options['move_raw']) {
+            $this->moveRaw($asset);
+        } else {
+            $asset = $this->cache($asset);
+            $this->assetManager->set($name, $asset);
+        }
     }
 }

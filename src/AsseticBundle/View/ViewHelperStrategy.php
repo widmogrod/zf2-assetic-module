@@ -10,20 +10,13 @@ class ViewHelperStrategy extends AbstractStrategy
     public function setupAsset(AssetInterface $asset)
     {
         $path = $this->getBaseUrl() . $this->getBasePath() .  $asset->getTargetPath();
-        $this->helper($path, $asset->getLastModified());
+        $this->helper($path);
     }
 
-    protected function helper($path, $lastModified = null)
+    protected function helper($path)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         $extension = strtolower($extension);
-
-        if (null !== $lastModified)
-        {
-            $path = strpos($path, '?')
-                ? sprintf('%s&%s', $path, $lastModified)
-                : sprintf('%s?%s', $path, $lastModified);
-        }
 
         switch($extension)
         {
@@ -43,7 +36,7 @@ class ViewHelperStrategy extends AbstractStrategy
         switch (true)
         {
             case ($renderer instanceof PhpRenderer):
-                if (strpos($path, "head_")) {
+                if (strpos($path, "head_") !== false) {
                     $renderer->plugin('HeadScript')->appendFile($path);
                 } else {
                     $renderer->plugin('InlineScript')->appendFile($path);

@@ -1,4 +1,4 @@
-# AsseticBundle [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.1.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 
 ## Introduction
 
@@ -9,7 +9,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
 ## Requirements
 
-  * Zend Framework 2 (https://github.com/zendframework/zf2). Tested on *Zend Framework 2.0.***.
+  * Zend Framework 2 (https://github.com/zendframework/zf2).
   * [Assetic](https://github.com/kriswallsmith/assetic)
   * PHP 5.3 or gather
 
@@ -23,7 +23,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ``` json
 {
     "require": {
-        "widmogrod/zf2-assetic-module": "dev-master"
+        "widmogrod/zf2-assetic-module": "1.*"
     }
 }
 ```
@@ -38,6 +38,18 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Changes
+#### 2013-04-21
+  * added cache buster strategy
+  * start tagging releases
+
+#### 2013-04-11
+  * optional filters in debug mode
+
+#### 2013-04-10
+  * added configurable umask
+
+#### 2013-04-01
+  * added configurable acceptable errors #54
 
 #### 2012-12-26:
   * update description how to merge
@@ -151,6 +163,17 @@ return array(
                         'options' => array(),
                     ),
 
+                    'lib_css' => array(
+                        'assets' => array(
+                            'css/lib.css'
+                        ),
+                        'filters' => array(
+                            '?CssRewriteFilter' => array( // filter is not active in debug mode
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            )
+                        )
+                    ),
+
                     'base_js' => array(
                         'assets' => array(
                             'js/html5.js',
@@ -210,6 +233,21 @@ return array(
             ),
 
             /**
+              * Module is not enabled if an MvcEvent::EVENT_DISPATCH_ERROR event occurs.
+              * However, we may still want our assets for pages with dispatch errors.
+              * So, we can build up a whitelist of errors for the module to be enabled for.
+              */
+            'acceptableErrors' => array(
+                //defaults
+                \Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND,
+                \Zend\Mvc\Application::ERROR_CONTROLLER_INVALID,
+                \Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH,
+
+                //allow assets when authorisation fails when using the BjyAuthorize module
+                \BjyAuthorize\Guard\Route::ERROR,
+            ),
+
+            /**
              * Define location, where assets should be move.
              * This is default option. You should create this directory by hand.
              */
@@ -231,6 +269,13 @@ return array(
              * @optional
              */
             'debug' => false,
+
+            /*
+             * set Umask
+             *
+             * @optional
+             */
+            'umask' => null,
 
             /*
              * Define base URL which will prepend your resources address
@@ -399,6 +444,10 @@ _AsseticBundle_ uses the following algorithm to determine the configuration to u
   2. If 'controller' not exists, use assets from 'route' configuration
   3. If 'route' not exists, don't load assets
 
+## Cache Busting
+By default the asset's last modified time is added into to the filename before the extension.
+To change this behaviour a different cache buster strategy must be injected into the service.
+To prevent a cache buster url being used, add the Null cachebuster to the service
 
 ## Projects using _AsseticBundle_
 

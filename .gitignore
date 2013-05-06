@@ -4,4 +4,5 @@
 composer.lock
 vendor/*
 .idea
+nbproject
 phpunit.xml

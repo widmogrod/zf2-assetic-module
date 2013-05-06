@@ -6,4 +6,4 @@ define('TEST_ASSETS_DIR', __DIR__ . '/assets');
 define('TEST_CACHE_DIR', __DIR__ . '/cache');
 define('TEST_PUBLIC_DIR', __DIR__ . '/public');
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require '../vendor/autoload.php';

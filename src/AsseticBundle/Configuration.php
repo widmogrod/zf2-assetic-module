@@ -14,6 +14,13 @@ class Configuration
     protected $debug = false;
 
     /**
+     * Should build assets on request.
+     *
+     * @var bool
+     */
+    protected $buildOnRequest = true;
+
+    /**
      * Full path to public directory where assets will be generated.
      *
      * @var string
@@ -100,6 +107,13 @@ class Configuration
      * @var array
      */
     protected $rendererToStrategy = array();
+
+    protected $acceptableErrors = array();
+
+    /**
+     * @var null|integer
+     */
+    protected $umask = null;
 
     public function __construct($config = null)
     {
@@ -333,5 +347,50 @@ class Configuration
         return array_key_exists($rendererName, $this->rendererToStrategy)
             ? $this->rendererToStrategy[$rendererName]
             : $default;
+    }
+
+    public function setAcceptableErrors(array $acceptableErrors)
+    {
+        $this->acceptableErrors = $acceptableErrors;
+    }
+
+    public function getAcceptableErrors()
+    {
+        return $this->acceptableErrors;
+    }
+
+    /**
+     * @return integer|null
+     */
+    public function getUmask()
+    {
+        return $this->umask;
+    }
+
+    /**
+     * @param null|integer $umask
+     */
+    public function setUmask($umask)
+    {
+        $this->umask = null;
+        if (is_int($umask)) {
+            $this->umask = (int) $umask;
+        }
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function setBuildOnRequest($flag)
+    {
+        $this->buildOnRequest = (bool) $flag;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBuildOnRequest()
+    {
+        return $this->buildOnRequest;
     }
 }

@@ -10,7 +10,9 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\ModuleManager\Feature\ServiceProviderInterface,
-    Zend\ModuleManager\Feature\BootstrapListenerInterface;
+    Zend\ModuleManager\Feature\BootstrapListenerInterface,
+    Zend\Mvc\MvcEvent,
+    Zend\Mvc\Application;
 
 class Module
     implements
@@ -21,24 +23,25 @@ class Module
         ServiceProviderInterface
 {
     /**
-     * @var array
+     * @var ModuleManagerInterface
      */
-    protected $loadedModules;
+    protected $moduleManager;
 
     /**
      * Initialize workflow
      *
-     * @param  \Zend\ModuleManager\ModuleManager $manager
+     * @param \Zend\ModuleManager\ModuleManagerInterface $manager
      * @return void
      */
     public function init(ModuleManagerInterface $manager)
     {
-        $this->loadedModules = $manager->getLoadedModules();
+        $this->moduleManager = $manager;
     }
 
     /**
      * Listen to the bootstrap event
      *
+     * @param \Zend\EventManager\EventInterface $e
      * @return array
      */
     public function onBootstrap(EventInterface $e)
@@ -49,6 +52,7 @@ class Module
          */
         $app = $e->getApplication();
         $app->getEventManager()->attach('dispatch', array($this, 'renderAssets'), 32);
+        $app->getEventManager()->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), 32);
     }
 
     public function getConfig()
@@ -75,7 +79,6 @@ class Module
         );
     }
 
-
     public function getAutoloaderConfig()
     {
         return array(
@@ -87,28 +90,41 @@ class Module
         );
     }
 
-    public function renderAssets(\Zend\Mvc\MvcEvent $e)
+    public function renderAssets(MvcEvent $e)
     {
+        $sm     = $e->getApplication()->getServiceManager();
+        $config = $sm->get('AsseticConfiguration');
+        if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
+            $error = $e->getError();
+            if ($error && !in_array($error, $config->getAcceptableErrors())) {
+                // break if not an acceptable error
+                return;
+            }
+        }
+
         $response = $e->getResponse();
         if (!$response) {
             $response = new Response();
             $e->setResponse($response);
         }
 
-        $sm = $e->getApplication()->getServiceManager();
-
-        $router = $e->getRouteMatch();
-
         /** @var $asseticService \AsseticBundle\Service */
         $asseticService = $sm->get('AsseticService');
 
-        # setup service
-        $asseticService->setRouteName($router->getMatchedRouteName());
-        $asseticService->setControllerName($router->getParam('controller'));
-        $asseticService->setActionName($router->getParam('action'));
+        # setup service if a matched route exist
+        $router = $e->getRouteMatch();
+        if ($router) {
+            $asseticService->setRouteName($router->getMatchedRouteName());
+            $asseticService->setControllerName($router->getParam('controller'));
+            $asseticService->setActionName($router->getParam('action'));
+        }
+
+        # build assets for modules
+        if ($asseticService->getConfiguration()->getBuildOnRequest()) {
+            $asseticService->initLoadedModules($this->moduleManager->getLoadedModules(false));
+        }
 
         # init assets for modules
-        $asseticService->initLoadedModules($this->loadedModules);
         $asseticService->setupRenderer($sm->get('ViewRenderer'));
     }
 }
