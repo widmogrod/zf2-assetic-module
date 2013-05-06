@@ -158,7 +158,7 @@ class Service extends \PHPUnit_Framework_TestCase
 
     public function testInitLoadedModules() {
         $loadModules = array('test_application' => 'test_application');
-        $this->object->initLoadedModules($loadModules);
+        $this->object->build($loadModules);
         $assetManager = $this->object->getAssetManager();
 
         $this->assertTrue($assetManager->has('base_css'));
