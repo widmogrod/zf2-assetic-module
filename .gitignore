@@ -6,3 +6,4 @@ vendor/*
 .idea
 nbproject
 phpunit.xml
+index.php
