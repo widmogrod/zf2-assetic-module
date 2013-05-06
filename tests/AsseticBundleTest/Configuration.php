@@ -83,13 +83,6 @@ class Configuration extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testSetWebPathFailure() {
-        $this->object->setWebPath('non existing path');
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetWebPathFailure() {
         $this->object->getWebPath();
     }
