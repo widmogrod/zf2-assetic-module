@@ -34,8 +34,13 @@ return array(
 
     'assetic_configuration' => array(
         'debug'              => false,
-        // Set to true if you're working in development environment
-        'buildOnRequest'     => false,
+        /**
+         * Set to true if you're working in a development environment and you want for
+         * every assets to be moved to public directory after some changes.
+         * Set to false on production environment - to boost your application.
+         * Default true - for backward compatibility.
+         */
+        'buildOnRequest'     => true,
         // Relative to application root dir.
         // Path where generated assets will be moved.
         'webPath'            => 'public/assets',

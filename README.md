@@ -1,4 +1,4 @@
-# AsseticBundle v1.1.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.2.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 
 ## Introduction
 
@@ -37,66 +37,15 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
-## Changes
-#### 2013-04-21
-  * added cache buster strategy
-  * start tagging releases
+## Latest changes
+#### 2013-05-06
+  * Create console actions, run `php index.php` to see more informations
+  * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backward compatybility. My recomendation is to set this to false on production enviroment.
+  * Cleanup, refactoring
 
-#### 2013-04-11
-  * optional filters in debug mode
-
-#### 2013-04-10
-  * added configurable umask
-
-#### 2013-04-01
-  * added configurable acceptable errors #54
-
-#### 2012-12-26:
-  * update description how to merge
-  * change behavior for option "baseUrl" now is detected by ZF2 (in ServiceFactory::createService)
-  * new configuration option "basePath"
-  * composer is now recommended way of installation.
-  * fix issue #36: Case insesitive module name in configuration required
-  * fix issue #30: Possible Assets may apply where they are not wanted
-
-#### 2012-12-25:
-  * wrote tests
-  * add travis-ci
-  * remove old code
-  * add AsseticBundleServiceAwareInterface
-
-#### 2012-09-04:
-  * composer support added, now is recommended way of installation
-  * remove vendor directory
-  * new installation process
-
-#### 2012-08-26:
-
-  * rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
-  * assetic configuration namespace was change from:
-
-``` php
-array(
-    'di' => array(
-        'instance' => array(
-            'assetic-configuration' => array(
-                'parameters' => array(
-                    'config' => array(/* configuration */)
-                )
-            )
-        )
-    )
-);
-```
-
-to:
-
-``` php
-array('assetic_configuration' => array(/* configuration */));
-```
+For more information I invite you to see (CHANGELOG.md)[https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md]
 
 ## How to use _AsseticBundle_
-
 ### ZF2 Skeleton Application - migration to _AsseticBundle_
 
 This example shows how to convert "ZF2 Skeleton Application" to load assets via _AsseticBundle_.
@@ -212,7 +161,9 @@ return array(
 </head>
 ```
 
-4. Refresh site and have fun!
+4. run `php index.php assetic setup` - this will create directory structure
+5. run `php index.php assetic build` - this will build all assets
+6. Refresh site and have fun!
 
 ### Complex configuration example
 
@@ -221,6 +172,13 @@ return array(
 // module.config.php
 return array(
     'assetic_configuration' => array(
+            /**
+             * Set to true if you're working in a development environment and you want for
+             * every assets to be moved to public directory after some changes.
+             * Set to false on production environment - to boost your application.
+             * Default true - for backward compatibility.
+             */
+            'buildOnRequest'     => true,
 
             /**
              * Map how given view renderer instance will be interpreted by AsseticBundle.
@@ -442,7 +400,7 @@ _AsseticBundle_ uses the following algorithm to determine the configuration to u
 
   1. Use assets from 'controller' configuration
   2. If 'controller' not exists, use assets from 'route' configuration
-  3. If 'route' not exists, don't load assets
+  3. If 'route' not exists, use defaut options or don't load assets
 
 ## Cache Busting
 By default the asset's last modified time is added into to the filename before the extension.
@@ -469,8 +427,7 @@ To prevent a cache buster url being used, add the Null cachebuster to the servic
 
 
 ### Additional staff
-
-### Layout .phtml example
+#### Layout .phtml example
 
 ``` php
 <?php echo $this->plugin('doctype')->setDoctype(\Zend\View\Helper\Doctype::HTML5); ?>
@@ -505,3 +462,8 @@ To prevent a cache buster url being used, add the Null cachebuster to the servic
 </body>
 </html>
 ```
+
+## Stability
+[![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch master
+
+[![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=devel)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch devel
