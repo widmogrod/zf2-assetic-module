@@ -14,6 +14,8 @@ class ConsoleController extends AbstractActionController implements AsseticBundl
 
     public function buildAction()
     {
+        $config = $this->assetic->getConfiguration();
+        $config->setBuildOnRequest(true);
         $this->assetic->build();
     }
 
