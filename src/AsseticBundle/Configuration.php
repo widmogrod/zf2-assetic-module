@@ -214,9 +214,14 @@ class Configuration
 
     public function getRoute($name, $default = null)
     {
-        return array_key_exists($name, $this->routes)
-                ? $this->routes[$name]
-                : $default;
+        // gives possibility to specify regex in route name
+        foreach ($this->routes as $spec => $config) {
+            if (preg_match('(^' . $spec . '$)i', $name)) {
+                return $config;
+            }
+        }
+
+        return $default;
     }
 
     public function setControllers(array $controllers)
