@@ -222,7 +222,7 @@ class Configuration
             }
         }
         ksort($assets);
-        return $assets?array_values($assets):$default;
+        return $assets?($assets):$default;
     }
 
     public function setControllers(array $controllers)
