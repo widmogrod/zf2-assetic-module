@@ -87,11 +87,11 @@ return array(
 
         'modules' => array(
             /*
-             * Application moodule - assets configuration
+             * Application module - assets configuration
              */
             'application' => array(
 
-                # module root path for yout css and js files
+                # module root path for your css and js files
                 'root_path' => __DIR__ . '/../assets',
 
                 # collection od assets
