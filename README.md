@@ -11,7 +11,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 
   * Zend Framework 2 (https://github.com/zendframework/zf2).
   * [Assetic](https://github.com/kriswallsmith/assetic)
-  * PHP 5.3 or gather
+  * PHP 5.3 or later
 
 ## Installation
 ### Composer installation
@@ -39,7 +39,7 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 ## Latest changes
 #### 2013-05-06
   * Create console actions, run `php index.php` to see more informations
-  * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backward compatybility. My recomendation is to set this to false on production enviroment.
+  * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backwards compatibility. My recommendation is to set this to false on production environment.
   * Cleanup, refactoring
 
 For more information I invite you to see [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
@@ -160,7 +160,7 @@ return array(
 </head>
 ```
 
-4. run `php index.php assetic setup` - this will create directory structure
+4. run `php index.php assetic setup` - this will create the directory structure
 5. run `php index.php assetic build` - this will build all assets
 6. Refresh site and have fun!
 
@@ -172,8 +172,8 @@ return array(
 return array(
     'assetic_configuration' => array(
             /**
-             * Set to true if you're working in a development environment and you want for
-             * every assets to be moved to public directory after some changes.
+             * Set to true if you're working in a development environment and you want
+             * every asset to be moved to public directory after some changes.
              * Set to false on production environment - to boost your application.
              * Default true - for backward compatibility.
              */
