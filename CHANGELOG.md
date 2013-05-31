@@ -1,3 +1,23 @@
+#### 2013-05-17
+  * Added an ability to match multiple route names with priority sort. Example:
+
+``` php
+<?php
+return array(
+    'assetic_configuration' => array(
+        'routes' => array(
+            // make sure base assets are on the topmost position
+            'routes' => array(
+                '(?!admin).*' => array(
+                    -100 => '@base_css',
+                    -90  => '@base_js',
+                )
+            ),
+        )
+    )
+);
+```
+
 #### 2013-05-12
   * Added possibility to specify `regex` in route name. example:
 
