@@ -217,7 +217,7 @@ class Configuration
         $assets = array();
         $routeMatched = false;
 
-        // return all routes for which the route name matches the regex
+        // Merge all assets configuration for which regular expression matches route
         foreach ($this->routes as $spec => $config) {
             if (preg_match('(^' . $spec . '$)i', $name)) {
                 $routeMatched = true;
@@ -225,13 +225,8 @@ class Configuration
             }
         }
 
-        if ($routeMatched) {
-            return $assets;
-        } else {
-            return $default;
-        }
-
-        return $default;
+        // Only return default if none regular expression matched
+        return $routeMatched ? $assets : $default;
     }
 
     public function setControllers(array $controllers)
