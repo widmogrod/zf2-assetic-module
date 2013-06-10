@@ -187,6 +187,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertContains('@a', $assets);
         $this->assertContains('@b', $assets);
         $this->assertContains('@c', $assets);
+        $this->assertNotContains('@d', $assets);
     }
 
     public function testGetControllers() {
