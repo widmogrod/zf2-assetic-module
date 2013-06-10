@@ -190,6 +190,15 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertNotContains('@d', $assets);
     }
 
+    public function testEmptyRouteMatchWillNotTriggerDefault(){
+        $this->object->setRoutes(array('bar' => array()));
+
+        $assets = $this->object->getRoute('bar');
+        $this->assertNotEquals('default', $assets);
+        $this->assertCount(0, $assets);
+    }
+
+
     public function testGetControllers() {
         $expected = array();
         $result = $this->object->getControllers();
