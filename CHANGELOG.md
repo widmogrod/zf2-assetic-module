@@ -1,3 +1,23 @@
+#### 2013-06-10
+  * All route configurations that match the current route will now be merged. This is especially useful when used in combination with the regular expressions previously introduced For example:
+
+``` php
+<?php
+return array(
+    'assetic_configuration' => array(
+        'routes' => array(
+            'admin/.*' => array(
+                '@specific_admin_js
+            ),
+            'admin/(dashboard|reports|etc)/.+' => array(
+                '@admin_css',
+                '@admin_js'
+            )
+        )
+    )
+);
+```
+
 #### 2013-05-12
   * Added possibility to specify `regex` in route name. example:
 
