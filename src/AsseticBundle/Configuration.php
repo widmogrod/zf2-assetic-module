@@ -214,14 +214,19 @@ class Configuration
 
     public function getRoute($name, $default = null)
     {
-        // gives possibility to specify regex in route name
+        $assets = array();
+        $routeMatched = false;
+
+        // Merge all assets configuration for which regular expression matches route
         foreach ($this->routes as $spec => $config) {
             if (preg_match('(^' . $spec . '$)i', $name)) {
-                return $config;
+                $routeMatched = true;
+                $assets = Stdlib\ArrayUtils::merge($assets, (array) $config);
             }
         }
 
-        return $default;
+        // Only return default if none regular expression matched
+        return $routeMatched ? $assets : $default;
     }
 
     public function setControllers(array $controllers)
