@@ -37,6 +37,8 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
   3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
 
 ## Latest changes
+#### 2013-05-12
+  * Asset collections defined on route level can now match the current route using regular expression
 #### 2013-05-06
   * Create console actions, run `php index.php` to see more informations
   * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backwards compatibility. My recommendation is to set this to false on production environment.
@@ -269,6 +271,13 @@ return array(
                     '@base_css',
                     '@base_js',
                 ),
+                
+                /*
+                 * These assets will only be loaded for routes starting with admin
+                 */
+                'admin/.* => array(
+                    '@admin_assets'
+                ),
 
                 /*
                  * when router 'home' will be used then this set of asset will be loaded
@@ -336,6 +345,12 @@ return array(
                                 'js/setup.js' // relative to 'root_path'
                             )
                         ),
+                        
+                        'admin_css' => array(
+                            'assets' => array(
+                                'css/admin.css'
+                            )
+                        )
                     ),
                 ),
 
