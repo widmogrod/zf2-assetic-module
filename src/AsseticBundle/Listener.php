@@ -72,9 +72,6 @@ class Listener implements ListenerAggregateInterface
             $asseticService->setActionName($router->getParam('action'));
         }
 
-        // build assets for modules
-        $asseticService->build();
-
         // init assets for modules
         $asseticService->setupRenderer($sm->get('ViewRenderer'));
     }
