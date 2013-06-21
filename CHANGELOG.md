@@ -5,6 +5,7 @@
   * Improve documentation
   * Create out of box configuration
   * #29 - pass more arguments to filter constructor
+  * #74 - now only assets match request are build
 
 2013-06-10
 ----------
