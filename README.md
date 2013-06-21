@@ -1,7 +1,7 @@
 # AsseticBundle v1.3.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 ## What it is?
 
-Assets managment module made easy.
+Assets managment per module made easy.
 
 **Key features**
 
