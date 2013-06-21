@@ -1,9 +1,8 @@
 # AsseticBundle v1.3.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module) [![](http://stillmaintained.com/widmogrod/zf2-assetic-module.png)](http://stillmaintained.com/widmogrod/zf2-assetic-module)
-## What it is?
 
 Assets managment per module made easy.
 
-**Key features**
+**Key features:**
 
   * **Optimaze your assets**. Minify your css, js; Compile scss, and more.
   * **Adapts To Your Needs**. Using custom template engine? Impleent your own `AsseticBundle\View\StrategyInterface`
@@ -32,4 +31,4 @@ What this mean? [Take a look here](http://getcomposer.org/doc/00-intro.md#introd
   * [Configuration](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/config.md)
   * [Tips & Tricks](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/tips.md)
 
-[![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=devel)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch devel
+[![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=devel)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch `devel`
