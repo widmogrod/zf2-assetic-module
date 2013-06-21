@@ -22,7 +22,7 @@ return array(
             'Assetic\AssetWriter'         => 'AsseticBundle\WriterFactory',
         ),
         'invokables' => array(
-            'Assetic\AssetManager'      => 'Assetic\AssetManager',
+            'Assetic\AssetManager'      => 'Assetic\LazyAssetManager',
             'Assetic\FilterManager'     => 'Assetic\FilterManager',
             'AsseticBundle\CacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
             'AsseticBundle\Listener'    => 'AsseticBundle\Listener',
