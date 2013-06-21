@@ -1,6 +1,0 @@
-[submodule "vendor/assetic"]
-	path = vendor/assetic
-	url = https://github.com/kriswallsmith/assetic.git
-[submodule "vendor/lessphp"]
-	path = vendor/lessphp
-	url = https://github.com/leafo/lessphp.git
