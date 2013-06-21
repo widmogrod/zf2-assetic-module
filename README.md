@@ -23,7 +23,7 @@ Assets managment per module made easy.
 }
 ```
 
-What this mean? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
+what does it mean? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
 
 ## Documentation
 
