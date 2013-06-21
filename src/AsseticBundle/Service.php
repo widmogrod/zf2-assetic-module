@@ -303,6 +303,9 @@ class Service
 
             /** @var $asset \Assetic\Asset\AssetInterface */
             $asset = $this->assetManager->get($assetAlias);
+            // Save asset on disk
+            $this->writeAsset($asset);
+            // Prepare view strategy
             $strategy->setupAsset($asset);
         }
     }
@@ -435,6 +438,17 @@ class Service
         } else {
             $asset = $this->cache($asset);
             $this->assetManager->set($name, $asset);
+        }
+    }
+
+    /**
+     * Write $asset to public directory.
+     *
+     * @param AssetInterface $asset     Asset to write
+     */
+    public function writeAsset(AssetInterface $asset) {
+        if ($this->getConfiguration()->getBuildOnRequest()) {
+            $this->getAssetWriter()->writeAsset($asset);
         }
     }
 }
