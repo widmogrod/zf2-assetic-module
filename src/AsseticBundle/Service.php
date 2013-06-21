@@ -232,9 +232,11 @@ class Service
             };
 
             if (!$fm->has($filterId)) {
-                $filter = new $name($option);
                 if (is_array($option)) {
-                    call_user_func_array(array($filter, '__construct'), $option);
+                    $r = new \ReflectionClass($name);
+                    $filter = $r->newInstanceArgs($option);
+                } else {
+                    $filter = new $name($option);
                 }
 
                 $fm->set($filterId, $filter);
