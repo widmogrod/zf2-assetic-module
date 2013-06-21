@@ -179,11 +179,11 @@ class Service
             foreach ($collections as $name => $options) {
                 $this->prepareCollection($options, $name, $factory);
             }
+        }
 
-			if ($this->configuration->getBuildOnRequest()) {
-	            $writer = $this->getAssetWriter();
-	            $writer->writeManagerAssets($this->assetManager);
-			}
+        if ($this->configuration->getBuildOnRequest()) {
+            $writer = $this->getAssetWriter();
+            $writer->writeManagerAssets($this->assetManager);
         }
 
         if (null !== $umask) {
