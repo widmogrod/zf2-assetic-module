@@ -4,6 +4,7 @@
   * Simply front page
   * Improve documentation
   * Create out of box configuration
+  * #29 - pass more arguments to filter constructor
 
 2013-06-10
 ----------
