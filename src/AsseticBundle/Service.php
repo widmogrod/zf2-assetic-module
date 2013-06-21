@@ -224,12 +224,8 @@ class Service
                 $alias = $name;
             }
 
-            $filterId = $alias;
-
-            // remove '?' if the filter is optional
-            if (strpos($filterId, '?') === 0) {
-                $filterId = substr($filterId, 1);
-            };
+            // Filter Id should have optional filter indicator "?"
+            $filterId = ltrim($alias, '?');
 
             if (!$fm->has($filterId)) {
                 if (is_array($option)) {
