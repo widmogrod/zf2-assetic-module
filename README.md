@@ -1,23 +1,19 @@
-# AsseticBundle v1.2.2 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
-
+# AsseticBundle v1.3.0 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 ## Introduction
+Assets managment per module made easy.
 
-AsseticBundle is module for ZF2 allowing asset managment dependent on route-name, controller-alias-name (di).
-Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
+## Key features
 
-*P.S.* Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
+  * `Optimaze your assets.` Minify your css, js; Compile scss, and more.
+  * `Adapt to your need.` Using custom template engine? Impleent your own `AsseticBundle\View\StrategyInterface`
+  * `Well tested`. Besides unit test this solution is production ready.
+  * `Bring your idea`. Hava a great idea? Brig your tested pull request!
+  * `Every change tracked`. Want knew whats new? Take a look at [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
+  * `Exellent community`. Everything is thanks to great support from Github.com & PHP community! Thank you.
 
-## Requirements
-
-  * Zend Framework 2 (https://github.com/zendframework/zf2).
-  * [Assetic](https://github.com/kriswallsmith/assetic)
-  * PHP 5.3 or later
 
 ## Installation
-### Composer installation
-
-  1. `cd my/project/directory`
-  2. Create a `composer.json` file with following content:
+### Composer
 
 ``` json
 {
@@ -27,27 +23,13 @@ Core of module is [assetic](https://github.com/kriswallsmith/assetic) library.
 }
 ```
 
-  3. Run `php composer.phar install`
-  4. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
+Don't know how? [Read this introduction to composer](http://getcomposer.org/doc/00-intro.md#introduction)
 
-### Installation without composer (DEPRECATED)
+## Documentation
 
-  1. ``cd my/project/folder``
-  2. ``git clone git@github.com:widmogrod/zf2-assetic-module.git module/AsseticBundle --recursive``
-  3. Open ``my/project/folder/configs/application.config.php`` and add ``'AsseticBundle'`` to your ``'modules'`` parameter.
-
-## Latest changes
-
-#### 2013-05-12
-
-  * Asset collections defined on route level can now match the current route using regular expression
-
-#### 2013-05-06
-  * Create console actions, run `php index.php` to see more informations
-  * Option to disable/enable generating assets on fly `'buildOnRequest' => true` - by default is set to `true` for backwards compatibility. My recommendation is to set this to false on production environment.
-  * Cleanup, refactoring
-
-For more information I invite you to see [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
+  * [How to use](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
+  * [Configuration](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
+  * [Tips & Tricks](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
 
 ## How to use _AsseticBundle_
 ### ZF2 Skeleton Application - migration to _AsseticBundle_
@@ -482,5 +464,4 @@ To prevent a cache buster url being used, add the Null cachebuster to the servic
 
 ## Stability
 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch master
-
 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=devel)](https://travis-ci.org/widmogrod/zf2-assetic-module)  on branch devel

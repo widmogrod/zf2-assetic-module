@@ -1,3 +1,8 @@
+#### 2013-06-21
+  * Simply front page
+  * Improve documentation
+  * Create out of box configuration
+
 #### 2013-06-10
   * All route configurations that match the current route will now be merged. This is especially useful when used in combination with the regular expressions previously introduced. 
 
@@ -39,6 +44,9 @@ return array(
     )
 );
 ```
+
+#### 2013-05-12
+  * Asset collections defined on route level can now match the current route using regular expression
 
 #### 2013-05-06
   * Create console actions, run `php index.php` to see more informations
