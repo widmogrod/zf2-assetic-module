@@ -2,8 +2,6 @@
 
 Assets managment per module made easy.
 
-**Key features:**
-
   * **Optimaze your assets**. Minify your css, js; Compile scss, and more.
   * **Adapts To Your Needs**. Using custom template engine? Impleent your own `AsseticBundle\View\StrategyInterface`
   * **Well tested**. Besides unit test this solution is production ready.
