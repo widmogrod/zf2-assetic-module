@@ -15,11 +15,9 @@ Assets managment per module made easy.
 
 1. Install package by composer. Don't know how? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
 ``` json
-{
-    "require": {
-        "widmogrod/zf2-assetic-module": "1.*"
-    }
-}
+{"require": {
+    "widmogrod/zf2-assetic-module": "1.*"
+}}
 ```
 
 2. Create cache and assets directory with valid permissions.
