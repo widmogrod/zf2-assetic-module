@@ -14,7 +14,6 @@ Assets managment per module made easy.
 ## Installation
 
 1. Install package by composer. Don't know how? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
-
 ``` json
 {
     "require": {
@@ -22,15 +21,11 @@ Assets managment per module made easy.
     }
 }
 ```
-
 2. Create cache and assets directory with valid permissions.
-
 ```
 php public/index.php assetic setup
 ```
-
 3. Setup your asset configuration.
-
 ```
 cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist modules/My_Module/configs/assets.config.php
 ```
