@@ -181,11 +181,6 @@ class Service
             }
         }
 
-        if ($this->configuration->getBuildOnRequest()) {
-            $writer = $this->getAssetWriter();
-            $writer->writeManagerAssets($this->assetManager);
-        }
-
         if (null !== $umask) {
             umask($umask);
         }
