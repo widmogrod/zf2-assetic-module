@@ -3,7 +3,7 @@
 
   * Simply front page
   * Improve documentation
-  * Create out of box configuration
+  * Create out of the box configuration `config/assets.config.php.dist`
   * #29 - pass more arguments to filter constructor
   * #74 - now only assets match in request are build
 
