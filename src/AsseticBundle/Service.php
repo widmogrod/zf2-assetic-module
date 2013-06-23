@@ -418,15 +418,16 @@ class Service
         $filters = isset($options['filters']) ? $options['filters'] : array();
         $options = isset($options['options']) ? $options['options'] : array();
         $options['output'] = isset($options['output']) ? $options['output'] : $name;
+        $moveRaw = isset($options['move_raw']) && $options['move_raw'];
 
         $filters = $this->initFilters($filters);
 
         /** @var $asset \Assetic\Asset\AssetCollection */
         $asset = $factory->createAsset($assets, $filters, $options);
 
-        # allow to move all files 1:1 to new directory
-        # its particulary usefull when this assets are images.
-        if (isset($options['move_raw']) && $options['move_raw']) {
+        // Allow to move all files 1:1 to new directory
+        // its particularly useful when this assets are i.e. images.
+        if ($moveRaw) {
             $this->moveRaw($asset);
         } else {
             $asset = $this->cache($asset);
@@ -440,7 +441,22 @@ class Service
      * @param AssetInterface $asset     Asset to write
      */
     public function writeAsset(AssetInterface $asset) {
-        if ($this->getConfiguration()->getBuildOnRequest()) {
+        // We're not interested in saving assets on request
+        if (!$this->configuration->getBuildOnRequest()) {
+            return;
+        }
+
+        // Write asset on dish in every request
+        if (!$this->configuration->getWriteIfChanged()) {
+            $this->getAssetWriter()->writeAsset($asset);
+        }
+
+        $target = $this->configuration->getWebPath($asset->getTargetPath());
+        $created = is_file($target);
+        $isChanged = $created && filemtime($target) < $asset->getLastModified();
+
+        // And long requested optimization
+        if (!$created || $isChanged) {
             $this->getAssetWriter()->writeAsset($asset);
         }
     }

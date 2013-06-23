@@ -70,6 +70,13 @@ class Configuration
     protected $basePath;
 
     /**
+     * Asset will be save on disk, only when it's modification time was changed
+     *
+     * @var bool
+     */
+    protected $writeIfChanged = true;
+
+    /**
      * Default options.
      *
      * @var array
@@ -155,10 +162,14 @@ class Configuration
         $this->webPath = $path;
     }
 
-    public function getWebPath()
+    public function getWebPath($file = null)
     {
         if (null === $this->webPath) {
             throw new Exception\RuntimeException('Web path is not set');
+        }
+
+        if (null !== $file) {
+            return rtrim($this->webPath, '/\\') . '/' . ltrim($file, '/\\');
         }
 
         return $this->webPath;
@@ -242,8 +253,8 @@ class Configuration
     public function getController($name, $default = null)
     {
         return array_key_exists($name, $this->controllers)
-                ? $this->controllers[$name]
-                : $default;
+            ? $this->controllers[$name]
+            : $default;
     }
 
     public function setModules(array $modules)
@@ -268,8 +279,8 @@ class Configuration
     {
         $name = strtolower($name);
         return array_key_exists($name, $this->modules)
-                ? $this->modules[$name]
-                : $default;
+            ? $this->modules[$name]
+            : $default;
     }
 
     public function detectBaseUrl()
@@ -394,5 +405,21 @@ class Configuration
     public function getBuildOnRequest()
     {
         return $this->buildOnRequest;
+    }
+
+    /**
+     * @param boolean $flag
+     */
+    public function setWriteIfChanged($flag)
+    {
+        $this->writeIfChanged = (bool) $flag;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getWriteIfChanged()
+    {
+        return $this->writeIfChanged;
     }
 }

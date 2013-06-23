@@ -1,6 +1,7 @@
 <?php
 namespace AsseticBundleTest;
 
+use Assetic\Asset\FileAsset;
 use AsseticBundle;
 
 /**
@@ -168,7 +169,7 @@ class Service extends \PHPUnit_Framework_TestCase
         $assetFile = $assetManager->get('base_css')->getTargetPath();
         $this->assertStringStartsWith('base_css.', $assetFile);
         $this->assertStringEndsWith('.css', $assetFile);
-        
+
         $assetFile = $assetManager->get('base_js')->getTargetPath();
         $this->assertStringStartsWith('base_js.', $assetFile);
         $this->assertStringEndsWith('.js', $assetFile);
@@ -200,19 +201,19 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertNull($value);
     }
 
-//    /**
-//     * @expectedException AsseticBundle\Exception\InvalidArgumentException
-//     */
-//    public function testGetStrategyForRendererFailure() {
-//        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
-//
-//        $this->object->getConfiguration()->addRendererToStrategy(
-//            get_class($renderer),
-//            'AsseticBundle\View\NonExisting'
-//        );
-//
-//        $this->object->getStrategyForRenderer($renderer);
-//    }
+    /**
+     * @expectedException AsseticBundle\Exception\InvalidArgumentException
+     */
+    public function testGetStrategyForRendererFailure() {
+        $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
+
+        $this->object->getConfiguration()->addRendererToStrategy(
+            get_class($renderer),
+            'AsseticBundle\View\NonExisting'
+        );
+
+        $this->object->getStrategyForRenderer($renderer);
+    }
 
     public function testGetStrategyForRendererSuccess() {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')->disableOriginalConstructor()->getMock();
@@ -224,5 +225,103 @@ class Service extends \PHPUnit_Framework_TestCase
 
         $value = $this->object->getStrategyForRenderer($renderer);
         $this->assertInstanceOf('AsseticBundle\View\StrategyInterface', $value);
+    }
+
+    public function testWriteAssetIfNotExists() {
+        $this->configuration->setBuildOnRequest(true);
+        $this->configuration->setWriteIfChanged(true);
+
+        $this->object->build();
+
+        $manager = $this->object->getAssetManager();
+        $asset = $manager->get('base_css');
+        $targetFile = $this->configuration->getWebPath($asset->getTargetPath());
+        if (is_file($targetFile)) {
+            unlink($targetFile);
+        }
+
+        $this->assertFileNotExists($targetFile);
+        $this->object->writeAsset($asset);
+        $this->assertFileExists($targetFile);
+    }
+
+    public function testWriteAssetIfIsUpdated() {
+        $this->configuration->setBuildOnRequest(true);
+        $this->configuration->setWriteIfChanged(true);
+
+        $this->object->build();
+
+        $manager = $this->object->getAssetManager();
+        $assets = $manager->get('base_css')->all();
+
+        /** @var \Assetic\Asset\AssetInterface $asset */
+        $asset = $assets[0];
+        $asset->setTargetPath($manager->get('base_css')->getTargetPath());
+        $targetFile = $this->configuration->getWebPath($asset->getTargetPath());
+        if (is_file($targetFile)) {
+            unlink($targetFile);
+        }
+
+        $this->assertFileNotExists($targetFile);
+        $this->object->writeAsset($asset);
+        $this->assertFileExists($targetFile);
+
+        $sourceFile = $asset->getSourceRoot() . '/' . $asset->getSourcePath();
+        $targetMTime = filemtime($targetFile);
+
+        // ensure that file modification timestamp is changed
+        touch($targetFile, $targetMTime + 2);
+
+        clearstatcache(true, $targetFile);
+        $modifiedTargetMTime = filemtime($targetFile);
+
+        $this->assertGreaterThan($targetMTime, $modifiedTargetMTime);
+
+        $modifiedAsset = new FileAsset($sourceFile);
+        $modifiedAsset->setTargetPath($targetFile);
+
+        $this->object->writeAsset($modifiedAsset);
+
+        clearstatcache(true, $targetFile);
+        $modifiedTargetMTime = filemtime($targetFile);
+
+        $this->assertGreaterThan($targetMTime, $modifiedTargetMTime);
+    }
+
+    public function testWriteAssetIfNotUpdated() {
+        $this->configuration->setBuildOnRequest(true);
+        $this->configuration->setWriteIfChanged(true);
+
+        $this->object->build();
+
+        $manager = $this->object->getAssetManager();
+        $assets = $manager->get('base_css')->all();
+
+        /** @var \Assetic\Asset\AssetInterface $asset */
+        $asset = $assets[0];
+        $asset->setTargetPath($manager->get('base_css')->getTargetPath());
+        $targetFile = $this->configuration->getWebPath($asset->getTargetPath());
+        if (is_file($targetFile)) {
+            unlink($targetFile);
+        }
+
+        $this->assertFileNotExists($targetFile);
+        $this->object->writeAsset($asset);
+        $this->assertFileExists($targetFile);
+
+        $sourceFile = $asset->getSourceRoot() . '/' . $asset->getSourcePath();
+        $targetMTime = filemtime($targetFile);
+
+        sleep(2);
+
+        $modifiedAsset = new FileAsset($sourceFile);
+        $modifiedAsset->setTargetPath($targetFile);
+
+        $this->object->writeAsset($modifiedAsset);
+
+        clearstatcache(true, $targetFile);
+        $targetMTimeNotModified = filemtime($targetFile);
+
+        $this->assertLessThanOrEqual($targetMTime, $targetMTimeNotModified);
     }
 }
