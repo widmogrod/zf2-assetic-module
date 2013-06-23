@@ -29,7 +29,7 @@ php public/index.php assetic setup
 ```
 cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist modules/My_Module/configs/assets.config.php
 ```
-end read [how to start](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md) guite.
+and read [how to start](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md) guite.
 
 ## Documentation
 
