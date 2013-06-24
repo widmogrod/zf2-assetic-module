@@ -61,7 +61,105 @@ This section belong to `collection` section and is composed from fallowing optio
 | output   | `string`  | no       | You can give your own output file name.
 | move_raw | `boolean` | no       | This option is very useful to move images, because we don't want them raw, without any modification.
 
-#### Combining all together
+### Controllers section
+
+Making your module aware of assets is one step but second is to utilize this knowlage.
+You can do it by telling `AsseticBundle` what assets should be used in what controller.
+If you want to use assets for specifc route then go to next section.
+
+Consider falowing configuration:
+
+```
+<?php
+return array(
+    'assetic_configuration' => array(
+        'controllers' => array(
+            'Your_Module_Name\Controller\Index' => array(
+                '@my_css',
+                '@my_js',
+            ),
+        ),
+        
+        /* some code ommited for clarity */
+    ),
+);
+```
+
+When you make request to `Your_Module_Name\Controller\Index` asset collections `my_css` and `my_js` will be injected to the layout.
+
+### Routes section
+
+Making your module aware of assets is one step but second is to utilize this knowlage.
+You can do it by telling `AsseticBundle` what assets should be used for what route.
+
+Consider falowing configuration:
+
+```
+<?php
+return array(
+    'assetic_configuration' => array(
+        'routes' => array(
+            'admin(.*)' => array(
+                '@specific_admin_js
+            ),
+            'admin(/dashboard|/reports|/etc)' => array(
+                '@admin_css',
+                '@admin_js'
+            )
+        )
+            
+        /* some code ommited for clarity */
+    ),
+);
+```
+
+1. When you make request to **route name** `admin` only asset collection `specific_admin_js` will be injected to the layout. Its because route name `admin` is matched agains regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and only first is matched.
+2. When you make request to **route name** `admin/dashboard` asset collection `specific_admin_js, admin_css, admin_js` will be used. Its because route name `admin/dashboard` is matched agains regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and every pattern is matched.
+
+
+### Defaults section
+
+Making your module aware of assets is one step but second is to utilize this knowlage.
+You can do it by telling `AsseticBundle` what assets should be used as default assets or even as base for every request.
+This option can be useful when you are building application, without sophisticated module separation.
+
+Consider falowing configuration:
+
+```
+<?php
+return array(
+    'assetic_configuration' => array(
+        'default' => array(
+            'assets' => array(
+                '@base_css',
+            ),
+            'options' => array(
+                'mixin' => true
+            ),
+        ),
+
+        /* some code ommited for clarity */
+    ),
+);
+```
+
+1. If we can't find matching controller or router configuration for given request then asset collection `base_css` will be injected into layout.
+2. If we matched router or controller and option `mixin` is set to `true` then to mached asset will be merged `base_css`.
+
+### RendererToStrategy
+
+Zend Framework 2 is using different rendering strategy depending on specific for each strategy conditions. To prevent `AsseticBundle`from injecting assets during request that don't utilize layout rendering - renderer strategy was introduce.
+Also,….
+
+| Renderer | Strategy  |
+|----------|-----------|
+| `Zend\View\Renderer\PhpRenderer`  | `AsseticBundle\View\ViewHelperStrategy`
+| `Zend\View\Renderer\FeedRenderer` | `AsseticBundle\View\NoneStrategy`
+| `Zend\View\Renderer\JsonRenderer` | `AsseticBundle\View\NoneStrategy`
+
+### AcceptableErrors
+
+### Combining all together
 
 Consider for example falowing module structure:
 
@@ -77,7 +175,7 @@ Consider for example falowing module structure:
 │       └── test.js
 ```
 
-To make your module aware you should create file similar to this:
+To make your module aware of assets you should create file similar to this:
 
 ```
 <?php
@@ -122,13 +220,6 @@ return array(
 );
 
 ```
-
-
-### Controllers section
-### Routes section
-### Defaults section
-### RendererToStrategy
-### AcceptableErrors
 
 ## Which configuration will be used?
 
