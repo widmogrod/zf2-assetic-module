@@ -24,7 +24,27 @@ Below are described values in main `assetic_configuration` section.
 ## Specific configuration
 ### Modules section
 
-In this section you should define what assets you have and what filters should be apply on them during build phase. Consider for example falowing module structure:
+In this section you should define what assets you have and what filters should be apply on them during build phase.
+
+Following table describes module configuration.
+
+| Name        | Type      | Description |
+|-------------|-----------|-------------|
+| root_path   | `string`  | Must be absolute path to module directory containing its assets
+| collections | `array`   | Collections are named groups of assets. Each collection must containt simgle type of assets i.e. separate for JavaScript, separate for css, spearate for images
+
+### Collection section
+
+This section belong to module section and is composed from fallowing options.
+
+| Name    | Type       | Required | Description |
+|---------|------------|----------|-------------|
+| assets  | `string[]` | yes      |
+| filters | `array`    | no       |
+| options | `array`    | no       |
+
+
+Consider for example falowing module structure:
 
 ```
 ├── Module.php
@@ -48,8 +68,6 @@ return array(
         'modules' => array(
             'Your_Module_Name' => array(
                 'root_path' => __DIR__ . '/../assets',
-
-                'controllers' => array(/* (some code ommited for clarity) */),
 
                 'collections' => array(
                     'my_css' => array(
