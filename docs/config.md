@@ -35,28 +35,31 @@ Following table describes module configuration.
 
 #### Collection section
 
-This section belong to module section and is composed from fallowing options. 
+This section belong to `modules` section and is composed from fallowing options:
 
 | Name    | Type       | Required | Description |
 |---------|------------|----------|-------------|
-| assets  | `string[]` | yes      |   
-| filters | `array`    | no       | 
-| options | `array`    | no       | 
+| assets  | `string[]` | yes      | List of relative paths to `root_path` pointing to asset file. Thos files must containt simgle type of assets i.e. separate for JavaScript, separate for css, spearate for images
+| filters | `array`    | no       | Described in separate section
+| options | `array`    | no       | Options are passed to `Assetic\Factory\AssetFactory::createAsset` and also are described in separate section.
 
 ##### Filters section
 
+This section belong to `collection` section and is composed from fallowing options:
+
 | Name   | Type    | Required | Description |
 |--------|---------|----------|-------------|
-| name   | `string`| yes      |   
-| option | `array` | no       | 
+| name   | `string`| yes      | Filter name must be valid class name i.e `Assetic\Filter\CssRewriteFilter`. By valid, I mean it should be visible through autoloader.
+| option | `array` | no       | Some filters are require options in constructor, so by providing them here, you can specialize the filter instance.
 
 ##### Options section
 
+This section belong to `collection` section and is composed from fallowing options:
+
 | Name     | Type      | Required | Description |
 |----------|-----------|----------|-------------|
-| output   | `string`  | no       |   
-| move_raw | `boolean` | no       | 
-
+| output   | `string`  | no       | You can give your own output file name.
+| move_raw | `boolean` | no       | This option is very useful to move images, because we don't want them raw, without any modification.
 
 #### Combining all together
 
