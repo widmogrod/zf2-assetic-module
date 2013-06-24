@@ -12,20 +12,21 @@ return array(
         'debug' => true,
         'buildOnRequest' => true,
 
+        'controllers' => array(
+            'Your_Module_Name\Controller\Index' => array(
+                '@my_css',
+                '@my_js',
+            ),
+        ),
+
         'modules' => array(
             'Your_Module_Name' => array(
                 'root_path' => __DIR__ . '/../assets',
 
-                'controllers' => array(
-                    'Your_Module_Name\Controller\Index' => array(
-                        '@my_css',
-                        '@my_js',
-                    ),
-                ),
-
                 'collections' => array(
                     'my_css' => array(
-                        'assets' => array(// 'css/main1.css',
+                        'assets' => array(
+                            // 'css/main1.css',
                             // 'css/main2.css',
                         ),
                         'filters' => array(
@@ -38,7 +39,8 @@ return array(
                         ),
                     ),
                     'my_js' => array(
-                        'assets' => array(// 'js/main1.js',
+                        'assets' => array(
+                        // 'js/main1.js',
                             // 'js/main2.js',
                         ),
                         'filters' => array(
