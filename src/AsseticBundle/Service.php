@@ -167,11 +167,6 @@ class Service
      */
     public function build()
     {
-        $umask = $this->configuration->getUmask();
-        if (null !== $umask) {
-            $umask = umask($umask);
-        }
-
         $moduleConfiguration = $this->configuration->getModules();
         foreach ($moduleConfiguration as $configuration) {
             $factory = $this->createAssetFactory($configuration);
@@ -179,10 +174,6 @@ class Service
             foreach ($collections as $name => $options) {
                 $this->prepareCollection($options, $name, $factory);
             }
-        }
-
-        if (null !== $umask) {
-            umask($umask);
         }
     }
 
@@ -441,6 +432,8 @@ class Service
      * @param AssetInterface $asset     Asset to write
      */
     public function writeAsset(AssetInterface $asset) {
+        $umask = $this->configuration->getUmask();
+
         // We're not interested in saving assets on request
         if (!$this->configuration->getBuildOnRequest()) {
             return;
@@ -448,7 +441,15 @@ class Service
 
         // Write asset on dish in every request
         if (!$this->configuration->getWriteIfChanged()) {
+            if (null !== $umask) {
+                $umask = umask($umask);
+            }
+
             $this->getAssetWriter()->writeAsset($asset);
+
+            if (null !== $umask) {
+                umask($umask);
+            }
         }
 
         $target = $this->configuration->getWebPath($asset->getTargetPath());
@@ -457,7 +458,15 @@ class Service
 
         // And long requested optimization
         if (!$created || $isChanged) {
+            if (null !== $umask) {
+                $umask = umask($umask);
+            }
+
             $this->getAssetWriter()->writeAsset($asset);
+
+            if (null !== $umask) {
+                umask($umask);
+            }
         }
     }
 }

@@ -12,42 +12,39 @@ return array(
         'debug' => true,
         'buildOnRequest' => true,
 
-    ),
+        'modules' => array(
+            'Your_Module_Name' => array(
+                'root_path' => __DIR__ . '/../assets',
 
-    'modules' => array(
-        'Your_Module_Name' => array(
-            'root_path' => __DIR__ . '/../assets',
-
-            'controllers' => array(
-                'Your_Module_Name\Controller\Index' => array(
-                    '@my_css',
-                    '@my_js',
-                ),
-            ),
-
-            'collections' => array(
-                'my_css' => array(
-                    'assets' => array(
-                        // 'css/main1.css',
-                        // 'css/main2.css',
-                    ),
-                    'filters' => array(
-                        '?CssRewriteFilter' => array(
-                            'name' => 'Assetic\Filter\CssRewriteFilter'
-                        ),
-                        '?CssMinFilter' => array(
-                            'name' => 'Assetic\Filter\CssMinFilter'
-                        ),
+                'controllers' => array(
+                    'Your_Module_Name\Controller\Index' => array(
+                        '@my_css',
+                        '@my_js',
                     ),
                 ),
-                'my_js' => array(
-                    'assets' => array(
-                        // 'js/main1.js',
-                        // 'js/main2.js',
+
+                'collections' => array(
+                    'my_css' => array(
+                        'assets' => array(// 'css/main1.css',
+                            // 'css/main2.css',
+                        ),
+                        'filters' => array(
+                            '?CssRewriteFilter' => array(
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            ),
+                            '?CssMinFilter' => array(
+                                'name' => 'Assetic\Filter\CssMinFilter'
+                            ),
+                        ),
                     ),
-                    'filters' => array(
-                        '?JSMinFilter' => array(
-                            'name' => 'Assetic\Filter\JSMinFilter'
+                    'my_js' => array(
+                        'assets' => array(// 'js/main1.js',
+                            // 'js/main2.js',
+                        ),
+                        'filters' => array(
+                            '?JSMinFilter' => array(
+                                'name' => 'Assetic\Filter\JSMinFilter'
+                            ),
                         ),
                     ),
                 ),
