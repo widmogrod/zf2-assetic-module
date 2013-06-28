@@ -214,11 +214,13 @@ class Service
             $filterId = ltrim($alias, '?');
 
             if (!$fm->has($filterId)) {
-                if (is_array($option)) {
+                if (is_array($option) && !empty($option)) {
                     $r = new \ReflectionClass($name);
                     $filter = $r->newInstanceArgs($option);
-                } else {
+                } else if ($option) {
                     $filter = new $name($option);
+                } else {
+                    $filter = new $name();
                 }
 
                 $fm->set($filterId, $filter);
