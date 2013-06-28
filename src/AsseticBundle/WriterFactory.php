@@ -9,12 +9,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class WriterFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $locator
      * @return \Assetic\AssetWriter;
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $locator)
     {
-        $asseticConfig = $serviceLocator->get('AsseticConfiguration');
+        $asseticConfig = $locator->get('AsseticConfiguration');
         $asseticWriter = new AssetWriter($asseticConfig->getWebPath());
 
         return $asseticWriter;
