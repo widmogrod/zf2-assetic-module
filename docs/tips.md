@@ -64,11 +64,17 @@ php public/index.php assetic build
 
 ## Cache Busting
 
+You changed your CSS files and you don't see changes in browser?
+This is common problem. 
+To prevent the browser from caching any sort of assets `AssetcBundle` provides `LastModifiedStrategy`. 
+This strategy adds last modified time into to the filename before the extension.
+Thanks to that, the browser will always recieve fresh assets.
+
 By default, cache busting is disabled.
 To enable it you need to:
 
-1. Enable cache by setting option `'cacheEnabled' => true`
-2. Tell which cache buster strategy you want to use by initializing `AsseticCacheBuster` name in service manager
+1. Enable cache by setting option `cacheEnabled` to `true`
+2. Tell which cache buster strategy you want to use by initializing `AsseticCacheBuster` name in service manager 
 ```
 return array(
     'service_manager' => array(
@@ -76,8 +82,6 @@ return array(
             'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
 )));
 ```
-> In this strategy, last modified time is added into to the filename before the extension.
-
 
 
 ## Minimalistic layout template
