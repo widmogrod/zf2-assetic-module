@@ -105,9 +105,6 @@ class Service
 
     public function getCacheBusterStrategy()
     {
-        if (null === $this->cacheBusterStrategy) {
-            $this->cacheBusterStrategy = new \AsseticBundle\CacheBuster\LastModifiedStrategy();
-        }
         return $this->cacheBusterStrategy;
     }
 
@@ -382,8 +379,12 @@ class Service
         $factory = new Factory\AssetFactory($configuration['root_path']);
         $factory->setAssetManager($this->getAssetManager());
         $factory->setFilterManager($this->getFilterManager());
+        // Cache buster should be add only if cache is enabled and if is available.
         if ($this->configuration->getCacheEnabled()) {
-            $factory->addWorker($this->getCacheBusterStrategy());
+            $worker = $this->getCacheBusterStrategy();
+            if ($worker instanceof WorkerInterface) {
+                $factory->addWorker($worker);
+            }
         }
         $factory->setDebug($this->configuration->isDebug());
         return $factory;
@@ -395,7 +396,8 @@ class Service
      */
     public function moveRaw(AssetCollection $asset)
     {
-        foreach ($asset as $value/** @var $value AssetInterface */) {
+        foreach ($asset as $value) {
+            /** @var $value AssetInterface */
             $value->setTargetPath($value->getSourcePath());
             $value = $this->cacheAsset($value);
             $this->writeAsset($value);
@@ -434,7 +436,8 @@ class Service
      *
      * @param AssetInterface $asset     Asset to write
      */
-    public function writeAsset(AssetInterface $asset) {
+    public function writeAsset(AssetInterface $asset)
+    {
         // We're not interested in saving assets on request
         if (!$this->configuration->getBuildOnRequest()) {
             return;
@@ -458,7 +461,8 @@ class Service
     /**
      * @param AssetInterface $asset
      */
-    protected function write(AssetInterface $asset) {
+    protected function write(AssetInterface $asset)
+    {
         $umask = $this->configuration->getUmask();
         if (null !== $umask) {
             $umask = umask($umask);
