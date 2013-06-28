@@ -177,7 +177,7 @@ class Service
         }
     }
 
-    private function cache(AssetInterface $asset)
+    private function cacheAsset(AssetInterface $asset)
     {
         return $this->configuration->getCacheEnabled()
             ? new AssetCache($asset, new FilesystemCache($this->configuration->getCachePath()))
@@ -395,17 +395,18 @@ class Service
         foreach ($asset as $value/** @var $value AssetInterface */) {
             $name = md5($value->getSourceRoot() . $value->getSourcePath());
             $value->setTargetPath($value->getSourcePath());
-            $value = $this->cache($value);
+            $value = $this->cacheAsset($value);
             $this->assetManager->set($name, $value);
         }
     }
 
     /**
-     * @param $options
-     * @param $name
-     * @param $factory
+     * @param array $options
+     * @param string $name
+     * @param Factory\AssetFactory $factory
+     * @return void
      */
-    public function prepareCollection($options, $name, $factory)
+    public function prepareCollection($options, $name, Factory\AssetFactory $factory)
     {
         $assets = isset($options['assets']) ? $options['assets'] : array();
         $filters = isset($options['filters']) ? $options['filters'] : array();
@@ -415,7 +416,6 @@ class Service
 
         $filters = $this->initFilters($filters);
 
-        /** @var $asset \Assetic\Asset\AssetCollection */
         $asset = $factory->createAsset($assets, $filters, $options);
 
         // Allow to move all files 1:1 to new directory
@@ -423,7 +423,7 @@ class Service
         if ($moveRaw) {
             $this->moveRaw($asset);
         } else {
-            $asset = $this->cache($asset);
+            $asset = $this->cacheAsset($asset);
             $this->assetManager->set($name, $asset);
         }
     }
