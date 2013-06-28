@@ -394,10 +394,9 @@ class Service
     public function moveRaw(AssetCollection $asset)
     {
         foreach ($asset as $value/** @var $value AssetInterface */) {
-            $name = md5($value->getSourceRoot() . $value->getSourcePath());
             $value->setTargetPath($value->getSourcePath());
             $value = $this->cacheAsset($value);
-            $this->assetManager->set($name, $value);
+            $this->writeAsset($value);
         }
     }
 
@@ -465,7 +464,7 @@ class Service
 
         if ($this->configuration->isDebug() && $asset instanceof AssetCollection) {
             foreach ($asset as $item) {
-                $this->getAssetWriter()->writeAsset($item);
+                $this->writeAsset($item);
             }
         } else {
             $this->getAssetWriter()->writeAsset($asset);
