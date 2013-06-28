@@ -1,16 +1,26 @@
 <?php
 namespace AsseticBundle\View;
 
-use AsseticBundle\Service,
-    Zend\View\Renderer\PhpRenderer,
-    Assetic\Asset\AssetInterface;
+use Assetic\Asset\AssetCollection;
+use AsseticBundle\Service;
+use Zend\View\Renderer\PhpRenderer;
+use Assetic\Asset\AssetInterface;
 
 class ViewHelperStrategy extends AbstractStrategy
 {
     public function setupAsset(AssetInterface $asset)
     {
-        $path = $this->getBaseUrl() . $this->getBasePath() .  $asset->getTargetPath();
-        $this->helper($path);
+        if ($this->isDebug() && $asset instanceof AssetCollection) {
+            // Move assets as single instance not as a collection
+            foreach ($asset as $value) {
+                /** @var AssetCollection $value */
+                $path = $this->getBaseUrl() . $this->getBasePath() .  $value->getTargetPath();
+                $this->helper($path);
+            }
+        } else {
+            $path = $this->getBaseUrl() . $this->getBasePath() .  $asset->getTargetPath();
+            $this->helper($path);
+        }
     }
 
     protected function helper($path)

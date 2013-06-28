@@ -344,6 +344,7 @@ class Service
         $strategy = $this->strategy[$rendererName];
         $strategy->setBaseUrl($this->configuration->getBaseUrl());
         $strategy->setBasePath($this->configuration->getBasePath());
+        $strategy->setDebug($this->configuration->isDebug());
         $strategy->setRenderer($renderer);
         return $strategy;
     }
@@ -415,7 +416,6 @@ class Service
         $moveRaw = isset($options['move_raw']) && $options['move_raw'];
 
         $filters = $this->initFilters($filters);
-
         $asset = $factory->createAsset($assets, $filters, $options);
 
         // Allow to move all files 1:1 to new directory
@@ -434,8 +434,6 @@ class Service
      * @param AssetInterface $asset     Asset to write
      */
     public function writeAsset(AssetInterface $asset) {
-        $umask = $this->configuration->getUmask();
-
         // We're not interested in saving assets on request
         if (!$this->configuration->getBuildOnRequest()) {
             return;
@@ -443,15 +441,7 @@ class Service
 
         // Write asset on dish in every request
         if (!$this->configuration->getWriteIfChanged()) {
-            if (null !== $umask) {
-                $umask = umask($umask);
-            }
-
-            $this->getAssetWriter()->writeAsset($asset);
-
-            if (null !== $umask) {
-                umask($umask);
-            }
+            $this->write($asset);
         }
 
         $target = $this->configuration->getWebPath($asset->getTargetPath());
@@ -460,15 +450,29 @@ class Service
 
         // And long requested optimization
         if (!$created || $isChanged) {
-            if (null !== $umask) {
-                $umask = umask($umask);
-            }
+            $this->write($asset);
+        }
+    }
 
+    /**
+     * @param AssetInterface $asset
+     */
+    protected function write(AssetInterface $asset) {
+        $umask = $this->configuration->getUmask();
+        if (null !== $umask) {
+            $umask = umask($umask);
+        }
+
+        if ($this->configuration->isDebug() && $asset instanceof AssetCollection) {
+            foreach ($asset as $item) {
+                $this->getAssetWriter()->writeAsset($item);
+            }
+        } else {
             $this->getAssetWriter()->writeAsset($asset);
+        }
 
-            if (null !== $umask) {
-                umask($umask);
-            }
+        if (null !== $umask) {
+            umask($umask);
         }
     }
 }
