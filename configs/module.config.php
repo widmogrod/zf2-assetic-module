@@ -14,8 +14,6 @@ return array(
     'service_manager' => array(
         'aliases' => array(
             'AsseticConfiguration' => 'AsseticBundle\Configuration',
-            // Its not mandatory, and you can define your cache buster by your own
-            // 'AsseticCacheBuster'   => 'AsseticBundle\CacheBuster',
             'AsseticService' => 'AsseticBundle\Service',
         ),
         'factories' => array(
@@ -25,7 +23,6 @@ return array(
         'invokables' => array(
             'Assetic\AssetManager' => 'Assetic\AssetManager',
             'Assetic\FilterManager' => 'Assetic\FilterManager',
-            'AsseticBundle\CacheBuster\LastModifiedStrategy' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
             'AsseticBundle\Listener' => 'AsseticBundle\Listener',
         ),
         'initializers' => array(
