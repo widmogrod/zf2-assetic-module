@@ -374,12 +374,14 @@ class Service
      * @param array $configuration
      * @return Factory\AssetFactory
      */
-    public function createAssetFactory($configuration)
+    public function createAssetFactory(array $configuration)
     {
         $factory = new Factory\AssetFactory($configuration['root_path']);
         $factory->setAssetManager($this->getAssetManager());
         $factory->setFilterManager($this->getFilterManager());
-        $factory->addWorker($this->getCacheBusterStrategy());
+        if ($this->configuration->getCacheEnabled()) {
+            $factory->addWorker($this->getCacheBusterStrategy());
+        }
         $factory->setDebug($this->configuration->isDebug());
         return $factory;
     }
