@@ -6,6 +6,7 @@
   * Create out of the box configuration `config/assets.config.php.dist`
   * #29 - pass more arguments to filter constructor
   * #74 - now only assets match in request are build
+  * use cache buster only when cache is enabled
 
 2013-06-10
 ----------
