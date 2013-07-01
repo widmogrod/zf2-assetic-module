@@ -10,7 +10,7 @@ class ViewHelperStrategy extends AbstractStrategy
 {
     public function setupAsset(AssetInterface $asset)
     {
-        if ($this->isDebug() && $asset instanceof AssetCollection) {
+        if ($this->isDebug() && !$this->isCombine() && $asset instanceof AssetCollection) {
             // Move assets as single instance not as a collection
             foreach ($asset as $value) {
                 /** @var AssetCollection $value */

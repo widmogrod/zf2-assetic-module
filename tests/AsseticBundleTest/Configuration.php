@@ -45,6 +45,16 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->object->setDebug($expected));
         $this->assertEquals($expected, $this->object->isDebug());
     }
+    
+    public function testIsCombine() {
+    	$this->assertTrue($this->object->isCombine());
+    }
+    
+    public function testSetCombine() {
+    	$expected = false;
+    	$this->assertNull($this->object->setCombine($expected));
+    	$this->assertEquals($expected, $this->object->isCombine());
+    }
 
     public function testSetWebPath() {
         $result = $this->object->setWebPath(TEST_ASSETS_DIR);
