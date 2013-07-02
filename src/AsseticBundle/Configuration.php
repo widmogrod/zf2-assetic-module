@@ -12,6 +12,13 @@ class Configuration
      * @var bool
      */
     protected $debug = false;
+    
+    /**
+     * Combine option giving the opportunity not to combine the assets in debug mode.
+     *
+     * @var bool
+     */
+    protected $combine = true;
 
     /**
      * Should build assets on request.
@@ -157,6 +164,16 @@ class Configuration
         $this->debug = (bool) $flag;
     }
 
+    public function isCombine()
+    {
+    	return $this->combine;
+    }
+    
+    public function setCombine($flag)
+    {
+    	$this->combine = (bool) $flag;
+    }
+    
     public function setWebPath($path)
     {
         $this->webPath = $path;

@@ -2,13 +2,13 @@
 
 Assets managment per module made easy.
 
-  * **Optimaze your assets**. Minify your css, js; Compile scss, and more...
+  * **Optimize your assets**. Minify your css, js; Compile scss, and more...
   * **Adapts To Your Needs**. Using custom template engine and want to use power of this module, just implement `AsseticBundle\View\StrategyInterface`
   * **Well tested**. Besides unit test this solution is also ready for the production use.
-  * **Greate fundations**. Based on [Assetic](https://github.com/kriswallsmith/assetic) and [ZF2](https://github.com/zendframework/zf2)
-  * **Exellent community**. Everything is thanks to great support from GitHub & PHP community!
+  * **Great fundations**. Based on [Assetic](https://github.com/kriswallsmith/assetic) and [ZF2](https://github.com/zendframework/zf2)
+  * **Excellent community**. Everything is thanks to great support from GitHub & PHP community!
   * **Every change is tracked**. Want knew whats new? Take a look at [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
-  * **Listen to your ideas**. Hava a great idea? Brig your tested pull request or open new issue.
+  * **Listen to your ideas**. Hava a great idea? Bring your tested pull request or open a new issue.
 
 
 ## Installation
