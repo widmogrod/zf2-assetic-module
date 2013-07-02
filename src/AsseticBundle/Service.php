@@ -344,6 +344,7 @@ class Service
         $strategy->setBaseUrl($this->configuration->getBaseUrl());
         $strategy->setBasePath($this->configuration->getBasePath());
         $strategy->setDebug($this->configuration->isDebug());
+        $strategy->setCombine($this->configuration->isCombine());
         $strategy->setRenderer($renderer);
         return $strategy;
     }
@@ -443,7 +444,7 @@ class Service
             return;
         }
 
-        // Write asset on dish in every request
+        // Write asset on disk in every request
         if (!$this->configuration->getWriteIfChanged()) {
             $this->write($asset);
         }
@@ -468,7 +469,7 @@ class Service
             $umask = umask($umask);
         }
 
-        if ($this->configuration->isDebug() && $asset instanceof AssetCollection) {
+        if ($this->configuration->isDebug() && !$this->configuration->isCombine() && $asset instanceof AssetCollection) {
             foreach ($asset as $item) {
                 $this->writeAsset($item);
             }
