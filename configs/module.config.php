@@ -31,23 +31,6 @@ return array(
     ),
 
     'assetic_configuration' => array(
-        'debug' => true,
-        /**
-         * Set to true if you're working in a development environment and you want for
-         * every assets to be moved to public directory after some changes.
-         * Set to false on production environment - to boost your application.
-         * Default true - for backward compatibility.
-         */
-        'buildOnRequest' => true,
-        // Relative to application root dir.
-        // Path where generated assets will be moved.
-        'webPath' => 'public/assets',
-        // The base URL. When null then will be auto detected by ZF2.
-        'baseUrl' => null,
-        // The base path.
-        // Related path to the base URL.
-        // Indicate where asset are and from where will
-        'basePath' => 'assets',
         'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer' => 'AsseticBundle\View\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => 'AsseticBundle\View\NoneStrategy',
@@ -58,7 +41,5 @@ return array(
             Application::ERROR_CONTROLLER_INVALID,
             Application::ERROR_ROUTER_NO_MATCH
         ),
-        'routes' => array(),
-        'modules' => array(),
     ),
 );
