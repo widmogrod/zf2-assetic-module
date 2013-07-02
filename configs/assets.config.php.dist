@@ -12,6 +12,10 @@ return array(
         'debug' => true,
         'buildOnRequest' => true,
 
+        // this is specific to this project
+        'webPath' => realpath('public/assets'),
+        'basePath' => 'public/assets',
+
         'controllers' => array(
             'Your_Module_Name\Controller\Index' => array(
                 '@my_css',
