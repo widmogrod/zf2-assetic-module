@@ -7,8 +7,8 @@ Assets managment per module made easy.
   * **Well tested**. Besides unit test this solution is also ready for the production use.
   * **Great fundations**. Based on [Assetic](https://github.com/kriswallsmith/assetic) and [ZF2](https://github.com/zendframework/zf2)
   * **Excellent community**. Everything is thanks to great support from GitHub & PHP community!
-  * **Every change is tracked**. Want knew whats new? Take a look at [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
-  * **Listen to your ideas**. Hava a great idea? Bring your tested pull request or open a new issue.
+  * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
+  * **Listen to your ideas**. Have a great idea? Bring your tested pull request or open a new issue.
 
 
 ## Installation
@@ -29,7 +29,7 @@ php public/index.php assetic setup
 ```
 cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist modules/My_Module/configs/assets.config.php
 ```
-and read [how to start](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md) guite.
+and read [how to start](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md) guide.
 
 ## Documentation
 
