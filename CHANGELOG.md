@@ -1,3 +1,40 @@
+2013-07-25
+----------
+
+  * Availability to get filters from ServiceManager
+
+    ```php
+    <?php
+    'twitter_bootstrap_css' => array(
+         'assets' => array(
+               '/path/to/bootstrap/file.less'
+          ),
+         'filters' => array(
+               'BootstrapLessCompiler'
+         ),
+    );
+    ```
+
+    ```php
+    <?php
+    // BootstrapLessCompiler filter factory class
+    public function createService(ServiceLocatorInterface $serviceLocator){
+            $filter = new LessphpFilter();
+            $defaultPresets = $serviceLocator->get('config');
+            $defaultPresets = array_merge($defaultPresets['bootstrap_less']['default'], $defaultPresets['bootstrap_less']['application']);
+
+            $keys = array_map(function($v){
+                return '~\@' . $v . '(?=\b)~';
+            }, array_keys($defaultPresets));
+
+            foreach($defaultPresets as $_k => &$_v){
+                $_v = str_replace($keys, array_values($defaultPresets), $_v);
+            }
+            $filter->setPresets($defaultPresets);
+            return $filter;
+    }
+    ```
+
 2013-06-21
 ----------
 
