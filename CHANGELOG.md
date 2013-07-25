@@ -23,13 +23,6 @@
             $defaultPresets = $serviceLocator->get('config');
             $defaultPresets = array_merge($defaultPresets['bootstrap_less']['default'], $defaultPresets['bootstrap_less']['application']);
 
-            $keys = array_map(function($v){
-                return '~\@' . $v . '(?=\b)~';
-            }, array_keys($defaultPresets));
-
-            foreach($defaultPresets as $_k => &$_v){
-                $_v = str_replace($keys, array_values($defaultPresets), $_v);
-            }
             $filter->setPresets($defaultPresets);
             return $filter;
     }
