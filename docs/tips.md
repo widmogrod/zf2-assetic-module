@@ -5,7 +5,7 @@
 ### Development
 
 The development environment is characterized by rapid code and functionality changes, which can often lead to bugs if wrongly configured.
-The following settings are meant to help you minimize errors.
+The following settings are meant to help you minimize these errors.
 
 ```
 return array(
@@ -20,19 +20,19 @@ return array(
 - Turning off filters which have names prepended with question mark (`?`). Thanks to that you can, for example, disable the JS minify tool and have more readable code during development.
 - The collection of assets won't be combined to one file. Thanks to that:
   - You can quickly find which line is causing trouble.
-  - Changing one file will cause to update only this one file.
+  - Changing one file will not cause an asset rebuild [since they aren't combined].
 
 **Setting `buildOnRequest` option to `true` will enable:**
 
-- Changes in assets will cause build of this asset on every browser request. No need to do it manually.
-- Every asset is seen as separate file, thanks to this, change in one file will cause update only of this file.
+- Changes in assets will cause a rebuild on every browser request. No need to do it manually.
+- Every asset is seen as separate file, thanks to this, change in one file will cause a rebuild of this asset only.
 
 ### Production
 
 Production environment is characterized by stable code.
 No one edits/builds code on production, right? ;)
 
-Fallowing settings help you with this task.
+The following settings help you achieve this task.
 
 ```
 return array(
@@ -41,7 +41,7 @@ return array(
         'buildOnRequest' => false,
 ```
 
-Please also consider configuring the cache busting strategy, described in a separate section.
+Please also consider configuring the cache busting strategy, described in the config section.
 
 **Setting `debug` option to `false`:**
 
