@@ -3,7 +3,8 @@
 namespace AsseticBundle\CacheBuster;
 
 use Assetic\Asset\AssetInterface,
-    Assetic\Factory\Worker\WorkerInterface;
+    Assetic\Factory\Worker\WorkerInterface,
+    Assetic\Factory\AssetFactory;
 
 class LastModifiedStrategy implements WorkerInterface
 {

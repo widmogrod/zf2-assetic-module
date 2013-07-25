@@ -13,7 +13,7 @@ mv public/js module/Application/assets
 mv public/images module/Application/assets
 ```
 
-4. Edit the module configuration file `module/Application/config/module.config.php` add fallowing configuration:
+4. Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
 ``` php
 return array(
     'assetic_configuration' => array(

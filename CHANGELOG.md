@@ -1,3 +1,36 @@
+2013-07-25
+----------
+
+  * Allow add collections at runtime
+
+    ```php
+    <?php
+    public function onBootstrap(MvcEvent $e){
+        if ($e->getRequest() instanceof HttpRequest){
+            $sm = $e->getApplication()->getServiceManager();
+            $sm->get('AsseticBundle\Service')->getEventManager()->attach('setupRenderer', array($this, 'configureAssets'));
+        }
+    }
+    ```
+
+    ```php
+    <?php
+    public function configureAssets(EventInterface $e){
+         $response = array();
+         /** @var \AsseticBundle\Service $target */
+         $target = $e->getTarget();
+         $config = $target->getServiceLocator()->get('config');
+         $config = $config['collections'];
+         foreach($config as $assetName){
+             if ($target->getAssetManager()->has($assetName)){
+                 $response[] = $assetName;
+             }
+         }
+         return $response;
+    }
+    ```
+
+
 2013-06-21
 ----------
 

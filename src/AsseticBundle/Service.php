@@ -12,9 +12,27 @@ use Assetic\AssetManager,
     Assetic\Cache\FilesystemCache,
     Zend\View\Renderer\RendererInterface as Renderer,
     AsseticBundle\View\StrategyInterface;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ResponseCollection;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Traversable;
 
-class Service
+class Service implements EventManagerAwareInterface, ServiceLocatorAwareInterface
 {
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator = null;
+
+    /**
+     * @var EventManagerInterface
+     */
+    protected $events;
+
+
     const DEFAULT_ROUTE_NAME = 'default';
 
     /**
@@ -65,6 +83,69 @@ class Service
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
+    }
+
+    /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * Set the event manager instance used by this context
+     *
+     * @param  EventManagerInterface $events
+     * @return mixed
+     */
+    public function setEventManager(EventManagerInterface $events)
+    {
+        $identifiers = array(__CLASS__, get_class($this));
+        if (isset($this->eventIdentifier)) {
+            if ((is_string($this->eventIdentifier))
+                || (is_array($this->eventIdentifier))
+                || ($this->eventIdentifier instanceof Traversable)
+            ) {
+                $identifiers = array_unique(array_merge($identifiers, (array) $this->eventIdentifier));
+            } elseif (is_object($this->eventIdentifier)) {
+                $identifiers[] = $this->eventIdentifier;
+            }
+            // silently ignore invalid eventIdentifier types
+        }
+        $events->setIdentifiers($identifiers);
+        $this->events = $events;
+        return $this;
+    }
+
+    /**
+     * Retrieve the event manager
+     *
+     * Lazy-loads an EventManager instance if none registered.
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
+    {
+        if (!$this->events instanceof EventManagerInterface) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->events;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 
     public function setRouteName($routeName)
@@ -235,6 +316,16 @@ class Service
 
         if (count($config) == 0) {
             $config = $this->getRouterConfig();
+        }
+
+        /** @var ResponseCollection $response */
+        $params = array(
+            'renderer' => $renderer,
+            'config'   => $config
+        );
+        $response = $this->getEventManager()->trigger(__FUNCTION__, $this, $params);
+        foreach($response as $_config){
+            $config = array_merge($config, $_config);
         }
 
         // If we don't have any assets listed by now, or if we are mixing in
