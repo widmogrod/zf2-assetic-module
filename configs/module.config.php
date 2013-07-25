@@ -15,14 +15,15 @@ return array(
         'aliases' => array(
             'AsseticConfiguration' => 'AsseticBundle\Configuration',
             'AsseticService' => 'AsseticBundle\Service',
+            'Assetic\FilterManager' => 'AsseticBundle\FilterManager',
         ),
         'factories' => array(
             'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
             'Assetic\AssetWriter' => 'AsseticBundle\WriterFactory',
         ),
         'invokables' => array(
-            'Assetic\AssetManager' => 'Assetic\AssetManager',
-            'Assetic\FilterManager' => 'Assetic\FilterManager',
+            'Assetic\AssetManager'   => 'Assetic\AssetManager',
+            'AsseticBundle\FilterManager'  => 'AsseticBundle\FilterManager',
             'AsseticBundle\Listener' => 'AsseticBundle\Listener',
         ),
         'initializers' => array(
