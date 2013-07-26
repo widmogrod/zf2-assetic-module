@@ -42,19 +42,76 @@ class FilterManager extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getAliasProvider
+     * @dataProvider getAliasHasFalseProvider
      */
     public function testHasFalse($alias) {
         $this->assertFalse($this->object->has($alias));
     }
 
-    public function getAliasProvider() {
+    public function getAliasHasFalseProvider() {
         return array(
             'simple' => array(
                 '$alias' => 'simpleName',
             ),
             'invalid name' => array(
                 '$alias' => '@_simpleName',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getAliasGetExceptionProvider
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetException($alias) {
+        $this->object->get($alias);
+    }
+
+    public function getAliasGetExceptionProvider() {
+        return array(
+            'no existing' => array(
+                '$alias' => 'simpleName',
+            ),
+            'invalid name' => array(
+                '$alias' => '@_simpleName',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getAliasGetExceptionInstanceProvider
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetExceptionInstance($alias, $object) {
+        $this->service->setService($alias, $object);
+        $this->object->get($alias);
+    }
+
+    public function getAliasGetExceptionInstanceProvider() {
+        return array(
+            'simple' => array(
+                '$alias' => 'simpleName',
+                '$object' => new \stdClass(),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getAliasGetValidProvider
+     */
+    public function testGetValid($alias, $object) {
+        $this->assertInstanceOf('Assetic\Filter\FilterInterface', $object);
+        $this->service->setService($alias, $object);
+        $result = $this->object->get($alias);
+        $this->assertInstanceOf('Assetic\Filter\FilterInterface', $result);
+        $this->assertSame($result, $object);
+    }
+
+    public function getAliasGetValidProvider() {
+        return array(
+            'simple' => array(
+                '$alias' => 'simpleName',
+                '$object' => $this->getMock('Assetic\Filter\FilterInterface'),
             ),
         );
     }

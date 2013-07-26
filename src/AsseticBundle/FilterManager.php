@@ -60,7 +60,7 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
         }
 
         $filter = $service->get($alias);
-        if (!$filter instanceof FilterInterface) {
+        if (!($filter instanceof FilterInterface)) {
             $givenType = is_object($filter) ? get_class($filter) : gettype($filter);
             $message = 'Retrieved filter "%s" is not instanceof "Assetic\Filter\FilterInterface", but type was given %s';
             $message = sprintf($message, $alias, $givenType);
