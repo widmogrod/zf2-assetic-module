@@ -4,9 +4,8 @@
 
 ### Development
 
-Development environment is characterized by rapid code and functionality changes, which leads to bugs and most important demand to remove those bugs.
-
-Fallowing settings help you with this task.
+The development environment is characterized by rapid code and functionality changes, which can often lead to bugs if wrongly configured.
+The following settings are meant to help you minimize these errors.
 
 ```
 return array(
@@ -18,22 +17,22 @@ return array(
 
 **Setting `debug` option to `true` will enable:**
 
-- Turn off filters which have names prepended with question mark (`?`). Thanks to that, you can disable i.e. JS minify tool and have more readable code during development.
-- The collection of asset won't be combined to one file. Thanks to that:
-  - You can quickly find line which causing trouble.
-  - Changing one file will cause to update only this one file.
+- Turning off filters which have names prepended with question mark (`?`). Thanks to that you can, for example, disable the JS minify tool and have more readable code during development.
+- The collection of assets won't be combined to one file. Thanks to that:
+  - You can quickly find which line is causing trouble.
+  - Changing one file will not cause an asset rebuild [since they aren't combined].
 
 **Setting `buildOnRequest` option to `true` will enable:**
 
-- Changes in assets will cause build of this asset on every browser request. No need to do it manually.
-- Every asset is seen as separate file, thanks to this, change in one file will cause update only of this file.
+- Changes in assets will cause a rebuild on every browser request. No need to do it manually.
+- Every asset is seen as separate file, thanks to this, change in one file will cause a rebuild of this asset only.
 
 ### Production
 
 Production environment is characterized by stable code.
-No one edit/build code on production, aren't you? ;)
+No one edits/builds code on production, right? ;)
 
-Fallowing settings help you with this task.
+The following settings help you achieve this task.
 
 ```
 return array(
@@ -42,20 +41,20 @@ return array(
         'buildOnRequest' => false,
 ```
 
-Please consider to configure also the cache busting strategy, described in separate section.
+Please also consider configuring the cache busting strategy, described in the config section.
 
 **Setting `debug` option to `false`:**
 
-This is pure reverse of true option.
+This is a pure reversal of the "true" option.
 
-- Disabled filters now will be enable.
-- Asset now will be combined to one file.
+- Disabled filters will now be enabled.
+- Assets will now be combined to one file.
 
 **Setting `buildOnRequest` option to `false`:**
 
-This is pure reverse of true option.
+This is a pure reversal of the "true" option.
 
-Now to build assets you need to do it manually or by the deploy script. 
+Assets are built manually or by the deploy script, only once. 
 Thanks to this, you will relieve your web server and improve application speed.
 
 ```
@@ -64,11 +63,11 @@ php public/index.php assetic build
 
 ## Cache Busting
 
-You changed your CSS files and you don't see changes in browser?
-This is common problem. 
+Did you change your CSS files and don't see changes in browser?
+This is a common problem. 
 To prevent the browser from caching any sort of assets `AssetcBundle` provides `LastModifiedStrategy`. 
-This strategy adds last modified time into to the filename before the extension.
-Thanks to that, the browser will always recieve fresh assets.
+This strategy adds last modified time into the filename before the extension.
+Thanks to that, the browser will always receive fresh assets.
 
 By default, cache busting is disabled.
 To enable it you need to:
