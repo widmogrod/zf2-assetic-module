@@ -1,5 +1,4 @@
 <?php
-
 namespace AsseticBundle;
 
 use Assetic\Filter\FilterInterface;
@@ -7,12 +6,12 @@ use Assetic\FilterManager as AsseticFilterManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareInterface{
-
+class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareInterface
+{
     /**
      * @var ServiceLocatorInterface
      */
-    protected $serviceLocator = null;
+    protected $serviceLocator;
 
     /**
      * Set service locator
@@ -23,8 +22,6 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-
-        return $this;
     }
 
     /**
@@ -43,29 +40,35 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
      */
     public function has($alias)
     {
-        $has = parent::has($alias);
-        if (!$has){
-            if ($this->getServiceLocator()->has($alias)){
-                $filter = $this->getServiceLocator()->get($alias);
-                // slightly ignore other services
-                if ($filter instanceof FilterInterface){
-                    $this->set($alias, $filter);
-                    return true;
-                }
-            }
-        }
-
-        return $has;
+        return parent::has($alias) ? true : $this->getServiceLocator()->has($alias);
     }
 
     /**
      * @param $alias
+     * @throws \InvalidArgumentException    When cant retrieve filter from service manager.
      * @return mixed
      */
     public function get($alias)
     {
-        // just load from service manager if available
-        $this->has($alias);
-        return parent::get($alias);
+        if (parent::has($alias)) {
+            return parent::get($alias);
+        }
+
+        $service = $this->getServiceLocator();
+        if (!$service->has($alias)) {
+            throw new \InvalidArgumentException(sprintf('There is no "%s" filter in ZF2 service manager.', $alias));
+        }
+
+        $filter = $service->get($alias);
+        if (!$filter instanceof FilterInterface) {
+            $givenType = is_object($filter) ? get_class($filter) : gettype($filter);
+            $message = 'Retrieved filter "%s" is not instanceof "Assetic\Filter\FilterInterface", but type was given %s';
+            $message = sprintf($message, $alias, $givenType);
+            throw new \InvalidArgumentException($message);
+        }
+
+        $this->set($alias, $filter);
+
+        return $filter;
     }
 } 
