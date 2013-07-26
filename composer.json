@@ -1,6 +1,7 @@
 {
     "name": "widmogrod/zf2-assetic-module",
     "type": "library",
+    "minimum-stability": "dev",
     "description": "Zend Framework 2 module that provides complete integration of Assetic library",
     "keywords": ["assetic", "assets", "resources", "css", "js", "less"],
     "homepage": "https://github.com/widmogrod/zf2-assetic-module",
