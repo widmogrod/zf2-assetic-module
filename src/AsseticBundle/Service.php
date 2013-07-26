@@ -2,16 +2,16 @@
 namespace AsseticBundle;
 
 use Assetic\Asset\AssetCollection;
-use Assetic\AssetManager,
-    Assetic\FilterManager,
-    Assetic\Factory,
-    Assetic\Factory\Worker\WorkerInterface,
-    Assetic\AssetWriter,
-    Assetic\Asset\AssetInterface,
-    Assetic\Asset\AssetCache,
-    Assetic\Cache\FilesystemCache,
-    Zend\View\Renderer\RendererInterface as Renderer,
-    AsseticBundle\View\StrategyInterface;
+use Assetic\AssetManager;
+use Assetic\FilterManager as AsseticFilterManager;
+use Assetic\Factory;
+use Assetic\Factory\Worker\WorkerInterface;
+use Assetic\AssetWriter;
+use Assetic\Asset\AssetInterface;
+use Assetic\Asset\AssetCache;
+use Assetic\Cache\FilesystemCache;
+use Zend\View\Renderer\RendererInterface as Renderer;
+use AsseticBundle\View\StrategyInterface;
 
 class Service
 {
@@ -58,7 +58,7 @@ class Service
     protected $cacheBusterStrategy;
 
     /**
-     * @var \Assetic\FilterManager
+     * @var \Assetic\AsseticFilterManager
      */
     protected $filterManager;
 
@@ -114,7 +114,7 @@ class Service
         return $this;
     }
 
-    public function setFilterManager(FilterManager $filterManager)
+    public function setFilterManager(AsseticFilterManager $filterManager)
     {
         $this->filterManager = $filterManager;
     }
@@ -122,7 +122,7 @@ class Service
     public function getFilterManager()
     {
         if (null === $this->filterManager) {
-            $this->filterManager = new FilterManager();
+            $this->filterManager = new AsseticFilterManager();
         }
         return $this->filterManager;
     }
