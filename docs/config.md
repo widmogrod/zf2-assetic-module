@@ -7,7 +7,9 @@ Below are described values in main `assetic_configuration` section.
 | Name               | Type       | Default          | Description |
 |--------------------|------------|------------------|-------------|
 | buildOnRequest     | boolean    | `true`           | Set to `true` if you're working in a development environment and you want on every request update your assets. If set to `false` assets won't be build during http request but you can do it from console `php public/index.php assetic build`
-| debug              | boolean    | `false`          | If set to `true` then filters prepended with question mark `?CssMinFilter` won't be used. Great option for development enviroment.
+| debug              | boolean    | `false`          | If set to `true` then filters prepended 
+with question mark `?CssMinFilter` won't be used. Great option for development enviroment.
+| combine            | boolean    | `true`           | This flag is optional, by default is set to `true`. In debug mode allow you to combine all assets to one file. Setting `false` will result in loading each asset as a separate file.
 | rendererToStrategy | array      | -                | Described in separate section
 | acceptableErrors   | array      | -                | Described in separate section
 | webPath            | string     | `public/assets`  | Here, all assets will be saved

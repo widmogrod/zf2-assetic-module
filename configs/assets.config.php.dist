@@ -12,6 +12,10 @@ return array(
         'debug' => true,
         'buildOnRequest' => true,
 
+        // This is optional flag, by default set to `true`.
+        // In debug mode allow you to combine all assets to one file.
+        // 'combine' => false,
+
         // this is specific to this project
         'webPath' => realpath('public/assets'),
         'basePath' => 'public/assets',
