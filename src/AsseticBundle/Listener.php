@@ -44,22 +44,30 @@ class Listener implements ListenerAggregateInterface
         }
     }
 
+    /**
+     * In case `debug` mode is enabled and `combine` is set to false, attempt to find asset
+     * which targetPath matches the request uri and attempt to serve it.
+     *
+     * @param MvcEvent $e
+     * @return Response|\Zend\Stdlib\ResponseInterface
+     */
     public function serveStaticAssets(MvcEvent $e)
     {
-        $sm     = $e->getApplication()->getServiceManager();
+        $sm = $e->getApplication()->getServiceManager();
         /** @var Configuration $config */
         $config = $sm->get('AsseticConfiguration');
-        if($config->isCombine() || !$config->isDebug()) {
+        if ($config->isCombine() || !$config->isDebug()) {
             // combine must be disabled and debug enabled
             return;
         }
 
         $error = $e->getError();
-        if ($error && !in_array($error, array(
-                Application::ERROR_CONTROLLER_NOT_FOUND,
-                Application::ERROR_CONTROLLER_INVALID,
-                Application::ERROR_ROUTER_NO_MATCH,
-        ))){
+        if (!in_array($error, array(
+            Application::ERROR_CONTROLLER_NOT_FOUND,
+            Application::ERROR_CONTROLLER_INVALID,
+            Application::ERROR_ROUTER_NO_MATCH,
+        ))
+        ) {
             // this should only be invoked for 404 errors
             return;
         }
@@ -74,16 +82,21 @@ class Listener implements ListenerAggregateInterface
         $asseticService = $sm->get('AsseticService');
 
         // could not find any renderer, so we'll try to match the request URI against asset's target path
-        if($asset = $asseticService->findAssetForRequest($e->getRequest())){
-
-            if(count($asset->getFilters())) {
+        if ($asset = $asseticService->findAssetForRequest($e->getRequest())) {
+            // If the asset is using filters, we'll dump the contents to a temporary file
+            if (count($asset->getFilters())) {
                 $dump = $asset->dump();
                 $path = tempnam(sys_get_temp_dir(), 'asset-dump');
                 file_put_contents($path, $dump);
             } else {
                 $path = $asset->getSourceRoot() . '/' . $asset->getSourcePath();
+
+                if (!file_exists($path)) {
+                    return; // file not found
+                }
             }
 
+            // Prepare headers
             $lastModified = new LastModified();
             $date = new \DateTime();
             $date->setTimestamp($asset->getLastModified());
@@ -95,35 +108,38 @@ class Listener implements ListenerAggregateInterface
             $response->setContent(file_get_contents($path));
             $response->setStatusCode(200);
 
+            // Try to determine content-type
             $ext = pathinfo($asset->getTargetPath(), PATHINFO_EXTENSION);
-            if($ext == 'css') {
+            if ($ext == 'css') {
                 $headers->addHeaderLine('Content-Type', 'text/css');
-            }elseif($ext == 'js') {
+            } elseif ($ext == 'js') {
                 $headers->addHeaderLine('Content-Type', 'text/javascript');
             } elseif (function_exists('finfo_open')) {
                 $db = @finfo_open(FILEINFO_MIME);
 
                 if ($db) {
-                    if($mimeType = finfo_file($db, $path)) {
+                    if ($mimeType = finfo_file($db, $path)) {
                         $headers->addHeaderLine('Content-Type', $mimeType);
                     }
                 }
             }
 
-            // remove temp file
-            if(count($asset->getFilters())) {
+            // Remove temp file
+            if (count($asset->getFilters())) {
                 unlink($path);
             }
 
+            // Stop onError event propagation
             $e->stopPropagation(true);
 
+            // Return http response to send to the user
             return $response;
         }
     }
 
     public function renderAssets(MvcEvent $e)
     {
-        $sm     = $e->getApplication()->getServiceManager();
+        $sm = $e->getApplication()->getServiceManager();
         /** @var Configuration $config */
         $config = $sm->get('AsseticConfiguration');
         if ($e->getName() === MvcEvent::EVENT_DISPATCH_ERROR) {
@@ -158,5 +174,5 @@ class Listener implements ListenerAggregateInterface
 
         // Init assets for modules
         $asseticService->setupRenderer($sm->get('ViewRenderer'));
-   }
+    }
 }
