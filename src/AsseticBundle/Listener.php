@@ -159,8 +159,6 @@ class Listener implements ListenerAggregateInterface
         /** @var $asseticService \AsseticBundle\Service */
         $asseticService = $sm->get('AsseticService');
 
-        $asseticService->setRequest($e->getRequest());
-
         // setup service if a matched route exist
         $router = $e->getRouteMatch();
         if ($router) {

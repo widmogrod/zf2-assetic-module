@@ -64,11 +64,6 @@ class Service
      */
     protected $filterManager;
 
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
-
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
@@ -165,24 +160,6 @@ class Service
     {
         return $this->actionName;
     }
-
-    /**
-     * @param \Zend\Stdlib\RequestInterface $request
-     */
-    public function setRequest(RequestInterface $request)
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * @return \Zend\Stdlib\RequestInterface
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-
 
     /**
      * Build collection of assets.
