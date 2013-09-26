@@ -1,6 +1,16 @@
 2013-09-25
 ----------
 
+  * Refactored view helper and added an ability to prevent browser cache when the file is updated.
+  
+    ```php
+    <?php
+    echo $this->asset('login_ie7_head_js', array('addFileMTime' => true))
+    ```
+
+2013-09-25
+----------
+
   * Added view helper to have an ability to include asset collections in the view script manually.
   
     Only the collection name is required.
