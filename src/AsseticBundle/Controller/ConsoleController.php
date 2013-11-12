@@ -45,9 +45,9 @@ class ConsoleController extends AbstractActionController implements AsseticBundl
             mkdir($webPath, $mode, true);
             echo "Web path created '$webPath' with mode '$displayMode' \n";
         } else if ($pathExists) {
-            echo "Creation of cache path '$webPath' skipped - path exists \n";
+            echo "Creation of web path '$webPath' skipped - path exists \n";
         } else {
-            echo "Creation of cache path '$webPath' skipped - no path provided \n";
+            echo "Creation of web path '$webPath' skipped - no path provided \n";
         }
     }
 
