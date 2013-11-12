@@ -13,7 +13,7 @@ Below are described values in main `assetic_configuration` section.
 | acceptableErrors   | array      | -                | Described in separate section
 | webPath            | string     | `public/assets`  | Here, all assets will be saved
 | cachePath          | string     | `data/cache`     | Here, cache metadata will be saved
-| cacheEnabled       | boolean    | `true`           | If, true cache will be used on assets using filters. This is wery useful if we use filters like scss, closure,...
+| cacheEnabled       | boolean    | `true`           | If, true cache will be used on assets using filters. This is very useful if we use filters like scss, closure,...
 | umask              | integer    | `null`           | Yes, is regular `umask` apply on generated assets
 | baseUrl            | string     | `null`           | Define base URL which will prepend your resources. If `null`, then this value will be detected by ZF2
 | basePath           | string     | `assets`         | Indicate where assets are and from where will be loaded. In example where `$baseUrl = 'http://example.com/'` `$basePath = 'assets'` `$assetPath = '/main.css'` view strategy will build such resource address `<link href="$baseUrl . $basePath . $assetPath"/>`
