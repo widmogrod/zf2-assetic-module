@@ -40,7 +40,7 @@ This section belong to `modules` section and is composed from fallowing options:
 
 | Name    | Type       | Required | Description |
 |---------|------------|----------|-------------|
-| assets  | `string[]` | yes      | List of relative paths to `root_path` pointing to asset file. Thos files must containt simgle type of assets i.e. separate for JavaScript, separate for css, spearate for images
+| assets  | `string[]` | yes      | List of relative paths to `root_path` pointing to asset file. Thos files must containt single type of assets i.e. separate for JavaScript, separate for css, spearate for images
 | filters | `array`    | no       | Described in separate section
 | options | `array`    | no       | Options are passed to `Assetic\Factory\AssetFactory::createAsset` and also are described in separate section.
 
