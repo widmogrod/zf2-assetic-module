@@ -1,3 +1,24 @@
+2013-11-15
+----------
+
+  * Added the possibility to define assets to actions
+
+    Example controller configuration
+
+    ```php
+    'controllers' => array(
+        'ModuleName\Controller\ControllerName' => array(
+            'actions' => array(
+                'actionName' => array(
+                    '@collection_name',
+                ),
+            ),
+            '@base_css',
+            '@base_js',
+        ),
+    ),
+    ```
+
 2013-09-25
 ----------
 
