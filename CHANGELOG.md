@@ -9,7 +9,7 @@
     'controllers' => array(
         'ModuleName\Controller\ControllerName' => array(
             'actions' => array(
-                actionName' => array(
+                'actionName' => array(
                     '@collection_name',
                 ),
             ),
