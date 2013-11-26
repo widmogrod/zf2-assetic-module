@@ -1,4 +1,4 @@
-# AsseticBundle v1.3.3 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module) [![](http://stillmaintained.com/widmogrod/zf2-assetic-module.png)](http://stillmaintained.com/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.3.4 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module) [![](http://stillmaintained.com/widmogrod/zf2-assetic-module.png)](http://stillmaintained.com/widmogrod/zf2-assetic-module)
 
 Assets managment per module made easy.
 
