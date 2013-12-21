@@ -60,7 +60,7 @@ This section belong to `collection` section and is composed from fallowing optio
 | Name     | Type      | Required | Description |
 |----------|-----------|----------|-------------|
 | output   | `string`  | no       | You can give your own output file name.
-| move_raw | `boolean` | no       | This option is very useful to move images, because we don't want them raw, without any modification.
+| move_raw | `boolean` | no       | This option is very useful to move images, because we want them raw, without any modification.
 
 ### Controllers section
 
