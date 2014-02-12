@@ -70,10 +70,7 @@ This strategy adds last modified time into the filename before the extension.
 Thanks to that, the browser will always receive fresh assets.
 
 By default, cache busting is disabled.
-To enable it you need to:
-
-1. Enable cache by setting option `cacheEnabled` to `true`
-2. Tell which cache buster strategy you want to use by initializing `AsseticCacheBuster` name in service manager 
+To enable it you only need to specify which cache buster strategy you want to use by setting `AsseticCacheBuster` key in service manager configuration:
 ```
 return array(
     'service_manager' => array(
