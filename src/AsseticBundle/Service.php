@@ -407,12 +407,9 @@ class Service
         $factory = new Factory\AssetFactory($configuration['root_path']);
         $factory->setAssetManager($this->getAssetManager());
         $factory->setFilterManager($this->getFilterManager());
-        // Cache buster should be add only if cache is enabled and if is available.
-        if ($this->configuration->getCacheEnabled()) {
-            $worker = $this->getCacheBusterStrategy();
-            if ($worker instanceof WorkerInterface) {
-                $factory->addWorker($worker);
-            }
+        $worker = $this->getCacheBusterStrategy();
+        if ($worker instanceof WorkerInterface) {
+            $factory->addWorker($worker);
         }
         $factory->setDebug($this->configuration->isDebug());
         return $factory;

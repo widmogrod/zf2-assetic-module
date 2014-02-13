@@ -324,4 +324,17 @@ class Service extends \PHPUnit_Framework_TestCase
 
         $this->assertLessThanOrEqual($targetMTime, $targetMTimeNotModified);
     }
+
+    public function testCacheBusterStrategyWorker()
+    {
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
+        // no workers by default:
+        $this->assertAttributeEquals(array(), 'workers', $factory);
+
+        $cacheBusterStrategy = $this->getMock('AsseticBundle\CacheBuster\LastModifiedStrategy');
+        $this->object->setCacheBusterStrategy($cacheBusterStrategy);
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
+        // cache buster strategy is added to workers list:
+        $this->assertAttributeEquals(array($cacheBusterStrategy), 'workers', $factory);
+    }
 }
