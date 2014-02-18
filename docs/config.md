@@ -1,7 +1,7 @@
 # Configuration
 ## Main configuration
 
-Below are described values in main `assetic_configuration` section.
+Below are the description of configuration options in the main `assetic_configuration` section.
 
 
 | Name               | Type       | Default          | Description |
@@ -36,7 +36,7 @@ Following table describes module configuration.
 
 #### Collection section
 
-This section belong to `modules` section and is composed from fallowing options:
+This section belongs to `modules` section and is composed from following options:
 
 | Name    | Type       | Required | Description |
 |---------|------------|----------|-------------|
@@ -46,7 +46,7 @@ This section belong to `modules` section and is composed from fallowing options:
 
 ##### Filters section
 
-This section belong to `collection` section and is composed from fallowing options:
+This section belongs to `collection` section and is composed from following options:
 
 | Name   | Type    | Required | Description |
 |--------|---------|----------|-------------|
@@ -55,7 +55,7 @@ This section belong to `collection` section and is composed from fallowing optio
 
 ##### Options section
 
-This section belong to `collection` section and is composed from fallowing options:
+This section belongs to `collection` section and is composed from following options:
 
 | Name     | Type      | Required | Description |
 |----------|-----------|----------|-------------|
@@ -64,18 +64,19 @@ This section belong to `collection` section and is composed from fallowing optio
 
 ### Controllers section
 
-Making your module aware of assets is one step but second is to utilize this knowlage.
-You can do it by telling `AsseticBundle` what assets should be used in what controller.
+You can tell `AsseticBundle` what assets should be used in what controller.
 If you want to use assets for specifc route then go to next section.
 
-Consider falowing configuration:
+#### Specfing assets to use by controller
+
+Consider following configuration:
 
 ```
 <?php
 return array(
     'assetic_configuration' => array(
         'controllers' => array(
-            'Your_Module_Name\Controller\Index' => array(
+            'Your_Module_Name\Controller\ControllerName' => array(
                 '@my_css',
                 '@my_js',
             ),
@@ -86,14 +87,64 @@ return array(
 );
 ```
 
-When you make request to `Your_Module_Name\Controller\Index` asset collections `my_css` and `my_js` will be injected to the layout.
+When you make request to `Your_Module_Name\Controller\ControllerName` asset collections `my_css` and `my_js` will be injected into the layout.
+
+#### Specfing assets to use by controller and action
+
+You can also be more specific about what assets to use in which action of the controller. Consider following configuration:
+```
+<?php
+return array(
+    'assetic_configuration' => array(
+        'controllers' => array(
+            'Your_Module_Name\Controller\ControllerName' => array(
+                'actions' => array(
+                    'index' => array(
+                        '@my_css',
+                        '@my_js',
+                    ),
+                    'other-action' => array(
+                        '@my_other_css',
+                        '@my_other_js',
+                    ),
+                ),
+            ),
+        ),
+        
+        /* some code ommited for clarity */
+    ),
+);
+```
+
+When you make request to the controller `Your_Module_Name\Controller\ControllerName` and action `index` asset collections `my_css` and `my_js` will be injected into the layout.
+But when you make request to the controller `Your_Module_Name\Controller\ControllerName` and action `other-action` asset collections `my_other_css` and `my_other_js` will be injected into the layout instead.
+
+Note that you can combine the two approaches described above - you can specify some assset collections to be shared between all actions of the controller and then have others being used only in selected actions. Just write the shared collections in the controller array and action-specific ones inside actions array, like in the following example:
+
+```
+<?php
+return array(
+    'assetic_configuration' => array(
+        'controllers' => array(
+            'Your_Module_Name\Controller\ControllerName' => array(
+                '@shared_asset_collection',
+                'actions' => array(
+                    'index' => array(
+                        '@action_specific_asset_collection',
+                    ),
+                ),
+            ),
+        ),
+        /* some code ommited for clarity */
+    ),
+);
+```
 
 ### Routes section
 
-Making your module aware of assets is one step but second is to utilize this knowlage.
-You can do it by telling `AsseticBundle` what assets should be used for what route.
+You can tell `AsseticBundle` what assets should be used for what route.
 
-Consider falowing configuration:
+Consider following configuration:
 
 ```
 <?php
@@ -114,17 +165,16 @@ return array(
 );
 ```
 
-1. When you make request to **route name** `admin` only asset collection `specific_admin_js` will be injected to the layout. Its because route name `admin` is matched agains regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and only first is matched.
-2. When you make request to **route name** `admin/dashboard` asset collection `specific_admin_js, admin_css, admin_js` will be used. Its because route name `admin/dashboard` is matched agains regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and every pattern is matched.
+1. When you make request to **route name** `admin` only asset collection `specific_admin_js` will be injected into the layout. Its because route name `admin` is matched against regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and only first is matched.
+2. When you make request to **route name** `admin/dashboard` asset collection `specific_admin_js, admin_css, admin_js` will be used. Its because route name `admin/dashboard` is matched against regular expresion `admin(.*)` and `admin(/dashboard|/reports|/etc)` and every pattern is matched.
 
 
 ### Defaults section
 
-Making your module aware of assets is one step but second is to utilize this knowlage.
-You can do it by telling `AsseticBundle` what assets should be used as default assets or even as base for every request.
-This option can be useful when you are building application, without sophisticated module separation.
+You can tell `AsseticBundle` what assets should be used as a default assets or even as a base for every request.
+This option can be useful when you are building application without sophisticated module separation.
 
-Consider falowing configuration:
+Consider following configuration:
 
 ```
 <?php
@@ -144,12 +194,12 @@ return array(
 );
 ```
 
-1. If we can't find matching controller or router configuration for given request then asset collection `base_css` will be injected into layout.
-2. If we matched router or controller and option `mixin` is set to `true` then to mached asset will be merged `base_css`.
+1. If we can't find matching controller or router configuration for a given request then asset collection `base_css` will be injected into layout.
+2. If we matched router or controller and option `mixin` is set to `true` then the matched asset will be merged with `base_css`.
 
 ### RendererToStrategy
 
-Zend Framework 2 is using different rendering strategy depending on specific for each strategy conditions. To prevent `AsseticBundle`from injecting assets during request that don't utilize layout rendering - renderer strategy was introduce.
+Zend Framework 2 is using different rendering strategy depending on conditions specific to each strategy. To prevent `AsseticBundle` from injecting assets during request that don't utilize layout rendering - renderer strategy was introduced.
 Also,….
 
 | Renderer | Strategy  |
