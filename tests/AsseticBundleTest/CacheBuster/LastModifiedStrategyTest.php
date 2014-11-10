@@ -2,7 +2,8 @@
 namespace AsseticBundleTest\CacheBuster;
 
 use AsseticBundle\CacheBuster\LastModifiedStrategy,
-    Assetic\Asset\FileAsset;
+    Assetic\Asset\FileAsset,
+    Assetic\Factory\AssetFactory;
 
 class LastModifiedStrategyTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +17,9 @@ class LastModifiedStrategyTest extends \PHPUnit_Framework_TestCase
         $asset = new FileAsset(TEST_ASSETS_DIR . '/css/global.css');
         $asset->setTargetPath(TEST_PUBLIC_DIR . '/css/global.css');
 
-        $this->cacheBuster->process($asset);
+        $factory = new AssetFactory('');
+
+        $this->cacheBuster->process($asset, $factory);
 
         $this->assertSame(
             TEST_PUBLIC_DIR . '/css/global.' . $asset->getLastModified() . '.css',

@@ -8,7 +8,7 @@ use Assetic\Asset\AssetInterface,
 
 class LastModifiedStrategy implements WorkerInterface
 {
-    public function process(AssetInterface $asset)
+    public function process(AssetInterface $asset, AssetFactory $factory)
     {
         $path = $asset->getTargetPath();
         $ext  = pathinfo($path, PATHINFO_EXTENSION);
@@ -24,4 +24,3 @@ class LastModifiedStrategy implements WorkerInterface
         }
     }
 }
-
