@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/assetic": "1.2.*"
+        "kriswallsmith/assetic": "~1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
