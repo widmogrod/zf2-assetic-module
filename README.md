@@ -20,12 +20,21 @@ Assets managment per module made easy.
 }}
 ```
 
-2. Create cache and assets directory with valid permissions.
+2. Declare AsseticBundle into the application.config.file :
+
+```
+'modules' => array(
+     'Application',
+     'AsseticBundle' // <= declare you want to use AsseticModule 
+)
+```
+
+3. Create cache and assets directory with valid permissions.
 ```
 php public/index.php assetic setup
 ```
 
-3. Setup your asset configuration.
+4. Setup your asset configuration.
 ```
 cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist modules/My_Module/configs/assets.config.php
 ```
