@@ -19,6 +19,9 @@ return array(
     'assetic_configuration' => array(
         'debug' => true,
         'buildOnRequest' => true,
+        
+        'webPath' => realpath('public/assets'),
+        'basePath' => 'assets',
 
         'routes' => array(
             'home' => array(
