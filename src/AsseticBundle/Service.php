@@ -419,7 +419,7 @@ class Service
      * @param AssetCollection $asset
      * @return string
      */
-    public function moveRaw(AssetCollection $asset, $target_path = null )
+    public function moveRaw(AssetCollection $asset, $targetPath = null )
     {
         foreach ($asset as $value) {
             /** @var $value AssetInterface */
