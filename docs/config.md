@@ -61,6 +61,7 @@ This section belongs to `collection` section and is composed from following opti
 |----------|-----------|----------|-------------|
 | output   | `string`  | no       | You can give your own output file name.
 | move_raw | `boolean` | no       | This option is very useful to move images, because we want them raw, without any modification.
+| targetPath | `string` | no | Allow to sort assets in specific places [#127](https://github.com/widmogrod/zf2-assetic-module/pull/127#issuecomment-78114102)
 
 ### Controllers section
 
