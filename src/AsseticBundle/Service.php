@@ -10,7 +10,7 @@ use Assetic\AssetWriter;
 use Assetic\Asset\AssetInterface;
 use Assetic\Asset\AssetCache;
 use Assetic\Cache\FilesystemCache;
-use Zend\View\Renderer\RendererInterface as Renderer;p
+use Zend\View\Renderer\RendererInterface as Renderer;
 use AsseticBundle\View\StrategyInterface;
 
 class Service
