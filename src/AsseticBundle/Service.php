@@ -10,7 +10,7 @@ use Assetic\AssetWriter;
 use Assetic\Asset\AssetInterface;
 use Assetic\Asset\AssetCache;
 use Assetic\Cache\FilesystemCache;
-use Zend\View\Renderer\RendererInterface as Renderer;
+use Zend\View\Renderer\RendererInterface as Renderer;p
 use AsseticBundle\View\StrategyInterface;
 
 class Service
@@ -419,11 +419,11 @@ class Service
      * @param AssetCollection $asset
      * @return string
      */
-    public function moveRaw(AssetCollection $asset)
+    public function moveRaw(AssetCollection $asset, $target_path = null )
     {
         foreach ($asset as $value) {
             /** @var $value AssetInterface */
-            $value->setTargetPath($value->getSourcePath());
+            $value->setTargetPath(( $targetPath ? $targetPath : '' ) . $value->getSourcePath());
             $value = $this->cacheAsset($value);
             $this->writeAsset($value);
         }
@@ -442,6 +442,9 @@ class Service
         $options = isset($options['options']) ? $options['options'] : array();
         $options['output'] = isset($options['output']) ? $options['output'] : $name;
         $moveRaw = isset($options['move_raw']) && $options['move_raw'];
+        $targetPath = !empty( $options['targetPath'] ) ? $options['targetPath'] : '';
+	    if( substr( $targetPath, -1 ) != DIRECTORY_SEPARATOR )
+		    $targetPath .= DIRECTORY_SEPARATOR;
 
         $filters = $this->initFilters($filters);
         $asset = $factory->createAsset($assets, $filters, $options);
@@ -449,7 +452,7 @@ class Service
         // Allow to move all files 1:1 to new directory
         // its particularly useful when this assets are i.e. images.
         if ($moveRaw) {
-            $this->moveRaw($asset);
+            $this->moveRaw($asset, $targetPath);
         } else {
             $asset = $this->cacheAsset($asset);
             $this->assetManager->set($name, $asset);
