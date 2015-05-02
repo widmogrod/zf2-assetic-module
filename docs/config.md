@@ -149,7 +149,7 @@ return array(
     'assetic_configuration' => array(
         'routes' => array(
             'admin(.*)' => array(
-                '@specific_admin_js
+                '@specific_admin_js',
             ),
             'admin(/dashboard|/reports|/etc)' => array(
                 '@admin_css',
