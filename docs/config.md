@@ -72,8 +72,7 @@ If you want to use assets for specifc route then go to next section.
 
 Consider following configuration:
 
-```
-<?php
+```php
 return array(
     'assetic_configuration' => array(
         'controllers' => array(
@@ -93,8 +92,7 @@ When you make request to `Your_Module_Name\Controller\ControllerName` asset coll
 #### Specfing assets to use by controller and action
 
 You can also be more specific about what assets to use in which action of the controller. Consider following configuration:
-```
-<?php
+```php
 return array(
     'assetic_configuration' => array(
         'controllers' => array(
@@ -122,8 +120,7 @@ But when you make request to the controller `Your_Module_Name\Controller\Control
 
 Note that you can combine the two approaches described above - you can specify some assset collections to be shared between all actions of the controller and then have others being used only in selected actions. Just write the shared collections in the controller array and action-specific ones inside actions array, like in the following example:
 
-```
-<?php
+```php
 return array(
     'assetic_configuration' => array(
         'controllers' => array(
@@ -147,8 +144,7 @@ You can tell `AsseticBundle` what assets should be used for what route.
 
 Consider following configuration:
 
-```
-<?php
+```php
 return array(
     'assetic_configuration' => array(
         'routes' => array(
@@ -177,8 +173,7 @@ This option can be useful when you are building application without sophisticate
 
 Consider following configuration:
 
-```
-<?php
+```php
 return array(
     'assetic_configuration' => array(
         'default' => array(
@@ -229,7 +224,7 @@ Consider for example falowing module structure:
 
 To make your module aware of assets you should create file similar to this:
 
-```
+```php
 <?php
 // configs/assets.config.php
 return array(
