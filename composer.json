@@ -1,34 +1,45 @@
 {
-    "name": "widmogrod/zf2-assetic-module",
-    "type": "library",
-    "description": "Zend Framework 2 module that provides complete integration of Assetic library",
-    "keywords": ["assetic", "assets", "resources", "css", "js", "less"],
-    "homepage": "https://github.com/widmogrod/zf2-assetic-module",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Gabriel Habryn",
-            "email": "widmogrod@gmail.com",
-            "homepage": "https://github.com/widmogrod/zf2-assetic-module",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.3",
-        "kriswallsmith/assetic": "~1.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "zendframework/zendframework": "2.*"
-    },
-    "suggest": {
-        "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
-        "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler"
-    },
-    "autoload": {
-        "psr-0": {
-            "AsseticBundle": "src"
-        },
-        "classmap": ["Module.php"]
+  "name": "widmogrod/zf2-assetic-module",
+  "type": "library",
+  "description": "Zend Framework 2 module that provides complete integration of Assetic library",
+  "keywords": [
+    "assetic",
+    "assets",
+    "resources",
+    "css",
+    "js",
+    "less"
+  ],
+  "homepage": "https://github.com/widmogrod/zf2-assetic-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gabriel Habryn",
+      "email": "widmogrod@gmail.com",
+      "homepage": "https://github.com/widmogrod/zf2-assetic-module",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "kriswallsmith/assetic": "~1.2",
+    "widmogrod/php-functional": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*",
+    "zendframework/zendframework": "2.*"
+  },
+  "suggest": {
+    "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
+    "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler"
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "autoload": {
+    "psr-0": {
+      "AsseticBundle": "src"
+    },
+    "classmap": ["Module.php"]
+  }
 }

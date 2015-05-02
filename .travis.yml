@@ -5,16 +5,14 @@ php:
  - 5.4
  - 5.5
  - 5.6
+ - 7.0
  - hhvm
 
 before_install:
  - composer install --dev --prefer-dist
 
-before_script:
- - cp phpunit.xml.dist phpunit.xml
-
 script:
- - vendor/bin/phpunit
+ - composer test
 
 notifications:
   email: "widmogrod+zf2-assetic-module@gmail.com"
