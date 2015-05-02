@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "php": ">=5.3.3",
+    "php": ">=5.4",
     "kriswallsmith/assetic": "^1.2",
     "widmogrod/php-functional": "^1.0"
   },

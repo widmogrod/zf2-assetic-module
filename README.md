@@ -1,6 +1,6 @@
-# AsseticBundle v1.3.4 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module) [![](http://stillmaintained.com/widmogrod/zf2-assetic-module.png)](http://stillmaintained.com/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.4 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module) [![](http://stillmaintained.com/widmogrod/zf2-assetic-module.png)](http://stillmaintained.com/widmogrod/zf2-assetic-module)
 
-Assets managment per module made easy.
+Assets management per module made easy.
 
   * **Optimize your assets**. Minify your css, js; Compile scss, and more...
   * **Adapts To Your Needs**. Using custom template engine and want to use power of this module, just implement `AsseticBundle\View\StrategyInterface`

@@ -5,6 +5,7 @@ configs/.DS_Store
 composer.lock
 vendor/*
 .idea
+.vagrant
 nbproject
 phpunit.xml
 index.php

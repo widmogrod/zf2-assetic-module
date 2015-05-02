@@ -1,3 +1,10 @@
+2015-05-02
+----------
+
+  * Upgrade minimum PHP version to 5.4
+  * Composer.json is now more friendly for external libraries (^)
+  * Add Vagrantfile
+
 2013-11-15
 ----------
 
