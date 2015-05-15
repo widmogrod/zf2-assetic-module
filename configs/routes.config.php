@@ -1,27 +1,27 @@
 <?php
-return array(
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-                'assetic-build' => array(
-                    'options' => array(
+return [
+    'console' => [
+        'router' => [
+            'routes' => [
+                'assetic-build' => [
+                    'options' => [
                         'route'    => 'assetic build',
-                        'defaults' => array(
+                        'defaults' => [
                             'controller' => 'AsseticBundle\Controller\Console',
                             'action'     => 'build'
-                        ),
-                    ),
-                ),
-                'assetic-setup' => array(
-                    'options' => array(
+                        ],
+                    ],
+                ],
+                'assetic-setup' => [
+                    'options' => [
                         'route'    => 'assetic setup',
-                        'defaults' => array(
+                        'defaults' => [
                             'controller' => 'AsseticBundle\Controller\Console',
                             'action'     => 'setup'
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-);
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
