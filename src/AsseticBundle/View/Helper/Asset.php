@@ -2,13 +2,11 @@
 
 namespace AsseticBundle\View\Helper;
 
-use Zend\View\Helper\Placeholder\Container,
-    Zend\ServiceManager\ServiceLocatorInterface;
-
-use AsseticBundle\ServiceFactory,
-    AsseticBundle\Exception,
-    Assetic\Asset\AssetInterface,
-    Assetic\Asset\AssetCollection;
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\AssetInterface;
+use AsseticBundle\Exception;
+use AsseticBundle\Service;
+use Zend\View\Helper\Placeholder\Container;
 
 /**
  * Class Asset
@@ -16,19 +14,27 @@ use AsseticBundle\ServiceFactory,
  */
 class Asset extends Container\AbstractStandalone
 {
-
-    /** @var \AsseticBundle\Service|null */
+    /**
+     * @var Service
+     */
     protected $service = null;
+    /**
+     * @var null|string
+     */
     protected $baseUrl = '';
+    /**
+     * @var null|string
+     */
     protected $basePath = '';
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * Ensure everything on start.
+     *
+     * @param Service $service
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(Service $service)
     {
-        $serviceFactory = new ServiceFactory();
-        $this->service = $serviceFactory->createService($serviceLocator);
+        $this->service = $service;
         $this->service->build();
 
         $this->baseUrl = $this->service->getConfiguration()->getBaseUrl();
@@ -88,7 +94,7 @@ class Asset extends Container\AbstractStandalone
      */
     protected function helper(AssetInterface $asset, array $options = array())
     {
-        $path = $this->baseUrl . $this->basePath .  $asset->getTargetPath();
+        $path = $this->baseUrl . $this->basePath . $asset->getTargetPath();
 
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         $extension = strtolower($extension);
@@ -97,8 +103,7 @@ class Asset extends Container\AbstractStandalone
             $path .= '?' . $asset->getLastModified();
         }
 
-        switch($extension)
-        {
+        switch ($extension) {
             case 'js':
                 return $this->getScriptTag($path, $options);
 
@@ -133,9 +138,9 @@ class Asset extends Container\AbstractStandalone
         $rel = (isset($options['rel']) && !empty($options['rel'])) ? $options['rel'] : 'stylesheet';
 
         return '<link href="' . $this->escape($path)
-            . '" media="' . $this->escape($media)
-            . '" rel="' . $this->escape($rel)
-            . '" type="' . $this->escape($type) . '">';
+        . '" media="' . $this->escape($media)
+        . '" rel="' . $this->escape($rel)
+        . '" type="' . $this->escape($type) . '">';
     }
 
 }
