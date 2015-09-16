@@ -85,7 +85,7 @@ Please note anyone using `zf2-assetic-module` with `ZfcRbac` you will experience
 
 ```
 use Zend\Mvc\Application;
-use ZfcRbac\Service\Rbac;
+use ZfcRbac\Guard\GuardInterface;
 
 return array(
     'assetic_configuration' => array(
@@ -93,8 +93,7 @@ return array(
             Application::ERROR_CONTROLLER_NOT_FOUND,
             Application::ERROR_CONTROLLER_INVALID,
             Application::ERROR_ROUTER_NO_MATCH,
-            Rbac::ERROR_ROUTE_UNAUTHORIZED,
-            Rbac::ERROR_CONTROLLER_UNAUTHORIZED,
+            GuardInterface::GUARD_UNAUTHORIZED,
         ),
 );
 ```
