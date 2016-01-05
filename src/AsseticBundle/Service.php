@@ -457,7 +457,7 @@ class Service
         // Allow to move all files 1:1 to new directory
         // its particularly useful when this assets are i.e. images.
         if ($moveRaw) {
-            if ( isset( $options['disable_source_path'] ) && $options['disable_source_path'] ) {
+            if ( isset( $options['disable_source_path'] ) ) {
                 $this->moveRaw( $asset, $targetPath, $options['disable_source_path'] );
             } else {
                 $this->moveRaw( $asset, $targetPath );
