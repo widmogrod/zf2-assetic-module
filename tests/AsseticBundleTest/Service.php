@@ -66,6 +66,16 @@ class Service extends \PHPUnit_Framework_TestCase
                                 'move_raw' => true,
                             )
                         ),
+                        'base_fonts' => array(
+                            'assets'  => array(
+                                'fonts/*',
+                            ),
+                            'options' => array(
+                                'disable_source_path' => true,
+                                'move_raw'            => true,
+                                'targetPath'          => 'public2/fonts/test'
+                            )
+                        ),
                     ),
                 ),
             )
@@ -164,7 +174,9 @@ class Service extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($assetManager->has('base_css'));
         $this->assertTrue($assetManager->has('base_js'));
+
         $this->assertFalse($assetManager->has('base_images'));
+        $this->assertFalse($assetManager->has('base_fonts'));
 
         $assetFile = $assetManager->get('base_css')->getTargetPath();
         $this->assertStringStartsWith('base_css.', $assetFile);
