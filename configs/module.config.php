@@ -20,10 +20,10 @@ return array(
         'factories' => array(
             'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
             'Assetic\AssetWriter' => 'AsseticBundle\WriterFactory',
+            'AsseticBundle\FilterManager'  => 'AsseticBundle\FilterManagerFactory',
         ),
         'invokables' => array(
             'Assetic\AssetManager'   => 'Assetic\AssetManager',
-            'AsseticBundle\FilterManager'  => 'AsseticBundle\FilterManager',
             'AsseticBundle\Listener' => 'AsseticBundle\Listener',
         ),
         'initializers' => array(

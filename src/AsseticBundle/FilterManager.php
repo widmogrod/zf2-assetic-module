@@ -3,10 +3,9 @@ namespace AsseticBundle;
 
 use Assetic\Filter\FilterInterface;
 use Assetic\FilterManager as AsseticFilterManager;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareInterface
+class FilterManager extends AsseticFilterManager
 {
     /**
      * @var ServiceLocatorInterface
@@ -14,24 +13,11 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
     protected $serviceLocator;
 
     /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ServiceLocatorInterface $locator
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function __construct(ServiceLocatorInterface $locator)
     {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
+        $this->serviceLocator = $locator;
     }
 
     /**
@@ -40,7 +26,7 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
      */
     public function has($alias)
     {
-        return parent::has($alias) ? true : $this->getServiceLocator()->has($alias);
+        return parent::has($alias) ? true : $this->serviceLocator->has($alias);
     }
 
     /**
@@ -54,7 +40,7 @@ class FilterManager extends AsseticFilterManager implements ServiceLocatorAwareI
             return parent::get($alias);
         }
 
-        $service = $this->getServiceLocator();
+        $service = $this->serviceLocator;
         if (!$service->has($alias)) {
             throw new \InvalidArgumentException(sprintf('There is no "%s" filter in ZF2 service manager.', $alias));
         }

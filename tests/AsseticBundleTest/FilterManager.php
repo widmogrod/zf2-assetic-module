@@ -26,8 +26,7 @@ class FilterManager extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->service = new ServiceManager\ServiceManager();
-        $this->object = new AsseticBundle\FilterManager();
-        $this->object->setServiceLocator($this->service);
+        $this->object = new AsseticBundle\FilterManager($this->service);
     }
 
     /**
@@ -36,10 +35,6 @@ class FilterManager extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {}
-
-    public function testGetServiceLocator() {
-        $this->assertSame($this->service, $this->object->getServiceLocator());
-    }
 
     /**
      * @dataProvider getAliasHasFalseProvider
