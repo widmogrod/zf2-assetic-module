@@ -27,7 +27,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^3.7",
-    "zendframework/zendframework": "^2"
+    "zendframework/zend-mvc": "^2.6",
+    "zendframework/zend-console": "^2.6"
   },
   "suggest": {
     "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
