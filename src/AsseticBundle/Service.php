@@ -10,6 +10,8 @@ use Assetic\AssetWriter;
 use Assetic\Asset\AssetInterface;
 use Assetic\Asset\AssetCache;
 use Assetic\Cache\FilesystemCache;
+use Zend\Http\Request as HttpRequest;
+use Zend\Stdlib\RequestInterface;
 use Zend\View\Renderer\RendererInterface as Renderer;
 use AsseticBundle\View\StrategyInterface;
 
@@ -254,6 +256,39 @@ class Service
         return false;
     }
 
+    /**
+     * @param RequestInterface $request
+     * @return AssetInterface|null
+     */
+    public function findAssetForRequest(RequestInterface $request)
+    {
+        // Try to find the asset via targetPath in any of the defined modules
+        if($request instanceof HttpRequest) {
+            $uri = ltrim($request->getUri()->getPath(),'/');
+
+            $moduleConfiguration = $this->configuration->getModules();
+            foreach ($moduleConfiguration as $configuration) {
+                $factory = $this->createAssetFactory($configuration);
+                $collections = (array)$configuration['collections'];
+                foreach ($collections as $name => $options) {
+                    $assets = isset($options['assets']) ? $options['assets'] : array();
+                    $filters = isset($options['filters']) ? $options['filters'] : array();
+                    $options = isset($options['options']) ? $options['options'] : array();
+                    $options['output'] = isset($options['output']) ? $options['output'] : $name;
+
+                    $filters = $this->initFilters($filters);
+                    $collection = $factory->createAsset($assets, $filters, $options);
+                    foreach($collection as $asset) {
+                        /** @var $asset AssetInterface */
+                        if($asset->getTargetPath() == $uri) {
+                            return $asset;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function getDefaultConfig()
     {
         $defaultDefinition = $this->configuration->getDefault();
@@ -396,7 +431,6 @@ class Service
     {
         return $this->configuration;
     }
-
 
     /**
      * @param array $configuration
