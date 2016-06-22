@@ -2,6 +2,7 @@
 namespace AsseticBundle\Initializer;
 
 use AsseticBundle\AsseticBundleServiceAwareInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -9,19 +10,29 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class AsseticBundleInitializer implements InitializerInterface
 {
     /**
+     * invoke
+     *
+     * @param ContainerInterface $container
+     * @param $instance
+     */
+    public function __invoke(ContainerInterface $container, $instance)
+    {
+        if ($instance instanceof AsseticBundleServiceAwareInterface) {
+            if ($container instanceof ServiceLocatorAwareInterface) {
+                $container = $container->getServiceLocator();
+            }
+            $instance->setAsseticBundleService($container->get('AsseticService'));
+        }
+    }
+
+    /**
      * Initialize
      *
      * @param $instance
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
      */
     public function initialize($instance, ServiceLocatorInterface $serviceLocator)
     {
-        if ($instance instanceof AsseticBundleServiceAwareInterface) {
-            if ($serviceLocator instanceof ServiceLocatorAwareInterface) {
-                $serviceLocator = $serviceLocator->getServiceLocator();
-            }
-            $instance->setAsseticBundleService($serviceLocator->get('AsseticService'));
-        }
+        $this($serviceLocator, $instance);
     }
 }
