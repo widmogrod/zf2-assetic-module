@@ -1,16 +1,20 @@
 <?php
 namespace AsseticBundle;
 
+use Interop\Container\ContainerInterface;
+
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ServiceFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $locator
+     * @param ContainerInterface $locator
+     * @param String $requestedName
+     * @param Array $options, optional
      * @return \AsseticBundle\Service
      */
-    public function createService(ServiceLocatorInterface $locator)
+    public function __invoke(ContainerInterface $locator, $requestedName, array $options = null)
     {
         $asseticConfig = $locator->get('AsseticConfiguration');
         if ($asseticConfig->detectBaseUrl()) {
@@ -32,5 +36,14 @@ class ServiceFactory implements FactoryInterface
         }
 
         return $asseticService;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $locator
+     * @return \AsseticBundle\Service
+     */
+    public function createService(ServiceLocatorInterface $locator)
+    {
+        return $this($locator, 'AsseticService');
     }
 }
