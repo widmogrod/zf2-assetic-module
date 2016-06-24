@@ -35,7 +35,7 @@ class Module implements
 
         // Listener have only sense when request is via http.
         if (!Console::isConsole()) {
-            $em->attach($sm->get('AsseticBundle\Listener'));
+            $sm->get('AsseticBundle\Listener')->attach($em);
         }
     }
 
