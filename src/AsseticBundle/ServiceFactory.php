@@ -26,9 +26,9 @@ class ServiceFactory implements FactoryInterface
         }
 
         $asseticService = new Service($asseticConfig);
-        $asseticService->setAssetManager($locator->get('AsseticAssetManager'));
-        $asseticService->setAssetWriter($locator->get('AsseticAssetWriter'));
-        $asseticService->setFilterManager($locator->get('AsseticFilterManager'));
+        $asseticService->setAssetManager($locator->get('Assetic\AssetManager'));
+        $asseticService->setAssetWriter($locator->get('Assetic\AssetWriter'));
+        $asseticService->setFilterManager($locator->get('Assetic\FilterManager'));
 
         // Cache buster is not mandatory
         if ($locator->has('AsseticCacheBuster')){
