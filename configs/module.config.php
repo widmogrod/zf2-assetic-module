@@ -3,11 +3,11 @@ use Zend\Mvc\Application;
 
 return array(
     'controllers' => array(
-        'invokables' => array(
+        'aliases' => array(
             'AsseticBundle\Controller\Console' => 'AsseticBundle\Controller\ConsoleController',
         ),
-        'initializers' => array(
-            'AsseticBundleInitializer' => 'AsseticBundle\Initializer\AsseticBundleInitializer',
+        'factories' => array(
+            'AsseticBundle\Controller\ConsoleController' => 'AsseticBundle\Controller\ConsoleControllerFactory'
         ),
     ),
 
@@ -21,13 +21,8 @@ return array(
             'AsseticBundle\Service' => 'AsseticBundle\ServiceFactory',
             'Assetic\AssetWriter' => 'AsseticBundle\WriterFactory',
             'AsseticBundle\FilterManager'  => 'AsseticBundle\FilterManagerFactory',
-        ),
-        'invokables' => array(
-            'Assetic\AssetManager'   => 'Assetic\AssetManager',
-            'AsseticBundle\Listener' => 'AsseticBundle\Listener',
-        ),
-        'initializers' => array(
-            'AsseticBundleInitializer' => 'AsseticBundle\Initializer\AsseticBundleInitializer',
+            'Assetic\AssetManager'   => 'Zend\ServiceManager\Factory\InvokableFactory',
+            'AsseticBundle\Listener' => 'Zend\ServiceManager\Factory\InvokableFactory',
         ),
     ),
 

@@ -1,7 +1,6 @@
 <?php
 namespace AsseticBundle\Controller;
 
-use AsseticBundle\AsseticBundleServiceAwareInterface;
 use AsseticBundle\Service;
 use Zend\Mvc\Controller\AbstractActionController;
 
