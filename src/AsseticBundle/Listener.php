@@ -21,11 +21,12 @@ class Listener implements ListenerAggregateInterface
      * implementation will pass this to the aggregate.
      *
      * @param EventManagerInterface $events
+     * @param int $priority The priority with which the events are attached
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 32)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'renderAssets'), 32);
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), 32);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'renderAssets'), $priority);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), $priority);
     }
 
     /**
