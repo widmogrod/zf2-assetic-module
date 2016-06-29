@@ -14,11 +14,11 @@ use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\Version\Version;
 
 class Module implements
-    AutoloaderProviderInterface,
-    ConfigProviderInterface,
-    BootstrapListenerInterface,
-    ServiceProviderInterface,
-    ConsoleUsageProviderInterface
+        AutoloaderProviderInterface,
+        ConfigProviderInterface,
+        BootstrapListenerInterface,
+        ServiceProviderInterface,
+        ConsoleUsageProviderInterface
 {
     /**
      * Listen to the bootstrap event
@@ -64,15 +64,14 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return [
-            'factories' => [
+        return array(
+            'factories' => array(
                 'AsseticBundle\Configuration' => function (ServiceLocatorInterface $serviceLocator) {
                     $configuration = $serviceLocator->get('Configuration');
-
                     return new Configuration($configuration['assetic_configuration']);
-                },
-            ],
-        ];
+                }
+            ),
+        );
     }
 
     /**
@@ -82,13 +81,13 @@ class Module implements
      */
     public function getAutoloaderConfig()
     {
-        return [
-            'Zend\Loader\StandardAutoloader' => [
-                'namespaces' => [
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/',
-                ],
-            ],
-        ];
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/'
+                ),
+            ),
+        );
     }
 
     /**
@@ -114,9 +113,9 @@ class Module implements
      */
     public function getConsoleUsage(AdapterInterface $console)
     {
-        return [
+        return array(
             'assetic setup' => 'Create cache and assets directory with valid permissions.',
             'assetic build' => 'Build all assets',
-        ];
+        );
     }
 }
