@@ -11,14 +11,14 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
-use Zend\Mvc\MvcEvent;
+use Zend\Version\Version;
 
 class Module implements
-        AutoloaderProviderInterface,
-        ConfigProviderInterface,
-        BootstrapListenerInterface,
-        ServiceProviderInterface,
-        ConsoleUsageProviderInterface
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    BootstrapListenerInterface,
+    ServiceProviderInterface,
+    ConsoleUsageProviderInterface
 {
     /**
      * Listen to the bootstrap event
@@ -35,7 +35,11 @@ class Module implements
 
         // Listener have only sense when request is via http.
         if (!Console::isConsole()) {
-            $em->attach($sm->get('AsseticBundle\Listener'));
+            if (Version::compareVersion('3.0.0') == -1) {
+                $em->attach($sm->get('AsseticBundle\Listener'));
+            } else {
+                $sm->get('AsseticBundle\Listener')->attach($em);
+            }
         }
     }
 
@@ -60,14 +64,15 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
+        return [
+            'factories' => [
                 'AsseticBundle\Configuration' => function (ServiceLocatorInterface $serviceLocator) {
                     $configuration = $serviceLocator->get('Configuration');
+
                     return new Configuration($configuration['assetic_configuration']);
-                }
-            ),
-        );
+                },
+            ],
+        ];
     }
 
     /**
@@ -77,13 +82,13 @@ class Module implements
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/'
-                ),
-            ),
-        );
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/',
+                ],
+            ],
+        ];
     }
 
     /**
@@ -109,9 +114,9 @@ class Module implements
      */
     public function getConsoleUsage(AdapterInterface $console)
     {
-        return array(
+        return [
             'assetic setup' => 'Create cache and assets directory with valid permissions.',
             'assetic build' => 'Build all assets',
-        );
+        ];
     }
 }
