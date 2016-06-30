@@ -29,7 +29,8 @@
     "phpunit/phpunit": "^5.4",
     "zendframework/zend-mvc": "^3.0",
     "zendframework/zend-mvc-console": "^1.0",
-    "zendframework/zend-console": "^2.6"
+    "zendframework/zend-console": "^2.6",
+    "zendframework/zend-version": "@stable"
   },
   "suggest": {
     "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
