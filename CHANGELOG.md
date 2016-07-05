@@ -1,3 +1,10 @@
+2016-07-05
+----------
+
+ * Upgrade minimum PHP version to 5.6
+ * Add support for ZF3 (Big thanks to [@tylkomat](https://github.com/widmogrod/zf2-assetic-module/pull/147) and [@Saeven](https://github.com/widmogrod/zf2-assetic-module/pull/146)
+
+
 2015-05-02
 ----------
 
@@ -30,7 +37,7 @@
 ----------
 
   * Refactored view helper and added an ability to prevent browser cache when the file is updated.
-  
+
     ```php
     <?php
     echo $this->asset('login_ie7_head_js', array('addFileMTime' => true))
@@ -40,18 +47,18 @@
 ----------
 
   * Added view helper to have an ability to include asset collections in the view script manually.
-  
+
     Only the collection name is required.
-    
+
     ```
     <!--[if IE 7]>
         <?php echo $this->asset('login_ie7_head_js', array('type' => 'text/javascript')) ?>
         <?php echo $this->asset('login_ie7_css', array('media' => 'screen', 'type' => 'screen', 'text/css' => 'stylesheet')) ?>
     <![endif]-->
     ```
-    
+
     Register view helper in your module if necessary:
-    
+
     ```php
     <?php
     public function getViewHelperConfig()
@@ -113,7 +120,7 @@
 2013-06-10
 ----------
 
-  * All route configurations that match the current route will now be merged. This is especially useful when used in combination with the regular expressions previously introduced. 
+  * All route configurations that match the current route will now be merged. This is especially useful when used in combination with the regular expressions previously introduced.
 
     ``` php
     <?php
@@ -131,7 +138,7 @@
         )
     );
     ```
-    
+
     If now route `admin/page` gets matched by ZF2 only asset `@specific_admin_js` is selected. If route `admin/reports/x` is matched by ZF2 both assets `@specific_admin_js` and `admin_css` and `admin_js` get selected.
 
 2013-05-12
