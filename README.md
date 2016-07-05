@@ -1,4 +1,4 @@
-# AsseticBundle v1.5 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
+# AsseticBundle v1.6 [![Build Status](https://travis-ci.org/widmogrod/zf2-assetic-module.png?branch=master)](https://travis-ci.org/widmogrod/zf2-assetic-module)
 
 Assets management per module made easy.
 
@@ -16,7 +16,7 @@ Assets management per module made easy.
 1. Install package by composer. Don't know how? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
 ``` json
 {"require": {
-    "widmogrod/zf2-assetic-module": "1.*"
+    "widmogrod/zf2-assetic-module": "^1.6"
 }}
 ```
 
