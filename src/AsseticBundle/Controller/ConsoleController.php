@@ -1,11 +1,10 @@
 <?php
 namespace AsseticBundle\Controller;
 
-use AsseticBundle\AsseticBundleServiceAwareInterface;
 use AsseticBundle\Service;
 use Zend\Mvc\Controller\AbstractActionController;
 
-class ConsoleController extends AbstractActionController implements AsseticBundleServiceAwareInterface
+class ConsoleController extends AbstractActionController
 {
     /**
      * @var Service

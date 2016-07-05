@@ -1,16 +1,20 @@
 <?php
 namespace AsseticBundle;
 
+use Interop\Container\ContainerInterface;
+
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ServiceFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $locator
+     * @param ContainerInterface $locator
+     * @param String $requestedName
+     * @param Array $options, optional
      * @return \AsseticBundle\Service
      */
-    public function createService(ServiceLocatorInterface $locator)
+    public function __invoke(ContainerInterface $locator, $requestedName, array $options = null)
     {
         $asseticConfig = $locator->get('AsseticConfiguration');
         if ($asseticConfig->detectBaseUrl()) {
@@ -22,9 +26,9 @@ class ServiceFactory implements FactoryInterface
         }
 
         $asseticService = new Service($asseticConfig);
-        $asseticService->setAssetManager($locator->get('AsseticAssetManager'));
-        $asseticService->setAssetWriter($locator->get('AsseticAssetWriter'));
-        $asseticService->setFilterManager($locator->get('AsseticFilterManager'));
+        $asseticService->setAssetManager($locator->get('Assetic\AssetManager'));
+        $asseticService->setAssetWriter($locator->get('Assetic\AssetWriter'));
+        $asseticService->setFilterManager($locator->get('Assetic\FilterManager'));
 
         // Cache buster is not mandatory
         if ($locator->has('AsseticCacheBuster')){
@@ -32,5 +36,14 @@ class ServiceFactory implements FactoryInterface
         }
 
         return $asseticService;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $locator
+     * @return \AsseticBundle\Service
+     */
+    public function createService(ServiceLocatorInterface $locator)
+    {
+        return $this($locator, 'AsseticService');
     }
 }
