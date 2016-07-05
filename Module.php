@@ -11,7 +11,6 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
-use Zend\Version\Version;
 
 class Module implements
         AutoloaderProviderInterface,
@@ -35,11 +34,7 @@ class Module implements
 
         // Listener have only sense when request is via http.
         if (!Console::isConsole()) {
-            if (Version::compareVersion('3.0.0') == -1) {
-                $em->attach($sm->get('AsseticBundle\Listener'));
-            } else {
-                $sm->get('AsseticBundle\Listener')->attach($em);
-            }
+            $sm->get('AsseticBundle\Listener')->attach($em);
         }
     }
 
