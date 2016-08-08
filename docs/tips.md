@@ -58,7 +58,7 @@ Assets are built manually or by the deploy script, only once.
 Thanks to this, you will relieve your web server and improve application speed.
 
 ```
-php public/index.php assetic build
+vendor/bin/assetic build
 ```
 
 ## Cache Busting

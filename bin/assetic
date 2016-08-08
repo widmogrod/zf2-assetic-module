@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    include_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    include_once __DIR__ . '/../../../autoload.php';
+} else {
+    throw new RuntimeException(
+        'Error: vendor/autoload.php could not be found. Did you run "php composer.phar install"?'
+    );
+}
+
+if (!file_exists('config/application.config.php')) {
+    chdir(__DIR__);
+
+    $previousDir = '.';
+
+    // Search for the config/application.config.php
+    while (!file_exists('config/application.config.php')) {
+        $dir = dirname(getcwd());
+
+        if ($previousDir === $dir) {
+            throw new RuntimeException(
+                'Unable to locate "config/application.config.php": ' .
+                'is AsseticBundle in a subdir of your application skeleton?'
+            );
+        }
+
+        $previousDir = $dir;
+        chdir($dir);
+    }
+}
+
+// init Zend Application
+$application = \Zend\Mvc\Application::init(require 'config/application.config.php');
+
+/* @var $cli \Symfony\Console\Application */
+$cli = $application->getServiceManager()->get('AsseticBundle\Cli');
+exit($cli->run());
