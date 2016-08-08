@@ -38,30 +38,66 @@ class SetupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config      = $this->assetic->getConfiguration();
-        $mode        = (null !== ($mode = $config->getUmask())) ? $mode : 0775;
+        $config = $this->assetic->getConfiguration();
+        $mode   = (null !== ($mode = $config->getUmask())) ? $mode : 0775;
+
+        if (!$this->createPath($output, 'Cache', $config->getCachePath(), $mode)) {
+            return 1;
+        }
+        if (!$this->createPath($output, 'Web', $config->getWebPath(), $mode)) {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Creates a path with the needed permissions
+     *
+     * @param OutputInterface $output The output object
+     * @param string          $which  Which path?
+     * @param string          $path   The path
+     * @param int             $mode   The permissions
+     *
+     * @return bool                   Success
+     */
+    private function createPath(OutputInterface $output, $which, $path, $mode)
+    {
         $displayMode = decoct($mode);
-
-        $cachePath   = $config->getCachePath();
-        $pathExists  = is_dir($cachePath);
-        if ($cachePath && !$pathExists) {
-            mkdir($cachePath, $mode, true);
-            $output->writeln('Cache path created "' . $cachePath . '" with mode "' . $displayMode . '"');
-        } elseif ($pathExists) {
-            $output->writeln('Creation of cache path "' . $cachePath . '" skipped - path exists');
-        } else {
-            $output->writeln('Creation of cache path "' . $cachePath . '" skipped - no path provided');
+        $pathExists  = is_dir($path);
+        if (!$path) {
+            $output->writeln('Creation of ' . $which . ' path skipped - no path provided');
+            return true;
+        }
+        if (!$pathExists) {
+            if (mkdir($path, $mode, true)) {
+                $output->writeln($which . ' path created "' . $path . '" with mode "' . $displayMode . '"');
+                return true;
+            } else {
+                $output->writeln('<error>' . $which . ' path "' . $path . '" could not be created.</error>');
+                return false;
+            }
         }
 
-        $webPath    = $config->getWebPath();
-        $pathExists = is_dir($webPath);
-        if ($webPath && !$pathExists) {
-            mkdir($webPath, $mode, true);
-            $output->writeln('Web path created "' . $webPath . '" with mode "' . $displayMode . '"');
-        } elseif ($pathExists) {
-            $output->writeln('Creation of web path "' . $webPath . '" skipped - path exists');
-        } else {
-            $output->writeln('Creation of web path "' . $webPath . '" skipped - no path provided');
+        $readable = is_readable($path);
+        $writable = is_writable($path);
+        if ($readable && $writable) {
+            $output->writeln(
+                'Creation of ' . $which . ' path "' . $path . '" skipped - path exists with correct permissions'
+            );
+            return true;
+        } elseif (!$readable && !$writable) {
+            $output->writeln(
+                '<error>Creation of ' . $which . ' path "' . $path . '" failed - path exists but is neither readable nor writable</error>'
+            );
+        } elseif (!$readable) {
+            $output->writeln(
+                '<error>Creation of ' . $which . ' path "' . $path . '" failed - path exists but is not readable</error>'
+            );
+        } elseif (!$writable) {
+            $output->writeln(
+                '<error>Creation of ' . $which . ' path "' . $path . '" failed - path exists but is not writable</error>'
+            );
         }
+        return false;
     }
 }
