@@ -2,15 +2,6 @@
 use Zend\Mvc\Application;
 
 return array(
-    'controllers' => array(
-        'aliases' => array(
-            'AsseticBundle\Controller\Console' => 'AsseticBundle\Controller\ConsoleController',
-        ),
-        'factories' => array(
-            'AsseticBundle\Controller\ConsoleController' => 'AsseticBundle\Controller\ConsoleControllerFactory'
-        ),
-    ),
-
     'service_manager' => array(
         'aliases' => array(
             'AsseticConfiguration'  => 'AsseticBundle\Configuration',
