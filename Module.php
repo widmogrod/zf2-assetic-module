@@ -24,7 +24,7 @@ class Module implements
     {
         /** @var $e \Zend\Mvc\MvcEvent */
         // Only attach the Listener if the request came in through http(s)
-        if (PHP_SAPI == 'cli') {
+        if (PHP_SAPI !== 'cli') {
             $app = $e->getApplication();
 
             $app->getServiceManager()->get('AsseticBundle\Listener')->attach($app->getEventManager());
