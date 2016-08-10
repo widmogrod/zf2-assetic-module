@@ -31,7 +31,7 @@ Assets management per module made easy.
 
 3. Create cache and assets directory with valid permissions.
 ```
-php public/index.php assetic setup
+vendor/bin/assetic setup
 ```
 
 4. Setup your asset configuration.

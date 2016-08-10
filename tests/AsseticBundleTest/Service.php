@@ -343,7 +343,7 @@ class Service extends \PHPUnit_Framework_TestCase
         // no workers by default:
         $this->assertAttributeEquals(array(), 'workers', $factory);
 
-        $cacheBusterStrategy = $this->getMock('AsseticBundle\CacheBuster\LastModifiedStrategy');
+        $cacheBusterStrategy = $this->getMockBuilder('AsseticBundle\CacheBuster\LastModifiedStrategy')->getMock();
         $this->object->setCacheBusterStrategy($cacheBusterStrategy);
         $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
         // cache buster strategy is added to workers list:

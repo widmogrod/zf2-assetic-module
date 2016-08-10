@@ -48,7 +48,7 @@ return array(
                     ),
                     'my_js' => array(
                         'assets' => array(
-                        // 'js/main1.js',
+                            // 'js/main1.js',
                             // 'js/main2.js',
                         ),
                         'filters' => array(
