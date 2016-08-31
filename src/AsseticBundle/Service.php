@@ -33,34 +33,35 @@ class Service
     protected $actionName;
 
     /**
-     * @var \AsseticBundle\Configuration
+     * @var Configuration
      */
     protected $configuration;
 
     /**
-     * @var array of \AsseticBundle\View\StrategyInterface
+     * @var StrategyInterface[]
      */
     protected $strategy = array();
 
     /**
-     * @var \Assetic\AssetManager
+     * @var AssetManager
      */
     protected $assetManager;
 
     /**
-     * @var \Assetic\AssetWriter
+     * @var AssetWriter
      */
     protected $assetWriter;
 
     /**
-     * @var \Assetic\Factory\Worker\WorkerInterface
+     * @var WorkerInterface
      */
     protected $cacheBusterStrategy;
 
     /**
-     * @var \Assetic\AsseticFilterManager
+     * @var AsseticFilterManager
      */
     protected $filterManager;
+
 
     public function __construct(Configuration $configuration)
     {
@@ -269,14 +270,11 @@ class Service
     public function getControllerConfig()
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
-        if($assetOptions)
-        {
-            if(array_key_exists('actions', $assetOptions)){
+        if ($assetOptions) {
+            if (array_key_exists('actions', $assetOptions)){
                 unset($assetOptions['actions']);
             }
-        }
-        else
-        {
+        } else {
             $assetOptions = array();
         }
         return $assetOptions;
@@ -286,12 +284,11 @@ class Service
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
         $actionName = $this->getActionName();
-        if($assetOptions && array_key_exists('actions', $assetOptions) && array_key_exists($actionName, $assetOptions['actions']))
-        {
+        if ($assetOptions && array_key_exists('actions', $assetOptions)
+            && array_key_exists($actionName, $assetOptions['actions'])
+        ) {
             $actionAssets = $assetOptions['actions'][$actionName];
-        }
-        else
-        {
+        } else {
             $actionAssets = array();
         }
         return $actionAssets;
@@ -313,8 +310,6 @@ class Service
 
             /** @var $asset \Assetic\Asset\AssetInterface */
             $asset = $this->assetManager->get($assetAlias);
-            // Save asset on disk
-            $this->writeAsset($asset);
             // Prepare view strategy
             $strategy->setupAsset($asset);
         }
@@ -397,7 +392,6 @@ class Service
         return $this->configuration;
     }
 
-
     /**
      * @param array $configuration
      * @return Factory\AssetFactory
@@ -416,21 +410,28 @@ class Service
     }
 
     /**
-     * @param AssetCollection $asset
-     * @return string
+     * @param AssetCollection       $asset
+     * @param string|null           $targetPath
+     * @param Factory\AssetFactory  $factory
+     * @param bool                  $disableSourcePath
      */
-    public function moveRaw(AssetCollection $asset, $targetPath = null, $disableSourcePath = null )
+    public function moveRaw(
+        AssetCollection $asset,
+        $targetPath,
+        Factory\AssetFactory $factory,
+        $disableSourcePath = false
+    )
     {
         foreach ($asset as $value) {
             /** @var $value AssetInterface */
-            if ( $disableSourcePath ) {
+            if ($disableSourcePath) {
                 $value->setTargetPath(( $targetPath ? $targetPath : '' ) . basename( $value->getSourcePath() ) );
             } else {
                 $value->setTargetPath(( $targetPath ? $targetPath : '' ) . $value->getSourcePath());
             }
 
             $value = $this->cacheAsset($value);
-            $this->writeAsset($value);
+            $this->writeAsset($value, $factory);
         }
     }
 
@@ -448,8 +449,9 @@ class Service
         $options['output'] = isset($options['output']) ? $options['output'] : $name;
         $moveRaw = isset($options['move_raw']) && $options['move_raw'];
         $targetPath = !empty( $options['targetPath'] ) ? $options['targetPath'] : '';
-	    if( substr( $targetPath, -1 ) != DIRECTORY_SEPARATOR )
-		    $targetPath .= DIRECTORY_SEPARATOR;
+        if (substr( $targetPath, -1 ) != DIRECTORY_SEPARATOR) {
+            $targetPath .= DIRECTORY_SEPARATOR;
+        }
 
         $filters = $this->initFilters($filters);
         $asset = $factory->createAsset($assets, $filters, $options);
@@ -458,56 +460,63 @@ class Service
         // its particularly useful when this assets are i.e. images.
         if ($moveRaw) {
             if ( isset( $options['disable_source_path'] ) ) {
-                $this->moveRaw( $asset, $targetPath, $options['disable_source_path'] );
+                $this->moveRaw( $asset, $targetPath, $factory, $options['disable_source_path'] );
             } else {
-                $this->moveRaw( $asset, $targetPath );
+                $this->moveRaw( $asset, $targetPath, $factory );
             }
         } else {
             $asset = $this->cacheAsset($asset);
             $this->assetManager->set($name, $asset);
+            // Save asset on disk
+            $this->writeAsset($asset, $factory);
         }
     }
 
     /**
      * Write $asset to public directory.
      *
-     * @param AssetInterface $asset     Asset to write
+     * @param AssetInterface       $asset     Asset to write
+     * @param Factory\AssetFactory $factory   The factory this asset was generated with
      */
-    public function writeAsset(AssetInterface $asset)
+    public function writeAsset(AssetInterface $asset, Factory\AssetFactory $factory)
     {
         // We're not interested in saving assets on request
         if (!$this->configuration->getBuildOnRequest()) {
             return;
         }
 
-        // Write asset on disk in every request
+        // Write asset on disk on every request
         if (!$this->configuration->getWriteIfChanged()) {
-            $this->write($asset);
+            $this->write($asset, $factory);
+            return;
         }
 
-        $target = $this->configuration->getWebPath($asset->getTargetPath());
-        $created = is_file($target);
-        $isChanged = $created && filemtime($target) < $asset->getLastModified();
+        $target    = $this->configuration->getWebPath($asset->getTargetPath());
+        $created   = is_file($target);
+        $isChanged = $created && filemtime($target) < $factory->getLastModified($asset);
 
         // And long requested optimization
         if (!$created || $isChanged) {
-            $this->write($asset);
+            $this->write($asset, $factory);
         }
     }
 
     /**
-     * @param AssetInterface $asset
+     * @param AssetInterface       $asset     Asset to write
+     * @param Factory\AssetFactory $factory   The factory this asset was generated with
      */
-    protected function write(AssetInterface $asset)
+    protected function write(AssetInterface $asset, Factory\AssetFactory $factory)
     {
         $umask = $this->configuration->getUmask();
         if (null !== $umask) {
             $umask = umask($umask);
         }
 
-        if ($this->configuration->isDebug() && !$this->configuration->isCombine() && $asset instanceof AssetCollection) {
+        if ($this->configuration->isDebug() && !$this->configuration->isCombine()
+            && ($asset instanceof AssetCollection)
+        ) {
             foreach ($asset as $item) {
-                $this->writeAsset($item);
+                $this->writeAsset($item, $factory);
             }
         } else {
             $this->getAssetWriter()->writeAsset($asset);
