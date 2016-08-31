@@ -246,14 +246,15 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->object->build();
 
         $manager = $this->object->getAssetManager();
-        $asset = $manager->get('base_css');
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
+        $asset   = $manager->get('base_css');
         $targetFile = $this->configuration->getWebPath($asset->getTargetPath());
         if (is_file($targetFile)) {
             unlink($targetFile);
         }
 
         $this->assertFileNotExists($targetFile);
-        $this->object->writeAsset($asset);
+        $this->object->writeAsset($asset, $factory);
         $this->assertFileExists($targetFile);
     }
 
@@ -264,7 +265,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->object->build();
 
         $manager = $this->object->getAssetManager();
-        $assets = $manager->get('base_css')->all();
+        $assets  = $manager->get('base_css')->all();
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
 
         /** @var \Assetic\Asset\AssetInterface $asset */
         $asset = $assets[0];
@@ -275,7 +277,7 @@ class Service extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertFileNotExists($targetFile);
-        $this->object->writeAsset($asset);
+        $this->object->writeAsset($asset, $factory);
         $this->assertFileExists($targetFile);
 
         $sourceFile = $asset->getSourceRoot() . '/' . $asset->getSourcePath();
@@ -292,7 +294,7 @@ class Service extends \PHPUnit_Framework_TestCase
         $modifiedAsset = new FileAsset($sourceFile);
         $modifiedAsset->setTargetPath($targetFile);
 
-        $this->object->writeAsset($modifiedAsset);
+        $this->object->writeAsset($modifiedAsset, $factory);
 
         clearstatcache(true, $targetFile);
         $modifiedTargetMTime = filemtime($targetFile);
@@ -307,7 +309,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->object->build();
 
         $manager = $this->object->getAssetManager();
-        $assets = $manager->get('base_css')->all();
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
+        $assets  = $manager->get('base_css')->all();
 
         /** @var \Assetic\Asset\AssetInterface $asset */
         $asset = $assets[0];
@@ -318,7 +321,7 @@ class Service extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertFileNotExists($targetFile);
-        $this->object->writeAsset($asset);
+        $this->object->writeAsset($asset, $factory);
         $this->assertFileExists($targetFile);
 
         $sourceFile = $asset->getSourceRoot() . '/' . $asset->getSourcePath();
@@ -329,7 +332,7 @@ class Service extends \PHPUnit_Framework_TestCase
         $modifiedAsset = new FileAsset($sourceFile);
         $modifiedAsset->setTargetPath($targetFile);
 
-        $this->object->writeAsset($modifiedAsset);
+        $this->object->writeAsset($modifiedAsset, $factory);
 
         clearstatcache(true, $targetFile);
         $targetMTimeNotModified = filemtime($targetFile);
