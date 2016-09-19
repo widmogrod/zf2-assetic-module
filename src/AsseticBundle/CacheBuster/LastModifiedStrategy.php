@@ -13,7 +13,7 @@ class LastModifiedStrategy implements WorkerInterface
         $path = $asset->getTargetPath();
         $ext  = pathinfo($path, PATHINFO_EXTENSION);
 
-        $lastModified = $asset->getLastModified();
+        $lastModified = $factory->getLastModified($asset);
         if (null !== $lastModified) {
             $path = substr_replace(
                 $path,
