@@ -2,15 +2,21 @@
 
 This example shows how to convert "ZF2 Skeleton Application" to use `AsseticBundle`.
 
-1. Install ZF2 skeleton application
+1. [Install ZF2 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
+```
+composer create-project -sdev zendframework/skeleton-application path/to/install
+```
 2. Install `AsseticBundle`
+```
+composer require widmogrod/zf2-assetic-module
+```
 3. Move resources from public/ to module/Application/assets
 ```bash
 cd to/your/project/dir
 mkdir module/Application/assets
 mv public/css module/Application/assets
 mv public/js module/Application/assets
-mv public/images module/Application/assets
+mv public/img module/Application/assets
 ```
 
 4. Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
