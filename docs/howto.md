@@ -16,58 +16,56 @@ mv public/images module/Application/assets
 4. Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
 ``` php
 return array(
-    'assetic_configuration' => array(
+    'assetic_configuration' => [
         'debug' => true,
         'buildOnRequest' => true,
-        
-        'webPath' => realpath('public/assets'),
+
+        'webPath' => __DIR__ . '/../../../public/assets',
         'basePath' => 'assets',
 
-        'routes' => array(
-            'home' => array(
+        'routes' => [
+            'home' => [
                 '@base_js',
                 '@base_css',
-            ),
-        ),
+            ],
+        ],
 
-        'modules' => array(
-            'application' => array(
+        'modules' => [
+            'application' => [
                 'root_path' => __DIR__ . '/../assets',
-                'collections' => array(
-                    'base_css' => array(
-                        'assets' => array(
-                            'css/bootstrap-responsive.min.css',
+                'collections' => [
+                    'base_css' => [
+                        'assets' => [
                             'css/style.css',
                             'css/bootstrap.min.css'
-                        ),
-                        'filters' => array(
-                            'CssRewriteFilter' => array(
+                        ],
+                        'filters' => [
+                            'CssRewriteFilter' => [
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
-                            )
-                        ),
-                    ),
+                            ]
+                        ],
+                    ],
 
-                    'base_js' => array(
-                        'assets' => array(
-                            'js/html5.js',
-                            'js/jquery.min.js',
+                    'base_js' => [
+                        'assets' => [
+                            'js/jquery-3.1.0.min.js',
                             'js/bootstrap.min.js',
-                        )
-                    ),
+                        ]
+                    ],
 
-                    'base_images' => array(
-                        'assets' => array(
-                            'images/*.png',
-                            'images/*.ico',
-                        ),
-                        'options' => array(
+                    'base_images' => [
+                        'assets' => [
+                            'img/*.png',
+                            'img/*.ico',
+                        ],
+                        'options' => [
                             'move_raw' => true,
-                        )
-                    ),
-                ),
-            ),
-        ),
-    ),
+                        ]
+                    ],
+                ],
+            ],
+        ],
+    ],
 );
 ```
 
