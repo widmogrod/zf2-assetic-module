@@ -2,15 +2,15 @@
 
 This example shows how to convert "ZF2 Skeleton Application" to use `AsseticBundle`.
 
-1. [Install ZF2 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
+#### [Install ZF2 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
 ```
 composer create-project -sdev zendframework/skeleton-application path/to/install
 ```
-2. Install `AsseticBundle`
+#### Install `AsseticBundle`
 ```
 composer require widmogrod/zf2-assetic-module
 ```
-3. Move resources from public/ to module/Application/assets
+#### Move resources from public/ to module/Application/assets
 ```bash
 cd to/your/project/dir
 mkdir module/Application/assets
@@ -19,7 +19,8 @@ mv public/js module/Application/assets
 mv public/img module/Application/assets
 ```
 
-4. Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
+#### Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
+
 ``` php
 return array(
     'assetic_configuration' => [
@@ -75,7 +76,18 @@ return array(
 );
 ```
 
-5. Update "head" tag in layout file `module/Application/view/layout/layout.phtml` 
+#### Check if your `application.config.php` file has bellow options set to `false` for development mode.
+```php
+return [
+    /* (...) */
+    'module_listener_options' => [
+        'config_cache_enabled' => false,
+        'module_map_cache_enabled' => false,
+    ],
+];
+```
+
+#### Update "head" tag in layout file `module/Application/view/layout/layout.phtml` 
 ```
 <head>
     <meta charset="utf-8">
@@ -89,4 +101,9 @@ return array(
 </head>
 ```
 
-6. Refresh site and have fun!
+#### Build your assets
+```
+vendor/bin/assetic build -vvv
+```
+
+#### Refresh site and have fun!
