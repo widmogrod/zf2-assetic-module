@@ -1,8 +1,8 @@
 <?php
+
 namespace AsseticBundle;
 
 use Interop\Container\ContainerInterface;
-
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -10,8 +10,9 @@ class ServiceFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $locator
-     * @param String $requestedName
-     * @param Array $options, optional
+     * @param string $requestedName
+     * @param array $options, optional
+     *
      * @return \AsseticBundle\Service
      */
     public function __invoke(ContainerInterface $locator, $requestedName, array $options = null)
@@ -31,7 +32,7 @@ class ServiceFactory implements FactoryInterface
         $asseticService->setFilterManager($locator->get('Assetic\FilterManager'));
 
         // Cache buster is not mandatory
-        if ($locator->has('AsseticCacheBuster')){
+        if ($locator->has('AsseticCacheBuster')) {
             $asseticService->setCacheBusterStrategy($locator->get('AsseticCacheBuster'));
         }
 
@@ -40,6 +41,7 @@ class ServiceFactory implements FactoryInterface
 
     /**
      * @param ServiceLocatorInterface $locator
+     *
      * @return \AsseticBundle\Service
      */
     public function createService(ServiceLocatorInterface $locator)

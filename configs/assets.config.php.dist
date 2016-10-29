@@ -2,63 +2,55 @@
 /**
  * This configuration should be put in your module `configs` directory.
  */
-return array(
-    'assetic_configuration' => array(
-        // Use on production environment
-        // 'debug'              => false,
-        // 'buildOnRequest'     => false,
-
-        // Use on development environment
+return [
+    'assetic_configuration' => [
         'debug' => true,
         'buildOnRequest' => true,
 
-        // This is optional flag, by default set to `true`.
-        // In debug mode allow you to combine all assets to one file.
-        // 'combine' => false,
+        'webPath' => __DIR__ . '/../../../public/assets',
+        'basePath' => 'assets',
 
-        // this is specific to this project
-        'webPath' => realpath('public/assets'),
-        'basePath' => 'public/assets',
+        'routes' => [
+            'home' => [
+                '@base_js',
+                '@base_css',
+            ],
+        ],
 
-        'controllers' => array(
-            'Your_Module_Name\Controller\Index' => array(
-                '@my_css',
-                '@my_js',
-            ),
-        ),
-
-        'modules' => array(
-            'Your_Module_Name' => array(
+        'modules' => [
+            'application' => [
                 'root_path' => __DIR__ . '/../assets',
-
-                'collections' => array(
-                    'my_css' => array(
-                        'assets' => array(
-                            // 'css/main1.css',
-                            // 'css/main2.css',
-                        ),
-                        'filters' => array(
-                            '?CssRewriteFilter' => array(
+                'collections' => [
+                    'base_css' => [
+                        'assets' => [
+                            'css/style.css',
+                            'css/bootstrap.min.css'
+                        ],
+                        'filters' => [
+                            'CssRewriteFilter' => [
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
-                            ),
-                            '?CssMinFilter' => array(
-                                'name' => 'Assetic\Filter\CssMinFilter'
-                            ),
-                        ),
-                    ),
-                    'my_js' => array(
-                        'assets' => array(
-                            // 'js/main1.js',
-                            // 'js/main2.js',
-                        ),
-                        'filters' => array(
-                            '?JSMinFilter' => array(
-                                'name' => 'Assetic\Filter\JSMinFilter'
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-);
+                            ]
+                        ],
+                    ],
+
+                    'base_js' => [
+                        'assets' => [
+                            'js/jquery-3.1.0.min.js',
+                            'js/bootstrap.min.js',
+                        ]
+                    ],
+
+                    'base_images' => [
+                        'assets' => [
+                            'img/*.png',
+                            'img/*.ico',
+                        ],
+                        'options' => [
+                            'move_raw' => true,
+                        ]
+                    ],
+                ],
+            ],
+        ],
+    ],
+];

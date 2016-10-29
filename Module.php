@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle;
 
 use Zend\EventManager\EventInterface;
@@ -18,6 +19,7 @@ class Module implements
      * Listen to the bootstrap event
      *
      * @param \Zend\EventManager\EventInterface $e
+     *
      * @return array
      */
     public function onBootstrap(EventInterface $e)
@@ -49,14 +51,15 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
+        return [
+            'factories' => [
                 'AsseticBundle\Configuration' => function (ServiceLocatorInterface $serviceLocator) {
                     $configuration = $serviceLocator->get('Configuration');
+
                     return new Configuration($configuration['assetic_configuration']);
                 }
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -66,12 +69,12 @@ class Module implements
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ . '/'
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

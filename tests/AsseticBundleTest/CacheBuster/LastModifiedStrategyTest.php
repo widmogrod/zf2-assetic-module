@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundleTest\CacheBuster;
 
 use AsseticBundle\CacheBuster\LastModifiedStrategy,

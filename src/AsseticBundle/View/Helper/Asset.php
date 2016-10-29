@@ -4,7 +4,6 @@ namespace AsseticBundle\View\Helper;
 
 use Zend\View\Helper\Placeholder\Container,
     Zend\ServiceManager\ServiceLocatorInterface;
-
 use AsseticBundle\ServiceFactory,
     AsseticBundle\Exception,
     Assetic\Asset\AssetInterface,
@@ -12,11 +11,11 @@ use AsseticBundle\ServiceFactory,
 
 /**
  * Class Asset
+ *
  * @package AsseticBundle\View\Helper
  */
 class Asset extends Container\AbstractStandalone
 {
-
     /** @var \AsseticBundle\Service|null */
     protected $service = null;
     protected $baseUrl = '';
@@ -38,10 +37,12 @@ class Asset extends Container\AbstractStandalone
     /**
      * @param string $collectionName
      * @param array $options
+     *
      * @return string
+     *
      * @throws \AsseticBundle\Exception\InvalidArgumentException
      */
-    public function __invoke($collectionName, array $options = array())
+    public function __invoke($collectionName, array $options = [])
     {
         if (!$this->service->getAssetManager()->has($collectionName)) {
             throw new Exception\InvalidArgumentException(
@@ -57,9 +58,10 @@ class Asset extends Container\AbstractStandalone
     /**
      * @param AssetInterface $asset
      * @param array $options
+     *
      * @return string
      */
-    protected function setupAsset(AssetInterface $asset, array $options = array())
+    protected function setupAsset(AssetInterface $asset, array $options = [])
     {
         $ret = '';
 
@@ -83,9 +85,10 @@ class Asset extends Container\AbstractStandalone
     /**
      * @param AssetInterface $asset
      * @param array $options
+     *
      * @return string
      */
-    protected function helper(AssetInterface $asset, array $options = array())
+    protected function helper(AssetInterface $asset, array $options = [])
     {
         $path = $this->baseUrl . $this->basePath .  $asset->getTargetPath();
 
@@ -96,8 +99,7 @@ class Asset extends Container\AbstractStandalone
             $path .= '?' . $asset->getLastModified();
         }
 
-        switch($extension)
-        {
+        switch ($extension) {
             case 'js':
                 return $this->getScriptTag($path, $options);
 
@@ -111,9 +113,10 @@ class Asset extends Container\AbstractStandalone
     /**
      * @param $path
      * @param array $options
+     *
      * @return string
      */
-    protected function getScriptTag($path, array $options = array())
+    protected function getScriptTag($path, array $options = [])
     {
         $type = (isset($options['type']) && !empty($options['type'])) ? $options['type'] : 'text/javascript';
 
@@ -123,9 +126,10 @@ class Asset extends Container\AbstractStandalone
     /**
      * @param $path
      * @param array $options
+     *
      * @return string
      */
-    protected function getStylesheetTag($path, array $options = array())
+    protected function getStylesheetTag($path, array $options = [])
     {
         $media = (isset($options['media']) && !empty($options['media'])) ? $options['media'] : 'screen';
         $type = (isset($options['type']) && !empty($options['type'])) ? $options['type'] : 'text/css';
@@ -136,5 +140,4 @@ class Asset extends Container\AbstractStandalone
             . '" rel="' . $this->escape($rel)
             . '" type="' . $this->escape($type) . '">';
     }
-
 }

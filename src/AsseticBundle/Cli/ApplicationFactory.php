@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle\Cli;
 
 use Interop\Container\ContainerInterface;
@@ -10,7 +11,7 @@ class ApplicationFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $container
-     * @param String $requestedName
+     * @param string $requestedName
      * @param array $options, optional
      *
      * @return Application
@@ -27,6 +28,7 @@ class ApplicationFactory implements FactoryInterface
 
     /**
      * @param ServiceLocatorInterface $locator
+     *
      * @return \AsseticBundle\FilterManager
      */
     public function createService(ServiceLocatorInterface $locator)

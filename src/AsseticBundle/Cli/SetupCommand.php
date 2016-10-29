@@ -47,6 +47,7 @@ class SetupCommand extends Command
         if (!$this->createPath($output, 'Web', $config->getWebPath(), $mode)) {
             return 1;
         }
+
         return 0;
     }
 
@@ -66,14 +67,17 @@ class SetupCommand extends Command
         $pathExists  = is_dir($path);
         if (!$path) {
             $output->writeln('Creation of ' . $which . ' path skipped - no path provided');
+
             return true;
         }
         if (!$pathExists) {
             if (mkdir($path, $mode, true)) {
                 $output->writeln($which . ' path created "' . $path . '" with mode "' . $displayMode . '"');
+
                 return true;
             } else {
                 $output->writeln('<error>' . $which . ' path "' . $path . '" could not be created.</error>');
+
                 return false;
             }
         }
@@ -84,6 +88,7 @@ class SetupCommand extends Command
             $output->writeln(
                 'Creation of ' . $which . ' path "' . $path . '" skipped - path exists with correct permissions'
             );
+
             return true;
         } elseif (!$readable && !$writable) {
             $output->writeln(
@@ -98,6 +103,7 @@ class SetupCommand extends Command
                 '<error>Creation of ' . $which . ' path "' . $path . '" failed - path exists but is not writable</error>'
             );
         }
+
         return false;
     }
 }

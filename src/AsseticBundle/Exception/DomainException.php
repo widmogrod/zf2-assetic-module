@@ -1,4 +1,7 @@
 <?php
+
 namespace AsseticBundle\Exception;
 
-class DomainException extends \DomainException {}
+class DomainException extends \DomainException
+{
+}

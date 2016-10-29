@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
@@ -13,7 +14,7 @@ abstract class AbstractStrategy implements StrategyInterface
     protected $basePath;
 
     protected $debug = false;
-    
+
     protected $combine = true;
 
     public function setRenderer(Renderer $renderer)
@@ -58,14 +59,14 @@ abstract class AbstractStrategy implements StrategyInterface
     {
         return $this->debug;
     }
-    
+
     public function setCombine($flag)
     {
-    	$this->combine = (bool) $flag;
+        $this->combine = (bool) $flag;
     }
-    
+
     public function isCombine()
     {
-    	return $this->combine;
+        return $this->combine;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundleTest;
 
 use AsseticBundle;
@@ -34,67 +35,75 @@ class FilterManager extends \PHPUnit_Framework_TestCase
      * This method is called after a test is executed.
      */
     protected function tearDown()
-    {}
+    {
+    }
 
     /**
      * @dataProvider getAliasHasFalseProvider
      */
-    public function testHasFalse($alias) {
+    public function testHasFalse($alias)
+    {
         $this->assertFalse($this->object->has($alias));
     }
 
-    public function getAliasHasFalseProvider() {
-        return array(
-            'simple' => array(
+    public function getAliasHasFalseProvider()
+    {
+        return [
+            'simple' => [
                 '$alias' => 'simpleName',
-            ),
-            'invalid name' => array(
+            ],
+            'invalid name' => [
                 '$alias' => '@_simpleName',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @dataProvider getAliasGetExceptionProvider
      * @expectedException \InvalidArgumentException
      */
-    public function testGetException($alias) {
+    public function testGetException($alias)
+    {
         $this->object->get($alias);
     }
 
-    public function getAliasGetExceptionProvider() {
-        return array(
-            'no existing' => array(
+    public function getAliasGetExceptionProvider()
+    {
+        return [
+            'no existing' => [
                 '$alias' => 'simpleName',
-            ),
-            'invalid name' => array(
+            ],
+            'invalid name' => [
                 '$alias' => '@_simpleName',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @dataProvider getAliasGetExceptionInstanceProvider
      * @expectedException \InvalidArgumentException
      */
-    public function testGetExceptionInstance($alias, $object) {
+    public function testGetExceptionInstance($alias, $object)
+    {
         $this->service->setService($alias, $object);
         $this->object->get($alias);
     }
 
-    public function getAliasGetExceptionInstanceProvider() {
-        return array(
-            'simple' => array(
-                '$alias' => 'simpleName',
+    public function getAliasGetExceptionInstanceProvider()
+    {
+        return [
+            'simple' => [
+                '$alias'  => 'simpleName',
                 '$object' => new \stdClass(),
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @dataProvider getAliasGetValidProvider
      */
-    public function testGetValid($alias, $object) {
+    public function testGetValid($alias, $object)
+    {
         $this->assertInstanceOf('Assetic\Filter\FilterInterface', $object);
         $this->service->setService($alias, $object);
         $result = $this->object->get($alias);
@@ -102,12 +111,13 @@ class FilterManager extends \PHPUnit_Framework_TestCase
         $this->assertSame($result, $object);
     }
 
-    public function getAliasGetValidProvider() {
-        return array(
-            'simple' => array(
-                '$alias' => 'simpleName',
+    public function getAliasGetValidProvider()
+    {
+        return [
+            'simple' => [
+                '$alias'  => 'simpleName',
                 '$object' => $this->getMock('Assetic\Filter\FilterInterface'),
-            ),
-        );
+            ],
+        ];
     }
 }

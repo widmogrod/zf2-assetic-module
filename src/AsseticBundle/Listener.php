@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle;
 
 use Zend\EventManager\EventManagerInterface;
@@ -12,7 +13,7 @@ class Listener implements ListenerAggregateInterface
     /**
      * @var CallbackHandler[]
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Attach one or more listeners
@@ -25,8 +26,8 @@ class Listener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events, $priority = 32)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'renderAssets'), $priority);
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderAssets'), $priority);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'renderAssets'], $priority);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'renderAssets'], $priority);
     }
 
     /**

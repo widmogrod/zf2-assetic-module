@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle;
 
 use Assetic\Filter\FilterInterface;
@@ -22,6 +23,7 @@ class FilterManager extends AsseticFilterManager
 
     /**
      * @param $alias
+     *
      * @return bool
      */
     public function has($alias)
@@ -31,7 +33,9 @@ class FilterManager extends AsseticFilterManager
 
     /**
      * @param $alias
+     *
      * @throws \InvalidArgumentException    When cant retrieve filter from service manager.
+     *
      * @return mixed
      */
     public function get($alias)
@@ -57,4 +61,4 @@ class FilterManager extends AsseticFilterManager
 
         return $filter;
     }
-} 
+}

@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
@@ -18,7 +19,7 @@ interface StrategyInterface
 
     public function setDebug($flag);
     public function isDebug();
-    
+
     public function setCombine($flag);
     public function isCombine();
 
