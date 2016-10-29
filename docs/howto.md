@@ -1,16 +1,38 @@
-# How to
+# How to use AsseticBundle with ZF3
+## Introduction
+Step by step introduction, how to use `AsseticBundle` with `ZF3`
 
-This example shows how to convert "ZF2 Skeleton Application" to use `AsseticBundle`.
+#### [Install ZF3 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
+```
+composer create-project zendframework/skeleton-application path/to/project
+```
 
-#### [Install ZF2 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
+#### Enter ZF3 directory
 ```
-composer create-project -sdev zendframework/skeleton-application path/to/install
+cd path/to/project
 ```
+
 #### Install `AsseticBundle`
 ```
 composer require widmogrod/zf2-assetic-module
 ```
-#### Move resources from public/ to module/Application/assets
+
+#### Declare `AsseticBundle` in the `config/modules.config.php` file:
+```php
+return [
+    'Zend\Router',
+    'Zend\Validator',
+    'AsseticBundle', // <-- put it here
+    'Application',
+];
+```
+
+#### Create cache and assets directory with valid permissions.
+```
+vendor/bin/assetic setup
+```
+
+#### Move resources from `public/` to `module/Application/assets/`
 ```bash
 cd to/your/project/dir
 mkdir module/Application/assets
@@ -22,7 +44,8 @@ mv public/img module/Application/assets
 #### Edit the module configuration file `module/Application/config/module.config.php` add following configuration:
 
 ``` php
-return array(
+return [
+    /* ... */
     'assetic_configuration' => [
         'debug' => true,
         'buildOnRequest' => true,
@@ -73,7 +96,7 @@ return array(
             ],
         ],
     ],
-);
+];
 ```
 
 #### Check if your `application.config.php` file has bellow options set to `false` for development mode.
@@ -91,13 +114,11 @@ return [
 ```
 <head>
     <meta charset="utf-8">
-    <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
-    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
-    <?php
-        echo $this->plugin('HeadLink');
-        echo $this->plugin('HeadStyle');
-        echo $this->plugin('HeadScript');
-    ?>
+    <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
 </head>
 ```
 
@@ -106,4 +127,15 @@ return [
 vendor/bin/assetic build -vvv
 ```
 
-#### Refresh site and have fun!
+#### Start the server
+```
+php -S 127.0.0.1:8080 -t public/
+```
+
+Refresh site and have fun!
+
+
+#### What next?
+- [Configuration](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/config.md)
+- [Tips & Tricks](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/tips.md)
+
