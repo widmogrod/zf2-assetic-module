@@ -5,40 +5,14 @@ Assets management per module made easy.
   * **Optimize your assets**. Minify your css, js; Compile scss, and more...
   * **Adapts To Your Needs**. Using custom template engine and want to use power of this module, just implement `AsseticBundle\View\StrategyInterface`
   * **Well tested**. Besides unit test this solution is also ready for the production use.
-  * **Great fundations**. Based on [Assetic](https://github.com/kriswallsmith/assetic) and [ZF2](https://github.com/zendframework/zf2) & ZF3
+  * **Great fundations**. Based on [Assetic](https://github.com/kriswallsmith/assetic) and [ZF2](https://github.com/zendframework/zf2) & [ZF3](https://github.com/zendframework/zendframework/tree/release-3.0.0)
   * **Excellent community**. Everything is thanks to great support from GitHub & PHP community!
   * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](https://github.com/widmogrod/zf2-assetic-module/blob/master/CHANGELOG.md)
   * **Listen to your ideas**. Have a great idea? Bring your tested pull request or open a new issue.
 
 
 ## Installation
-
-1. Install package by composer. Don't know how? [Take a look here](http://getcomposer.org/doc/00-intro.md#introduction)
-``` json
-{"require": {
-    "widmogrod/zf2-assetic-module": "^2.0"
-}}
-```
-
-2. Declare AsseticBundle into the application.config.file :
-
-```
-'modules' => array(
-     'Application',
-     'AsseticBundle' // <= declare you want to use AsseticModule
-)
-```
-
-3. Create cache and assets directory with valid permissions.
-```
-vendor/bin/assetic setup
-```
-
-4. Setup your asset configuration.
-```
-cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist modules/My_Module/configs/assets.config.php
-```
-and read [how to start](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md) guide.
+Read [the quick start guide](https://github.com/widmogrod/zf2-assetic-module/blob/master/docs/howto.md).
 
 ## Documentation
 
