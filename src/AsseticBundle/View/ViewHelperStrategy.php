@@ -1,8 +1,8 @@
 <?php
+
 namespace AsseticBundle\View;
 
 use Assetic\Asset\AssetCollection;
-use AsseticBundle\Service;
 use Zend\View\Renderer\PhpRenderer;
 use Assetic\Asset\AssetInterface;
 
@@ -28,8 +28,7 @@ class ViewHelperStrategy extends AbstractStrategy
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         $extension = strtolower($extension);
 
-        switch($extension)
-        {
+        switch ($extension) {
             case 'js':
                 $this->appendScript($path);
                 break;
@@ -43,8 +42,7 @@ class ViewHelperStrategy extends AbstractStrategy
     protected function appendScript($path)
     {
         $renderer = $this->getRenderer();
-        switch (true)
-        {
+        switch (true) {
             case ($renderer instanceof PhpRenderer):
                 if (strpos($path, "head_") !== false) {
                     $renderer->plugin('HeadScript')->appendFile($path);
@@ -58,8 +56,7 @@ class ViewHelperStrategy extends AbstractStrategy
     protected function appendStylesheet($path)
     {
         $renderer = $this->getRenderer();
-        switch (true)
-        {
+        switch (true) {
             case ($renderer instanceof PhpRenderer):
                 $renderer->plugin('HeadLink')->appendStylesheet($path);
                 break;

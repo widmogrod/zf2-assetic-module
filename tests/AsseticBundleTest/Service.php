@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundleTest;
 
 use Assetic\Asset\FileAsset;
@@ -17,7 +18,7 @@ class Service extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $defaultOptions = array();
+    protected $defaultOptions = [];
 
     /**
      * @var AsseticBundle\Configuration
@@ -30,56 +31,56 @@ class Service extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->defaultOptions = array(
+        $this->defaultOptions = [
             'webPath' => TEST_PUBLIC_DIR,
-            'routes' => array(
-                'home' => array(
+            'routes'  => [
+                'home' => [
                     '@base_css',
                     '@base_js',
-                ),
-            ),
-            'modules' => array(
-                'test_application' => array(
-                    'root_path' => TEST_ASSETS_DIR,
-                    'collections' => array(
-                        'base_css' => array(
-                            'assets' => array(
+                ],
+            ],
+            'modules' => [
+                'test_application' => [
+                    'root_path'   => TEST_ASSETS_DIR,
+                    'collections' => [
+                        'base_css' => [
+                            'assets' => [
                                 'css/global.css',
-                            ),
-                            'filters' => array(
-                                'CssRewriteFilter' => array(
+                            ],
+                            'filters' => [
+                                'CssRewriteFilter' => [
                                     'name' => 'Assetic\Filter\CssRewriteFilter'
-                                )
-                            ),
-                            'options' => array(),
-                        ),
-                        'base_js' => array(
-                            'assets' => array(
+                                ]
+                            ],
+                            'options' => [],
+                        ],
+                        'base_js' => [
+                            'assets' => [
                                 'js/test.js',
-                            )
-                        ),
-                        'base_images' => array(
-                            'assets' => array(
+                            ]
+                        ],
+                        'base_images' => [
+                            'assets' => [
                                 'images/*.png',
-                            ),
-                            'options' => array(
+                            ],
+                            'options' => [
                                 'move_raw' => true,
-                            )
-                        ),
-                        'base_fonts' => array(
-                            'assets'  => array(
+                            ]
+                        ],
+                        'base_fonts' => [
+                            'assets'  => [
                                 'fonts/*',
-                            ),
-                            'options' => array(
+                            ],
+                            'options' => [
                                 'disable_source_path' => true,
                                 'move_raw'            => true,
                                 'targetPath'          => 'public2/fonts/test'
-                            )
-                        ),
-                    ),
-                ),
-            )
-        );
+                            ]
+                        ],
+                    ],
+                ],
+            ]
+        ];
 
         $this->configuration = new AsseticBundle\Configuration($this->defaultOptions);
         $this->object = new AsseticBundle\Service($this->configuration);
@@ -90,26 +91,30 @@ class Service extends \PHPUnit_Framework_TestCase
      * This method is called after a test is executed.
      */
     protected function tearDown()
-    {}
+    {
+    }
 
     /**
      * @param string $routeName
      * @dataProvider getRoutesNamesProvider
      */
-    public function testSetRouterName($routeName) {
+    public function testSetRouterName($routeName)
+    {
         $result = $this->object->setRouteName($routeName);
         $this->assertNull($result);
         $this->assertEquals($routeName, $this->object->getRouteName());
     }
 
-    public function getRoutesNamesProvider() {
-        return array(
-            'simple' => array('some'),
-            'chained' => array('some/route/more'),
-        );
+    public function getRoutesNamesProvider()
+    {
+        return [
+            'simple'  => ['some'],
+            'chained' => ['some/route/more'],
+        ];
     }
 
-    public function testGetRouterName() {
+    public function testGetRouterName()
+    {
         $value = $this->object->getRouteName();
         $this->assertEquals($value, AsseticBundle\Service::DEFAULT_ROUTE_NAME);
 
@@ -119,56 +124,65 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $expected);
     }
 
-    public function testSetAssetManager() {
+    public function testSetAssetManager()
+    {
         $value = new \Assetic\AssetManager();
         $result = $this->object->setAssetManager($value);
         $this->assertNull($result);
         $this->assertSame($value, $this->object->getAssetManager());
     }
 
-    public function testGetAssetManager() {
+    public function testGetAssetManager()
+    {
         $result = $this->object->getAssetManager();
         $this->assertInstanceOf('Assetic\AssetManager', $result);
     }
 
-    public function testSetFilterManager() {
+    public function testSetFilterManager()
+    {
         $value = new \Assetic\FilterManager();
         $result = $this->object->setFilterManager($value);
         $this->assertNull($result);
         $this->assertSame($value, $this->object->getFilterManager());
     }
 
-    public function testGetFilterManager() {
+    public function testGetFilterManager()
+    {
         $result = $this->object->getFilterManager();
         $this->assertInstanceOf('Assetic\FilterManager', $result);
     }
 
-    public function testSetControllerName() {
+    public function testSetControllerName()
+    {
         $expected = 'some-name';
         $value = $this->object->setControllerName($expected);
         $this->assertNull($value);
         $this->assertEquals($expected, $this->object->getControllerName());
     }
 
-    public function testGetControllerName() {
+    public function testGetControllerName()
+    {
         $value = $this->object->getControllerName();
         $this->assertNull($value);
     }
 
-    public function testSetActionName() {
+    public function testSetActionName()
+    {
         $expected = 'some-name';
         $value = $this->object->setActionName($expected);
         $this->assertNull($value);
         $this->assertEquals($expected, $this->object->getActionName());
     }
 
-    public function testGetActionName() {
+    public function testGetActionName()
+    {
         $value = $this->object->getActionName();
         $this->assertNull($value);
     }
 
-    public function testInitLoadedModules() {
-        $loadModules = array('test_application' => 'test_application');
+    public function testInitLoadedModules()
+    {
+        $loadModules = ['test_application' => 'test_application'];
         $this->object->build($loadModules);
         $assetManager = $this->object->getAssetManager();
 
@@ -187,13 +201,15 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertStringEndsWith('.js', $assetFile);
     }
 
-    public function testGetRendererName() {
+    public function testGetRendererName()
+    {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $name = $this->object->getRendererName($renderer);
         $this->assertEquals(get_class($renderer), $name);
     }
 
-    public function testHasStrategyForRenderer() {
+    public function testHasStrategyForRenderer()
+    {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $value = $this->object->hasStrategyForRenderer($renderer);
         $this->assertFalse($value);
@@ -207,7 +223,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertTrue($value);
     }
 
-    public function testGetStrategyForRendererNull() {
+    public function testGetStrategyForRendererNull()
+    {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $value = $this->object->getStrategyForRenderer($renderer);
         $this->assertNull($value);
@@ -216,7 +233,8 @@ class Service extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException AsseticBundle\Exception\InvalidArgumentException
      */
-    public function testGetStrategyForRendererFailure() {
+    public function testGetStrategyForRendererFailure()
+    {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
 
         $this->object->getConfiguration()->addRendererToStrategy(
@@ -227,7 +245,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->object->getStrategyForRenderer($renderer);
     }
 
-    public function testGetStrategyForRendererSuccess() {
+    public function testGetStrategyForRendererSuccess()
+    {
         $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
 
         $this->object->getConfiguration()->addRendererToStrategy(
@@ -239,7 +258,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('AsseticBundle\View\StrategyInterface', $value);
     }
 
-    public function testWriteAssetIfNotExists() {
+    public function testWriteAssetIfNotExists()
+    {
         $this->configuration->setBuildOnRequest(true);
         $this->configuration->setWriteIfChanged(true);
 
@@ -258,7 +278,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($targetFile);
     }
 
-    public function testWriteAssetIfIsUpdated() {
+    public function testWriteAssetIfIsUpdated()
+    {
         $this->configuration->setBuildOnRequest(true);
         $this->configuration->setWriteIfChanged(true);
 
@@ -302,7 +323,8 @@ class Service extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan($targetMTime, $modifiedTargetMTime);
     }
 
-    public function testWriteAssetIfNotUpdated() {
+    public function testWriteAssetIfNotUpdated()
+    {
         $this->configuration->setBuildOnRequest(true);
         $this->configuration->setWriteIfChanged(true);
 
@@ -344,12 +366,12 @@ class Service extends \PHPUnit_Framework_TestCase
     {
         $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
         // no workers by default:
-        $this->assertAttributeEquals(array(), 'workers', $factory);
+        $this->assertAttributeEquals([], 'workers', $factory);
 
         $cacheBusterStrategy = $this->getMockBuilder('AsseticBundle\CacheBuster\LastModifiedStrategy')->getMock();
         $this->object->setCacheBusterStrategy($cacheBusterStrategy);
         $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
         // cache buster strategy is added to workers list:
-        $this->assertAttributeEquals(array($cacheBusterStrategy), 'workers', $factory);
+        $this->assertAttributeEquals([$cacheBusterStrategy], 'workers', $factory);
     }
 }

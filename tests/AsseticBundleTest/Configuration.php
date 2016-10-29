@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundleTest;
 
 use AsseticBundle;
@@ -18,7 +19,7 @@ class Configuration extends \PHPUnit_Framework_TestCase
      *
      * @var array
      */
-    protected $testConfig = array();
+    protected $testConfig = [];
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -34,40 +35,48 @@ class Configuration extends \PHPUnit_Framework_TestCase
      * This method is called after a test is executed.
      */
     protected function tearDown()
-    {}
+    {
+    }
 
-    public function testIsDebug() {
+    public function testIsDebug()
+    {
         $this->assertFalse($this->object->isDebug());
     }
 
-    public function testSetDebug() {
+    public function testSetDebug()
+    {
         $expected = true;
         $this->assertNull($this->object->setDebug($expected));
         $this->assertEquals($expected, $this->object->isDebug());
     }
-    
-    public function testIsCombine() {
-    	$this->assertTrue($this->object->isCombine());
-    }
-    
-    public function testSetCombine() {
-    	$expected = false;
-    	$this->assertNull($this->object->setCombine($expected));
-    	$this->assertEquals($expected, $this->object->isCombine());
+
+    public function testIsCombine()
+    {
+        $this->assertTrue($this->object->isCombine());
     }
 
-    public function testSetWebPath() {
+    public function testSetCombine()
+    {
+        $expected = false;
+        $this->assertNull($this->object->setCombine($expected));
+        $this->assertEquals($expected, $this->object->isCombine());
+    }
+
+    public function testSetWebPath()
+    {
         $result = $this->object->setWebPath(TEST_ASSETS_DIR);
         $this->assertNull($result);
         $this->assertEquals(TEST_ASSETS_DIR, $this->object->getWebPath());
     }
 
-    public function getBaseUrl() {
+    public function getBaseUrl()
+    {
         $result = $this->object->getBaseUrl();
         $this->assertNull($result);
     }
 
-    public function testSetBaseUrl() {
+    public function testSetBaseUrl()
+    {
         $url = '/http://example.com';
         $expected = $url . '/';
 
@@ -76,12 +85,14 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->object->getBaseUrl());
     }
 
-    public function getBasePath() {
+    public function getBasePath()
+    {
         $result = $this->object->getBasePath();
         $this->assertNull($result);
     }
 
-    public function testSetBasePath() {
+    public function testSetBasePath()
+    {
         $url = '/~/jone/assets';
         $expected = trim($url,'/') . '/';
 
@@ -93,72 +104,82 @@ class Configuration extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testGetWebPathFailure() {
+    public function testGetWebPathFailure()
+    {
         $this->object->getWebPath();
     }
 
-    public function testSetCachePath() {
+    public function testSetCachePath()
+    {
         $result = $this->object->setCachePath(TEST_CACHE_DIR);
         $this->assertNull($result);
         $this->assertEquals(TEST_CACHE_DIR, $this->object->getCachePath());
     }
 
-    public function testGetCachePath() {
+    public function testGetCachePath()
+    {
         $result = $this->object->getCachePath();
         $this->assertNull($result);
     }
 
-    public function testGetCacheEnabled() {
+    public function testGetCacheEnabled()
+    {
         $this->assertFalse($this->object->getCacheEnabled());
     }
 
-    public function testSetCacheEnabled() {
+    public function testSetCacheEnabled()
+    {
         $expected = true;
         $this->assertNull($this->object->setCacheEnabled($expected));
         $this->assertEquals($expected, $this->object->getCacheEnabled());
     }
 
-    public function testGetDefault() {
-        $expected = array(
-            'assets' => array(),
-            'options' => array(),
-        );
+    public function testGetDefault()
+    {
+        $expected = [
+            'assets'  => [],
+            'options' => [],
+        ];
         $this->assertEquals($expected, $this->object->getDefault());
     }
 
-    public function testSetDefault() {
-        $options = array(
-            'test' => array(),
-        );
-        $expected = array(
-            'test' => array(),
-            'assets' => array(),
-            'options' => array(),
-        );
+    public function testSetDefault()
+    {
+        $options = [
+            'test' => [],
+        ];
+        $expected = [
+            'test'    => [],
+            'assets'  => [],
+            'options' => [],
+        ];
 
         $result = $this->object->setDefault($options);
         $this->assertNull($result);
         $this->assertEquals($expected, $this->object->getDefault());
     }
 
-    public function testSetRouters() {
-        $expected = array(
-            'home' => array(
+    public function testSetRouters()
+    {
+        $expected = [
+            'home' => [
                 'name' => 'value',
-            ),
-        );
+            ],
+        ];
         $result = $this->object->setRoutes($expected);
         $this->assertNull($result);
         $this->assertEquals($expected, $this->object->getRoutes());
     }
 
-    public function testGetRoutes() {
-        $expected = array();
+    public function testGetRoutes()
+    {
+        $expected = [];
         $result = $this->object->getRoutes();
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetRouter() {
+    public function testGetRouter()
+    {
         $result = $this->object->getRoute('test');
         $this->assertNull($result);
 
@@ -166,31 +187,32 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $result = $this->object->getRoute('test', $expected);
         $this->assertEquals($expected, $result);
 
-        $expected = array(
+        $expected = [
             'name' => 'value',
-        );
-        $routers = array(
+        ];
+        $routers = [
             'home' => $expected,
-        );
+        ];
         $this->object->setRoutes($routers);
         $result = $this->object->getRoute('home');
         $this->assertEquals($expected, $result);
     }
 
-    public function testMergeMultipleRouteMatches() {
-        $this->object->setRoutes(array(
-            'bar' => array(
+    public function testMergeMultipleRouteMatches()
+    {
+        $this->object->setRoutes([
+            'bar' => [
                 '@a',
                 '@d'
-            ),
-            'foo.*' => array(
+            ],
+            'foo.*' => [
                 '@a',
                 '@b'
-            ),
-            'foo/bar' => array(
+            ],
+            'foo/bar' => [
                 '@c'
-            )
-        ));
+            ]
+        ]);
 
         $assets = $this->object->getRoute('foo/bar');
         $this->assertCount(3, $assets);
@@ -200,22 +222,24 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $this->assertNotContains('@d', $assets);
     }
 
-    public function testEmptyRouteMatchWillNotTriggerDefault(){
-        $this->object->setRoutes(array('bar' => array()));
+    public function testEmptyRouteMatchWillNotTriggerDefault()
+    {
+        $this->object->setRoutes(['bar' => []]);
 
         $assets = $this->object->getRoute('bar');
         $this->assertNotEquals('default', $assets);
         $this->assertCount(0, $assets);
     }
 
-
-    public function testGetControllers() {
-        $expected = array();
+    public function testGetControllers()
+    {
+        $expected = [];
         $result = $this->object->getControllers();
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetController() {
+    public function testGetController()
+    {
         $controllerName = 'some';
         $result = $this->object->getController($controllerName);
         $this->assertNull($result);
@@ -224,24 +248,26 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $result = $this->object->getController($controllerName, $expected);
         $this->assertEquals($expected, $result);
 
-        $expected = array(
+        $expected = [
             'name' => 'value',
-        );
-        $data = array(
+        ];
+        $data = [
             $controllerName => $expected,
-        );
+        ];
         $this->object->setControllers($data);
         $result = $this->object->getController($controllerName);
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetModules() {
-        $expected = array();
+    public function testGetModules()
+    {
+        $expected = [];
         $result = $this->object->getModules();
         $this->assertEquals($expected, $result);
     }
 
-    public function testGetModule() {
+    public function testGetModule()
+    {
         $moduleName = 'SomeModule';
         $result = $this->object->getModule($moduleName);
         $this->assertNull($result);
@@ -250,24 +276,26 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $result = $this->object->getModule($moduleName, $expected);
         $this->assertEquals($expected, $result);
 
-        $expected = array(
+        $expected = [
             'name' => 'value',
-        );
-        $data = array(
+        ];
+        $data = [
             strtoupper($moduleName) => $expected,
-        );
+        ];
         $this->object->setModules($data);
         $result = $this->object->getModule($moduleName);
         $this->assertEquals($expected, $result);
     }
 
-    public function testSetRendererToStrategy() {
-        $data = array();
+    public function testSetRendererToStrategy()
+    {
+        $data = [];
         $result = $this->object->setRendererToStrategy($data);
         $this->assertNull($result);
     }
 
-    public function testGetStrategyNameForRenderer() {
+    public function testGetStrategyNameForRenderer()
+    {
         $strategyName = 'some-module';
         $result = $this->object->getStrategyNameForRenderer($strategyName);
         $this->assertNull($result);
@@ -276,18 +304,19 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $result = $this->object->getStrategyNameForRenderer($strategyName, $expected);
         $this->assertEquals($expected, $result);
 
-        $expected = array(
+        $expected = [
             'name' => 'value',
-        );
-        $data = array(
+        ];
+        $data = [
             $strategyName => $expected,
-        );
+        ];
         $this->object->setRendererToStrategy($data);
         $result = $this->object->getStrategyNameForRenderer($strategyName);
         $this->assertEquals($expected, $result);
     }
 
-    public function testAddRendererToStrategy() {
+    public function testAddRendererToStrategy()
+    {
         $value = $this->object->addRendererToStrategy('a', 'b');
         $this->assertNull($value);
     }

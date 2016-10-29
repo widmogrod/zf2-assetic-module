@@ -1,8 +1,8 @@
 <?php
+
 namespace AsseticBundle;
 
 use Zend\Stdlib;
-use AsseticBundle\Exception;
 
 class Configuration
 {
@@ -12,7 +12,7 @@ class Configuration
      * @var bool
      */
     protected $debug = false;
-    
+
     /**
      * Combine option giving the opportunity not to combine the assets in debug mode.
      *
@@ -88,31 +88,31 @@ class Configuration
      *
      * @var array
      */
-    protected $default = array(
-        'assets' => array(),
-        'options' => array(),
-    );
+    protected $default = [
+        'assets'  => [],
+        'options' => [],
+    ];
 
     /**
      * Map of routes names and assets configuration.
      *
      * @var array
      */
-    protected $routes = array();
+    protected $routes = [];
 
     /**
      * Map of modules names and assets configuration.
      *
      * @var array
      */
-    protected $modules = array();
+    protected $modules = [];
 
     /**
      * Map of controllers names and assets configuration.
      *
      * @var array
      */
-    protected $controllers = array();
+    protected $controllers = [];
 
     /**
      * Map of strategies that will be choose to setup Assetic\AssetInterface
@@ -120,7 +120,7 @@ class Configuration
      *
      * @var array
      */
-    protected $rendererToStrategy = array();
+    protected $rendererToStrategy = [];
 
     /**
      * List of error types occurring in EVENT_DISPATCH_ERROR that will use
@@ -128,12 +128,12 @@ class Configuration
      *
      * @var array
      */
-    protected $acceptableErrors = array();
+    protected $acceptableErrors = [];
 
     /**
      * Umask
      *
-     * @var null|integer
+     * @var null|int
      */
     protected $umask = null;
 
@@ -166,14 +166,14 @@ class Configuration
 
     public function isCombine()
     {
-    	return $this->combine;
+        return $this->combine;
     }
-    
+
     public function setCombine($flag)
     {
-    	$this->combine = (bool) $flag;
+        $this->combine = (bool) $flag;
     }
-    
+
     public function setWebPath($path)
     {
         $this->webPath = $path;
@@ -215,11 +215,11 @@ class Configuration
     public function setDefault(array $default)
     {
         if (!isset($default['assets'])) {
-            $default['assets'] = array();
+            $default['assets'] = [];
         }
 
         if (!isset($default['options'])) {
-            $default['options'] = array();
+            $default['options'] = [];
         }
 
         $this->default = $default;
@@ -242,7 +242,7 @@ class Configuration
 
     public function getRoute($name, $default = null)
     {
-        $assets = array();
+        $assets = [];
         $routeMatched = false;
 
         // Merge all assets configuration for which regular expression matches route
@@ -276,13 +276,14 @@ class Configuration
 
     public function setModules(array $modules)
     {
-        $this->modules = array();
+        $this->modules = [];
         foreach ($modules as $name => $options) {
             $this->addModule($name, $options);
         }
     }
 
-    public function addModule($name, array $options) {
+    public function addModule($name, array $options)
+    {
         $name = strtolower($name);
         $this->modules[$name] = $options;
     }
@@ -295,6 +296,7 @@ class Configuration
     public function getModule($name, $default = null)
     {
         $name = strtolower($name);
+
         return array_key_exists($name, $this->modules)
             ? $this->modules[$name]
             : $default;
@@ -340,8 +342,7 @@ class Configuration
 
     protected function processArray($config)
     {
-        foreach ($config as $key => $value)
-        {
+        foreach ($config as $key => $value) {
             $setter = $this->assembleSetterNameFromConfigKey($key);
             $this->{$setter}($value);
         }
@@ -359,6 +360,7 @@ class Configuration
                 . 'which must be defined'
             );
         }
+
         return $setter;
     }
 
@@ -390,7 +392,7 @@ class Configuration
     }
 
     /**
-     * @return integer|null
+     * @return int|null
      */
     public function getUmask()
     {
@@ -398,7 +400,7 @@ class Configuration
     }
 
     /**
-     * @param null|integer $umask
+     * @param null|int $umask
      */
     public function setUmask($umask)
     {
@@ -409,7 +411,7 @@ class Configuration
     }
 
     /**
-     * @param boolean $flag
+     * @param bool $flag
      */
     public function setBuildOnRequest($flag)
     {
@@ -417,7 +419,7 @@ class Configuration
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getBuildOnRequest()
     {
@@ -425,7 +427,7 @@ class Configuration
     }
 
     /**
-     * @param boolean $flag
+     * @param bool $flag
      */
     public function setWriteIfChanged($flag)
     {
@@ -433,7 +435,7 @@ class Configuration
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getWriteIfChanged()
     {

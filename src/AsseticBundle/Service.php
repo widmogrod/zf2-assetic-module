@@ -1,4 +1,5 @@
 <?php
+
 namespace AsseticBundle;
 
 use Assetic\Asset\AssetCollection;
@@ -40,7 +41,7 @@ class Service
     /**
      * @var StrategyInterface[]
      */
-    protected $strategy = array();
+    protected $strategy = [];
 
     /**
      * @var AssetManager
@@ -61,7 +62,6 @@ class Service
      * @var AsseticFilterManager
      */
     protected $filterManager;
-
 
     public function __construct(Configuration $configuration)
     {
@@ -88,6 +88,7 @@ class Service
         if (null === $this->assetManager) {
             $this->assetManager = new AssetManager();
         }
+
         return $this->assetManager;
     }
 
@@ -96,6 +97,7 @@ class Service
         if (null === $this->assetWriter) {
             $this->assetWriter = new AssetWriter($this->configuration->getWebPath());
         }
+
         return $this->assetWriter;
     }
 
@@ -112,6 +114,7 @@ class Service
     public function setCacheBusterStrategy(WorkerInterface $cacheBusterStrategy)
     {
         $this->cacheBusterStrategy = $cacheBusterStrategy;
+
         return $this;
     }
 
@@ -125,6 +128,7 @@ class Service
         if (null === $this->filterManager) {
             $this->filterManager = new AsseticFilterManager();
         }
+
         return $this->filterManager;
     }
 
@@ -168,7 +172,7 @@ class Service
         $moduleConfiguration = $this->configuration->getModules();
         foreach ($moduleConfiguration as $configuration) {
             $factory = $this->createAssetFactory($configuration);
-            $collections = (array)$configuration['collections'];
+            $collections = (array) $configuration['collections'];
             foreach ($collections as $name => $options) {
                 $this->prepareCollection($options, $name, $factory);
             }
@@ -184,7 +188,7 @@ class Service
 
     private function initFilters(array $filters)
     {
-        $result = array();
+        $result = [];
 
         $fm = $this->getFilterManager();
 
@@ -215,7 +219,7 @@ class Service
                 if (is_array($option) && !empty($option)) {
                     $r = new \ReflectionClass($name);
                     $filter = $r->newInstanceArgs($option);
-                } else if ($option) {
+                } elseif ($option) {
                     $filter = new $name($option);
                 } else {
                     $filter = new $name();
@@ -249,6 +253,7 @@ class Service
 
         if (count($config) > 0) {
             $this->setupRendererFromOptions($renderer, $config);
+
             return true;
         }
 
@@ -258,25 +263,28 @@ class Service
     public function getDefaultConfig()
     {
         $defaultDefinition = $this->configuration->getDefault();
-        return $defaultDefinition ? $defaultDefinition : array();
+
+        return $defaultDefinition ? $defaultDefinition : [];
     }
 
     public function getRouterConfig()
     {
         $assetOptions = $this->configuration->getRoute($this->getRouteName());
-        return $assetOptions ? $assetOptions : array();
+
+        return $assetOptions ? $assetOptions : [];
     }
 
     public function getControllerConfig()
     {
         $assetOptions = $this->configuration->getController($this->getControllerName());
         if ($assetOptions) {
-            if (array_key_exists('actions', $assetOptions)){
+            if (array_key_exists('actions', $assetOptions)) {
                 unset($assetOptions['actions']);
             }
         } else {
-            $assetOptions = array();
+            $assetOptions = [];
         }
+
         return $assetOptions;
     }
 
@@ -289,8 +297,9 @@ class Service
         ) {
             $actionAssets = $assetOptions['actions'][$actionName];
         } else {
-            $actionAssets = array();
+            $actionAssets = [];
         }
+
         return $actionAssets;
     }
 
@@ -317,20 +326,24 @@ class Service
 
     /**
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     *
      * @return bool
      */
     public function hasStrategyForRenderer(Renderer $renderer)
     {
         $rendererName = $this->getRendererName($renderer);
-        return !!$this->configuration->getStrategyNameForRenderer($rendererName);
+
+        return (bool) $this->configuration->getStrategyNameForRenderer($rendererName);
     }
 
     /**
      * Get strategy to setup assets for given $renderer.
      *
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     *
      * @throws Exception\DomainException
      * @throws Exception\InvalidArgumentException
+     *
      * @return \AsseticBundle\View\StrategyInterface|null
      */
     public function getStrategyForRenderer(Renderer $renderer)
@@ -368,6 +381,7 @@ class Service
         $strategy->setDebug($this->configuration->isDebug());
         $strategy->setCombine($this->configuration->isCombine());
         $strategy->setRenderer($renderer);
+
         return $strategy;
     }
 
@@ -375,6 +389,7 @@ class Service
      * Get renderer name from $renderer object.
      *
      * @param \Zend\View\Renderer\RendererInterface $renderer
+     *
      * @return string
      */
     public function getRendererName(Renderer $renderer)
@@ -394,6 +409,7 @@ class Service
 
     /**
      * @param array $configuration
+     *
      * @return Factory\AssetFactory
      */
     public function createAssetFactory(array $configuration)
@@ -406,6 +422,7 @@ class Service
             $factory->addWorker($worker);
         }
         $factory->setDebug($this->configuration->isDebug());
+
         return $factory;
     }
 
@@ -420,8 +437,7 @@ class Service
         $targetPath,
         Factory\AssetFactory $factory,
         $disableSourcePath = false
-    )
-    {
+    ) {
         foreach ($asset as $value) {
             /** @var $value AssetInterface */
             if ($disableSourcePath) {
@@ -439,13 +455,14 @@ class Service
      * @param array $options
      * @param string $name
      * @param Factory\AssetFactory $factory
+     *
      * @return void
      */
     public function prepareCollection($options, $name, Factory\AssetFactory $factory)
     {
-        $assets = isset($options['assets']) ? $options['assets'] : array();
-        $filters = isset($options['filters']) ? $options['filters'] : array();
-        $options = isset($options['options']) ? $options['options'] : array();
+        $assets = isset($options['assets']) ? $options['assets'] : [];
+        $filters = isset($options['filters']) ? $options['filters'] : [];
+        $options = isset($options['options']) ? $options['options'] : [];
         $options['output'] = isset($options['output']) ? $options['output'] : $name;
         $moveRaw = isset($options['move_raw']) && $options['move_raw'];
         $targetPath = !empty( $options['targetPath'] ) ? $options['targetPath'] : '';
@@ -488,6 +505,7 @@ class Service
         // Write asset on disk on every request
         if (!$this->configuration->getWriteIfChanged()) {
             $this->write($asset, $factory);
+
             return;
         }
 
