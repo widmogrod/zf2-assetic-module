@@ -99,6 +99,21 @@ return [
 ];
 ```
 
+- You could also copy file from `zf2-asseitc-module` to `module/Application`
+  ```
+  cp vendor/widmogrod/zf2-assetic-module/configs/assets.config.php.dist module/Application/config/assets.config.php
+  ```
+- Update `module/Application/src/Module.php` 
+  ```php
+  public function getConfig()
+  {
+      return array_merge(
+          include __DIR__ . '/../config/module.config.php',
+          include __DIR__ . '/../config/assets.config.php'
+      );
+  }
+  ```
+
 #### Check if your `application.config.php` file has bellow options set to `false` for development mode.
 ```php
 return [
