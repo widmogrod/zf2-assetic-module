@@ -16,6 +16,7 @@ return [
             'Assetic\AssetManager'        => 'Zend\ServiceManager\Factory\InvokableFactory',
             'AsseticBundle\Listener'      => 'Zend\ServiceManager\Factory\InvokableFactory',
             'AsseticBundle\Cli'           => 'AsseticBundle\Cli\ApplicationFactory',
+            'AsseticBundle\Configuration' => 'AsseticBundle\Factory\ConfigurationFactory',
         ],
     ],
 
