@@ -12,8 +12,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class Module implements
         AutoloaderProviderInterface,
         ConfigProviderInterface,
-        BootstrapListenerInterface,
-        ServiceProviderInterface
+        BootstrapListenerInterface
 {
     /**
      * Listen to the bootstrap event
@@ -41,25 +40,6 @@ class Module implements
     public function getConfig()
     {
         return require __DIR__ . '/configs/module.config.php';
-    }
-
-    /**
-     * Expected to return \Zend\ServiceManager\Config object or array to
-     * seed such an object.
-     *
-     * @return array|\Zend\ServiceManager\Config
-     */
-    public function getServiceConfig()
-    {
-        return [
-            'factories' => [
-                'AsseticBundle\Configuration' => function (ServiceLocatorInterface $serviceLocator) {
-                    $configuration = $serviceLocator->get('Configuration');
-
-                    return new Configuration($configuration['assetic_configuration']);
-                }
-            ],
-        ];
     }
 
     /**
