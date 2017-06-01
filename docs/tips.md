@@ -71,12 +71,21 @@ Thanks to that, the browser will always receive fresh assets.
 
 By default, cache busting is disabled.
 To enable it you only need to specify which cache buster strategy you want to use by setting `AsseticCacheBuster` key in service manager configuration:
-```
-return array(
-    'service_manager' => array(
-        'invokables' => array(
-            'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
-)));
+
+```php
+use AsseticBundle\CacheBuster\LastModifiedStrategy;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
+    'service_manager' => [
+        'aliases'   => [
+            'AsseticCacheBuster' => LastModifiedStrategy::class,
+        ],
+        'factories' => [
+            LastModifiedStrategy::class => InvokableFactory::class,
+        ]
+    ]
+];
 ```
 
 ## Using ZfcRbac module?
