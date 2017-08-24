@@ -525,23 +525,47 @@ class Service
      */
     protected function write(AssetInterface $asset, Factory\AssetFactory $factory)
     {
-        $umask = $this->configuration->getUmask();
-        if (null !== $umask) {
-            $umask = umask($umask);
-        }
-
         if ($this->configuration->isDebug() && !$this->configuration->isCombine()
             && ($asset instanceof AssetCollection)
         ) {
+            /** @var AssetInterface $item */
             foreach ($asset as $item) {
                 $this->writeAsset($item, $factory);
             }
         } else {
             $this->getAssetWriter()->writeAsset($asset);
         }
+        $this->setPermission($asset);
+    }
 
-        if (null !== $umask) {
-            umask($umask);
+    /**
+     * @param AssetInterface $asset Asset was wrote
+     */
+    protected function setPermission(AssetInterface $asset)
+    {
+        $target = $this->configuration->getWebPath($asset->getTargetPath());
+
+        if (is_file($target)) {
+            if ($this->configuration->getFilePermission() !== null) {
+                chmod($target, $this->configuration->getFilePermission());
+            }
+            $baseDir = dirname($asset->getTargetPath());
+        } else {
+            $baseDir = $asset->getTargetPath();
+        }
+
+        if ($this->configuration->getDirPermission() === null) {
+            return;
+        }
+
+        $dirNames = explode('/', rtrim($baseDir, '/'));
+
+        $dPerm   = $this->configuration->getDirPermission();
+        $dirName = [];
+        foreach ($dirNames as $item) {
+            $dirName[] = $item;
+            $path      = $this->configuration->getWebPath(implode('/', $dirName));
+            chmod($path, $dPerm);
         }
     }
 }

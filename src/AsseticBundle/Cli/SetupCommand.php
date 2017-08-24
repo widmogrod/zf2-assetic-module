@@ -39,7 +39,11 @@ class SetupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = $this->assetic->getConfiguration();
-        $mode   = (null !== ($mode = $config->getUmask())) ? $mode : 0775;
+
+        $mode = $config->getDirPermission();
+        if ($mode === null) {
+            $mode = 0775;
+        }
 
         if (!$this->createPath($output, 'Cache', $config->getCachePath(), $mode)) {
             return 1;

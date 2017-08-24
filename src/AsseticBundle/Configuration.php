@@ -131,11 +131,14 @@ class Configuration
     protected $acceptableErrors = [];
 
     /**
-     * Umask
-     *
-     * @var null|int
+     * @var null|int File permission for assetic files.
      */
-    protected $umask = null;
+    protected $filePermission = null;
+
+    /**
+     * @var null|int Directory permission for assetic directories.
+     */
+    protected $dirPermission = null;
 
     public function __construct($config = null)
     {
@@ -394,19 +397,38 @@ class Configuration
     /**
      * @return int|null
      */
-    public function getUmask()
+    public function getFilePermission()
     {
-        return $this->umask;
+        return $this->filePermission;
     }
 
     /**
-     * @param null|int $umask
+     * @param null|int $filePermission
      */
-    public function setUmask($umask)
+    public function setFilePermission($filePermission)
     {
-        $this->umask = null;
-        if (is_int($umask)) {
-            $this->umask = (int) $umask;
+        $this->filePermission = null;
+        if (is_int($filePermission)) {
+            $this->filePermission = (int) $filePermission;
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDirPermission()
+    {
+        return $this->dirPermission;
+    }
+
+    /**
+     * @param null|int $dirPermission
+     */
+    public function setDirPermission($dirPermission)
+    {
+        $this->dirPermission = null;
+        if (is_int($dirPermission)) {
+            $this->dirPermission = (int) $dirPermission;
         }
     }
 

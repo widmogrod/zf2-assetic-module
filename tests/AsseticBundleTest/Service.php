@@ -54,6 +54,14 @@ class Service extends \PHPUnit_Framework_TestCase
                             ],
                             'options' => [],
                         ],
+                        'deeper_base_css' => [
+                            'assets' => [
+                                'css/global.css',
+                            ],
+                            'options' => [
+                                'output' => 'chmod/very/deeper/deeper_base_css.css',
+                            ],
+                        ],
                         'base_js' => [
                             'assets' => [
                                 'js/test.js',
@@ -373,5 +381,47 @@ class Service extends \PHPUnit_Framework_TestCase
         $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
         // cache buster strategy is added to workers list:
         $this->assertAttributeEquals([$cacheBusterStrategy], 'workers', $factory);
+    }
+
+    public function testWriteAssetWithSetPermission()
+    {
+        $this->configuration->setFilePermission(0777);
+        $this->configuration->setDirPermission(0770);
+
+        $this->object->build();
+
+        /** @var \Assetic\Asset\AssetInterface $assets */
+        $asset   = $this->object->getAssetManager()->get('deeper_base_css');
+        $targetFile = $this->configuration->getWebPath($asset->getTargetPath());
+
+        if (is_file($targetFile)) {
+            unlink($targetFile);
+            foreach (['chmod/very/deeper', 'chmod/very', 'chmod'] as $name) {
+                rmdir($this->configuration->getWebPath($name));
+            }
+        }
+
+        $factory = $this->object->createAssetFactory($this->configuration->getModule('test_application'));
+
+        // checking on exists file
+        $this->assertFileNotExists($targetFile);
+        $this->object->writeAsset($asset, $factory);
+        $this->assertFileExists($targetFile);
+
+        $filePermisson = function ($path) {
+            return substr(sprintf('%o', fileperms($path)), -4);
+        };
+
+        // reset cache http://php.net/manual/ru/function.clearstatcache.php
+        clearstatcache(true, $targetFile);
+
+        // checking file permission
+        $this->assertEquals('0777', $filePermisson($targetFile));
+
+        // checking directory permission
+        foreach (['chmod/very/deeper', 'chmod/very', 'chmod'] as $name) {
+            $path = $this->configuration->getWebPath($name);
+            $this->assertEquals('0770', $filePermisson($path));
+        }
     }
 }
