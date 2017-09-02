@@ -320,4 +320,32 @@ class Configuration extends \PHPUnit_Framework_TestCase
         $value = $this->object->addRendererToStrategy('a', 'b');
         $this->assertNull($value);
     }
+
+    public function testGetFilePermission()
+    {
+        $this->assertNull($this->object->getFilePermission());
+    }
+
+    public function testGetDirPermission()
+    {
+        $this->assertNull($this->object->getDirPermission());
+    }
+
+    public function testSetFilePermission()
+    {
+        $this->object->setFilePermission('+x');
+        $this->assertNull($this->object->getFilePermission());
+
+        $this->object->setFilePermission(0777);
+        $this->assertEquals(0777, $this->object->getFilePermission());
+    }
+
+    public function testSetDirPermission()
+    {
+        $this->object->setDirPermission('+w');
+        $this->assertNull($this->object->getDirPermission());
+
+        $this->object->setDirPermission(0640);
+        $this->assertEquals(0640, $this->object->getDirPermission());
+    }
 }
