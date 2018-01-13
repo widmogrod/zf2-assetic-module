@@ -14,7 +14,7 @@ namespace AsseticBundle\CacheBuster;
  */
 class Null extends NoCache
 {
-    public function __construct($typeOrOptions = null)
+    public function __construct()
     {
         trigger_error(
             sprintf(
