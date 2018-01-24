@@ -17,6 +17,7 @@ return [
             'AsseticBundle\Listener'      => 'Zend\ServiceManager\Factory\InvokableFactory',
             'AsseticBundle\Cli'           => 'AsseticBundle\Cli\ApplicationFactory',
             'AsseticBundle\Configuration' => 'AsseticBundle\Factory\ConfigurationFactory',
+            'AsseticBundle\AsseticMiddleware' => \AsseticBundle\Factory\MiddlewareFactory::class,
         ],
     ],
 
