@@ -2,9 +2,9 @@
 
 namespace AsseticBundle\View;
 
-use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer,
-    Assetic\Asset\AssetInterface;
+use AsseticBundle\Service;
+use Zend\View\Renderer\RendererInterface as Renderer;
+use Assetic\Asset\AssetInterface;
 
 interface StrategyInterface
 {

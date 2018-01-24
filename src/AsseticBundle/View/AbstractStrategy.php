@@ -2,8 +2,8 @@
 
 namespace AsseticBundle\View;
 
-use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer;
+use AsseticBundle\Service;
+use Zend\View\Renderer\RendererInterface as Renderer;
 
 abstract class AbstractStrategy implements StrategyInterface
 {

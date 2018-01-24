@@ -3,6 +3,7 @@
 namespace AsseticBundle;
 
 use Interop\Container\ContainerInterface;
+use Zend\Expressive\Helper\UrlHelper;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -19,11 +20,17 @@ class ServiceFactory implements FactoryInterface
     {
         $asseticConfig = $locator->get('AsseticConfiguration');
         if ($asseticConfig->detectBaseUrl()) {
-            /** @var $request \Zend\Http\PhpEnvironment\Request */
-            $request = $locator->get('Request');
-            if (method_exists($request, 'getBaseUrl')) {
-                $asseticConfig->setBaseUrl($request->getBaseUrl());
-            }
+            //$request = $locator->get('Request');
+            //$request = $locator->get(\Zend\Expressive\Router\RouterInterface::class);
+            //if (method_exists($request, 'getBaseUrl')) {
+            //    $asseticConfig->setBaseUrl($request->getBaseUrl());
+            //}
+
+            $urlHelper = $locator->get(UrlHelper::class);
+            //$this->helper->setBasePath($locale);
+            //$basePath = $this->getBasePath();
+            $asseticConfig->setBaseUrl($urlHelper->getBasePath());
+
         }
 
         $asseticService = new Service($asseticConfig);
