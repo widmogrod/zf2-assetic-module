@@ -24,7 +24,7 @@
     "bin/assetic"
   ],
   "require": {
-    "php": "^5.6 || ^7.0",
+    "php": "^5.6 || ^7.*",
     "kriswallsmith/assetic": "^1.2",
     "widmogrod/php-functional": "^1.0",
     "zendframework/zend-mvc": "^3.0",
