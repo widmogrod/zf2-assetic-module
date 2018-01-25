@@ -10,39 +10,35 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ServiceFactory implements FactoryInterface
 {
     /**
-     * @param ContainerInterface $locator
+     * @param ContainerInterface $container
      * @param string $requestedName
      * @param array $options, optional
-     *
      * @return \AsseticBundle\Service
      */
-    public function __invoke(ContainerInterface $locator, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $asseticConfig = $locator->get('AsseticConfiguration');
+        $asseticConfig = $container->get('AsseticConfiguration');
         if ($asseticConfig->detectBaseUrl()) {
-            //$request = $locator->get('Request');
-            //$request = $locator->get(\Zend\Expressive\Router\RouterInterface::class);
-            //if (method_exists($request, 'getBaseUrl')) {
-            //    $asseticConfig->setBaseUrl($request->getBaseUrl());
-            //}
-
-            $urlHelper = $locator->get(UrlHelper::class);
-            //$this->helper->setBasePath($locale);
-            //$basePath = $this->getBasePath();
-            $asseticConfig->setBaseUrl($urlHelper->getBasePath());
-
+            if (class_exists(\Zend\Expressive\Application::class)) { // is expressive app
+                $urlHelper = $container->get(UrlHelper::class);
+                $asseticConfig->setBaseUrl($urlHelper->getBasePath());
+            } else {
+                /** @var $request \Zend\Http\PhpEnvironment\Request */
+                $request = $container->get('Request');
+                if (method_exists($request, 'getBaseUrl')) {
+                    $asseticConfig->setBaseUrl($request->getBaseUrl());
+                }
+            }
         }
 
         $asseticService = new Service($asseticConfig);
-        $asseticService->setAssetManager($locator->get('Assetic\AssetManager'));
-        $asseticService->setAssetWriter($locator->get('Assetic\AssetWriter'));
-        $asseticService->setFilterManager($locator->get('Assetic\FilterManager'));
-
+        $asseticService->setAssetManager($container->get('Assetic\AssetManager'));
+        $asseticService->setAssetWriter($container->get('Assetic\AssetWriter'));
+        $asseticService->setFilterManager($container->get('Assetic\FilterManager'));
         // Cache buster is not mandatory
-        if ($locator->has('AsseticCacheBuster')) {
-            $asseticService->setCacheBusterStrategy($locator->get('AsseticCacheBuster'));
+        if ($container->has('AsseticCacheBuster')) {
+            $asseticService->setCacheBusterStrategy($container->get('AsseticCacheBuster'));
         }
-
         return $asseticService;
     }
 

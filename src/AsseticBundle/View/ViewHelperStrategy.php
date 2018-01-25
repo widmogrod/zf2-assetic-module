@@ -49,8 +49,7 @@ class ViewHelperStrategy extends AbstractStrategy
                 if (strpos($path, "head_") !== false) {
                     $renderer->plugin('HeadScript')->appendFile($path);
                 } else {
-                    $plugin = $renderer->plugin('InlineScript');
-                    $plugin->appendFile($path);
+                    $renderer->plugin('InlineScript')->appendFile($path);
                 }
                 break;
         }
