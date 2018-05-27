@@ -238,11 +238,8 @@ class Service
     {
         $controllerConfig = $this->getControllerConfig();
         $actionConfig = $this->getActionConfig();
-        $config = array_merge($controllerConfig, $actionConfig);
-
-        if (count($config) == 0) {
-            $config = $this->getRouterConfig();
-        }
+        $routerConfig = $this->getRouterConfig();
+        $config = array_merge($routerConfig, $controllerConfig, $actionConfig);
 
         // If we don't have any assets listed by now, or if we are mixing in
         // the default assets, then merge in the default assets to the config array
