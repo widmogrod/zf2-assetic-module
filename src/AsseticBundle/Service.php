@@ -240,9 +240,11 @@ class Service
         $actionConfig = $this->getActionConfig();
         $routerConfig = $this->getRouterConfig();
 
+        $config = array_merge($controllerConfig, $actionConfig);
+
         $mergeConfigs = $this->configuration->canMergeActionAndRouterConfig();
         if ($mergeConfigs) {
-            $config = array_merge($routerConfig, $controllerConfig, $actionConfig);
+            $config = array_merge($routerConfig, $config);
         } elseif (count($config) == 0) {
             $config = $routerConfig;
         }
