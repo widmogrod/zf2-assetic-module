@@ -4,6 +4,7 @@ namespace AsseticBundle\View;
 
 use Assetic\Asset\AssetCollection;
 use Zend\View\Renderer\PhpRenderer;
+
 use Assetic\Asset\AssetInterface;
 
 class ViewHelperStrategy extends AbstractStrategy
@@ -41,6 +42,7 @@ class ViewHelperStrategy extends AbstractStrategy
 
     protected function appendScript($path)
     {
+        /** @var \Zend\Expressive\ZendView\ZendViewRenderer $renderer */
         $renderer = $this->getRenderer();
         switch (true) {
             case ($renderer instanceof PhpRenderer):
