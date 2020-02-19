@@ -211,14 +211,14 @@ class Service extends \PHPUnit_Framework_TestCase
 
     public function testGetRendererName()
     {
-        $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
+        $renderer = $this->getMockBuilder('Laminas\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $name = $this->object->getRendererName($renderer);
         $this->assertEquals(get_class($renderer), $name);
     }
 
     public function testHasStrategyForRenderer()
     {
-        $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
+        $renderer = $this->getMockBuilder('Laminas\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $value = $this->object->hasStrategyForRenderer($renderer);
         $this->assertFalse($value);
 
@@ -233,7 +233,7 @@ class Service extends \PHPUnit_Framework_TestCase
 
     public function testGetStrategyForRendererNull()
     {
-        $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
+        $renderer = $this->getMockBuilder('Laminas\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
         $value = $this->object->getStrategyForRenderer($renderer);
         $this->assertNull($value);
     }
@@ -243,7 +243,7 @@ class Service extends \PHPUnit_Framework_TestCase
      */
     public function testGetStrategyForRendererFailure()
     {
-        $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
+        $renderer = $this->getMockBuilder('Laminas\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
 
         $this->object->getConfiguration()->addRendererToStrategy(
             get_class($renderer),
@@ -255,7 +255,7 @@ class Service extends \PHPUnit_Framework_TestCase
 
     public function testGetStrategyForRendererSuccess()
     {
-        $renderer = $this->getMockBuilder('Zend\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
+        $renderer = $this->getMockBuilder('Laminas\View\Renderer\RendererInterface')->disableOriginalConstructor()->getMock();
 
         $this->object->getConfiguration()->addRendererToStrategy(
             get_class($renderer),

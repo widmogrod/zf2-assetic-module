@@ -3,7 +3,7 @@
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer;
+    Laminas\View\Renderer\RendererInterface as Renderer;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
@@ -23,7 +23,7 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * @return \Zend\View\Renderer\RendererInterface
+     * @return \Laminas\View\Renderer\RendererInterface
      */
     public function getRenderer()
     {

@@ -4,7 +4,7 @@ namespace AsseticBundle\Factory;
 
 use AsseticBundle\Configuration;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ConfigurationFactory implements FactoryInterface
 {

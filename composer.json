@@ -1,52 +1,55 @@
 {
-  "name": "widmogrod/zf2-assetic-module",
-  "type": "library",
-  "description": "Zend Framework 2 module that provides complete integration of Assetic library",
-  "keywords": [
-    "assetic",
-    "assets",
-    "resources",
-    "css",
-    "js",
-    "less"
-  ],
-  "homepage": "https://github.com/widmogrod/zf2-assetic-module",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Gabriel Habryn",
-      "email": "widmogrod@gmail.com",
-      "homepage": "https://github.com/widmogrod/zf2-assetic-module",
-      "role": "Developer"
-    }
-  ],
-  "bin": [
-    "bin/assetic"
-  ],
-  "require": {
-    "php": "^5.6 || ^7.0",
-    "kriswallsmith/assetic": "^1.2",
-    "widmogrod/php-functional": "^1.0",
-    "zendframework/zend-mvc": "^3.0",
-    "symfony/console": "^3.1.3"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^5.4",
-    "fabpot/php-cs-fixer": "^1.12"
-  },
-  "suggest": {
-    "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
-    "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler"
-  },
-  "scripts": {
-    "test": "phpunit",
-    "fix-code": "php-cs-fixer fix",
-    "check-code": "php-cs-fixer fix --verbose --diff --dry-run"
-  },
-  "autoload": {
-    "psr-0": {
-      "AsseticBundle": "src"
+    "name": "widmogrod/zf2-assetic-module",
+    "type": "library",
+    "description": "Zend Framework 2 module that provides complete integration of Assetic library",
+    "keywords": [
+        "assetic",
+        "assets",
+        "resources",
+        "css",
+        "js",
+        "less"
+    ],
+    "homepage": "https://github.com/widmogrod/zf2-assetic-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Habryn",
+            "email": "widmogrod@gmail.com",
+            "homepage": "https://github.com/widmogrod/zf2-assetic-module",
+            "role": "Developer"
+        }
+    ],
+    "bin": [
+        "bin/assetic"
+    ],
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "kriswallsmith/assetic": "^1.2",
+        "widmogrod/php-functional": "^1.0",
+        "laminas/laminas-mvc": "^3.0",
+        "symfony/console": "^3.1.3",
+        "laminas/laminas-dependency-plugin": "^1.0"
     },
-    "classmap": ["Module.php"]
-  }
+    "require-dev": {
+        "phpunit/phpunit": "^5.4",
+        "fabpot/php-cs-fixer": "^1.12"
+    },
+    "suggest": {
+        "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
+        "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "fix-code": "php-cs-fixer fix",
+        "check-code": "php-cs-fixer fix --verbose --diff --dry-run"
+    },
+    "autoload": {
+        "psr-0": {
+            "AsseticBundle": "src"
+        },
+        "classmap": [
+            "Module.php"
+        ]
+    }
 }

@@ -4,7 +4,7 @@ namespace AsseticBundle;
 
 use Assetic\Filter\FilterInterface;
 use Assetic\FilterManager as AsseticFilterManager;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FilterManager extends AsseticFilterManager
 {

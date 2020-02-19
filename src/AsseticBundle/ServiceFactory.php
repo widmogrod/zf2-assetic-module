@@ -3,8 +3,8 @@
 namespace AsseticBundle;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ServiceFactory implements FactoryInterface
 {
@@ -19,7 +19,7 @@ class ServiceFactory implements FactoryInterface
     {
         $asseticConfig = $locator->get('AsseticConfiguration');
         if ($asseticConfig->detectBaseUrl()) {
-            /** @var $request \Zend\Http\PhpEnvironment\Request */
+            /** @var $request \Laminas\Http\PhpEnvironment\Request */
             $request = $locator->get('Request');
             if (method_exists($request, 'getBaseUrl')) {
                 $asseticConfig->setBaseUrl($request->getBaseUrl());

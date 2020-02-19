@@ -2,11 +2,11 @@
 
 namespace AsseticBundle;
 
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\CallbackHandler;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Stdlib\CallbackHandler;
 
 class Listener implements ListenerAggregateInterface
 {
