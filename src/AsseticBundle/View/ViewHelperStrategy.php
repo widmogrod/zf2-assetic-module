@@ -3,7 +3,7 @@
 namespace AsseticBundle\View;
 
 use Assetic\Asset\AssetCollection;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 use Assetic\Asset\AssetInterface;
 
 class ViewHelperStrategy extends AbstractStrategy

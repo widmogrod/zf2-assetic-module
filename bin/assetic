@@ -34,11 +34,11 @@ if (!file_exists('config/application.config.php')) {
 
 $appConfig = include 'config/application.config.php';
 if (file_exists('config/development.config.php')) {
-    $appConfig = Zend\Stdlib\ArrayUtils::merge($appConfig, include 'config/development.config.php');
+    $appConfig = Laminas\Stdlib\ArrayUtils::merge($appConfig, include 'config/development.config.php');
 }
 
 // init Zend Application
-$application = \Zend\Mvc\Application::init($appConfig);
+$application = \Laminas\Mvc\Application::init($appConfig);
 
 /* @var $cli \Symfony\Console\Application */
 $cli = $application->getServiceManager()->get('AsseticBundle\Cli');

@@ -74,7 +74,7 @@ To enable it you only need to specify which cache buster strategy you want to us
 
 ```php
 use AsseticBundle\CacheBuster\LastModifiedStrategy;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => [
@@ -93,7 +93,7 @@ return [
 Please note anyone using `zf2-assetic-module` with `ZfcRbac` you will experience this same issue on (Access Denied)[https://github.com/widmogrod/zf2-assetic-module/pull/41]. This is due to the white list of acceptable errors in assetic. You will need to allow the firewall errors in your assetic configuration to get css on your access denied pages:
 
 ```
-use Zend\Mvc\Application;
+use Laminas\Mvc\Application;
 use ZfcRbac\Guard\GuardInterface;
 
 return array(

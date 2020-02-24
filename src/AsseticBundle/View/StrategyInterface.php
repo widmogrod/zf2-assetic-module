@@ -3,7 +3,7 @@
 namespace AsseticBundle\View;
 
 use AsseticBundle\Service,
-    Zend\View\Renderer\RendererInterface as Renderer,
+    Laminas\View\Renderer\RendererInterface as Renderer,
     Assetic\Asset\AssetInterface;
 
 interface StrategyInterface

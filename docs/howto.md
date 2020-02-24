@@ -4,7 +4,7 @@ Step by step introduction, how to use `AsseticBundle` with `ZF3`
 
 #### [Install ZF3 skeleton application](https://github.com/zendframework/ZendSkeletonApplication)
 ```
-composer create-project zendframework/skeleton-application path/to/project
+composer create-project laminas/skeleton-application path/to/project
 ```
 
 #### Enter ZF3 directory
@@ -20,8 +20,8 @@ composer require widmogrod/zf2-assetic-module
 #### Declare `AsseticBundle` in the `config/modules.config.php` file:
 ```php
 return [
-    'Zend\Router',
-    'Zend\Validator',
+    'Laminas\Router',
+    'Laminas\Validator',
     'AsseticBundle', // <-- put it here
     'Application',
 ];

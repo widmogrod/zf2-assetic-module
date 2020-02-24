@@ -224,7 +224,7 @@ return array(
 2012-08-26
 ----------
 
-  * Rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Zend\View\Renderer
+  * Rewrite AsseticBundle\Service to determinate how to set up template to use resources (link, script) depending on Laminas\View\Renderer
   * Assetic configuration namespace was change from:
 
 ``` php

@@ -201,9 +201,9 @@ Also,….
 
 | Renderer | Strategy  |
 |----------|-----------|
-| `Zend\View\Renderer\PhpRenderer`  | `AsseticBundle\View\ViewHelperStrategy`
-| `Zend\View\Renderer\FeedRenderer` | `AsseticBundle\View\NoneStrategy`
-| `Zend\View\Renderer\JsonRenderer` | `AsseticBundle\View\NoneStrategy`
+| `Laminas\View\Renderer\PhpRenderer`  | `AsseticBundle\View\ViewHelperStrategy`
+| `Laminas\View\Renderer\FeedRenderer` | `AsseticBundle\View\NoneStrategy`
+| `Laminas\View\Renderer\JsonRenderer` | `AsseticBundle\View\NoneStrategy`
 
 ### AcceptableErrors
 

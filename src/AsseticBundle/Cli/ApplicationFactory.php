@@ -4,8 +4,8 @@ namespace AsseticBundle\Cli;
 
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ApplicationFactory implements FactoryInterface
 {
