@@ -441,9 +441,9 @@ class Service
         foreach ($asset as $value) {
             /** @var $value AssetInterface */
             if ($disableSourcePath) {
-                $value->setTargetPath(( $targetPath ? $targetPath : '' ) . basename( $value->getSourcePath() ) );
+                $value->setTargetPath(($targetPath ? $targetPath : '') . basename($value->getSourcePath()));
             } else {
-                $value->setTargetPath(( $targetPath ? $targetPath : '' ) . $value->getSourcePath());
+                $value->setTargetPath(($targetPath ? $targetPath : '') . $value->getSourcePath());
             }
 
             $value = $this->cacheAsset($value);
@@ -465,8 +465,8 @@ class Service
         $options = isset($options['options']) ? $options['options'] : [];
         $options['output'] = isset($options['output']) ? $options['output'] : $name;
         $moveRaw = isset($options['move_raw']) && $options['move_raw'];
-        $targetPath = !empty( $options['targetPath'] ) ? $options['targetPath'] : '';
-        if (substr( $targetPath, -1 ) != DIRECTORY_SEPARATOR) {
+        $targetPath = !empty($options['targetPath']) ? $options['targetPath'] : '';
+        if (substr($targetPath, -1) != DIRECTORY_SEPARATOR) {
             $targetPath .= DIRECTORY_SEPARATOR;
         }
 
@@ -476,10 +476,10 @@ class Service
         // Allow to move all files 1:1 to new directory
         // its particularly useful when this assets are i.e. images.
         if ($moveRaw) {
-            if ( isset( $options['disable_source_path'] ) ) {
-                $this->moveRaw( $asset, $targetPath, $factory, $options['disable_source_path'] );
+            if (isset($options['disable_source_path'])) {
+                $this->moveRaw($asset, $targetPath, $factory, $options['disable_source_path']);
             } else {
-                $this->moveRaw( $asset, $targetPath, $factory );
+                $this->moveRaw($asset, $targetPath, $factory);
             }
         } else {
             $asset = $this->cacheAsset($asset);

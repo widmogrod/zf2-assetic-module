@@ -2,12 +2,12 @@
 
 namespace AsseticBundle\View\Helper;
 
-use Zend\View\Helper\Placeholder\Container,
-    Zend\ServiceManager\ServiceLocatorInterface;
-use AsseticBundle\ServiceFactory,
-    AsseticBundle\Exception,
-    Assetic\Asset\AssetInterface,
-    Assetic\Asset\AssetCollection;
+use Zend\View\Helper\Placeholder\Container;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use AsseticBundle\ServiceFactory;
+use AsseticBundle\Exception;
+use Assetic\Asset\AssetInterface;
+use Assetic\Asset\AssetCollection;
 
 /**
  * Class Asset
