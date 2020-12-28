@@ -6,7 +6,7 @@ use Assetic\Asset\AssetCollection;
 use Assetic\AssetManager;
 use Assetic\FilterManager as AsseticFilterManager;
 use Assetic\Factory;
-use Assetic\Factory\Worker\WorkerInterface;
+use Assetic\Contracts\Factory\Worker\WorkerInterface;
 use Assetic\AssetWriter;
 use Assetic\Asset\AssetInterface;
 use Assetic\Asset\AssetCache;
