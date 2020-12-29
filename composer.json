@@ -24,15 +24,15 @@
     "bin/assetic"
   ],
   "require": {
-    "php": "^5.6 || ^7.0",
-    "kriswallsmith/assetic": "^1.2",
+    "php": "^7.3",
+    "assetic/framework": "~2.0.0",
     "widmogrod/php-functional": "^1.0",
     "zendframework/zend-mvc": "^3.0",
-    "symfony/console": "^3.1.3"
+    "symfony/console": "^3.1.3 | ^4.0 | ^5.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.4",
-    "fabpot/php-cs-fixer": "^1.12"
+    "phpunit/phpunit": "^9",
+    "friendsofphp/php-cs-fixer": "^2.17"
   },
   "suggest": {
     "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
@@ -41,7 +41,7 @@
   "scripts": {
     "test": "phpunit",
     "fix-code": "php-cs-fixer fix",
-    "check-code": "php-cs-fixer fix --verbose --diff --dry-run"
+    "check-code": "php-cs-fixer fix src/ --verbose --diff --dry-run --using-cache=no"
   },
   "autoload": {
     "psr-0": {

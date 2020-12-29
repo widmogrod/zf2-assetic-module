@@ -34,7 +34,7 @@ class BuildCommand extends Command
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @return int 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -42,5 +42,7 @@ class BuildCommand extends Command
         $config->setBuildOnRequest(true);
         $this->assetic->build();
         $this->assetic->getAssetWriter()->writeManagerAssets($this->assetic->getAssetManager());
+
+        return 0;
     }
 }
