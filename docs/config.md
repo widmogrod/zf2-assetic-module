@@ -4,24 +4,25 @@
 Below are the description of configuration options in the main `assetic_configuration` section.
 
 
-| Name               | Type       | Default          | Description |
-|--------------------|------------|------------------|-------------|
-| buildOnRequest     | boolean    | `true`           | Set to `true` if you're working in a development environment and you want on every request update your assets. If set to `false` assets won't be build during http request but you can do it from console `vendor/bin/assetic build`
-| debug              | boolean    | `false`          | If set to `true` then filters prepended with question mark `?CssMinFilter` won't be used. Great option for development enviroment.
-| combine            | boolean    | `true`           | This flag is optional, by default is set to `true`. In debug mode allow you to combine all assets to one file. Setting `false` will result in loading each asset as a separate file.
-| rendererToStrategy | array      | -                | Described in separate section
-| acceptableErrors   | array      | -                | Described in separate section
-| webPath            | string     | `public/assets`  | Here, all assets will be saved
-| cachePath          | string     | `data/cache`     | Here, cache metadata will be saved
-| cacheEnabled       | boolean    | `true`           | If, true cache will be used on assets using filters. This is very useful if we use filters like scss, closure,...
-| filePermission     | integer    | `null`           | Permission mode of `chmod` command in octal system (exampe: 0777 or 0750) for files.
-| dirPermission      | integer    | `null`           | Permission mode of `chmod` and `mkdir` command in octal system (exampe: 0777 or 0750) for directories.
-| baseUrl            | string     | `null`           | Define base URL which will prepend your resources. If `null`, then this value will be detected by ZF2
-| basePath           | string     | `assets`         | Indicate where assets are and from where will be loaded. In example where `$baseUrl = 'http://example.com/'` `$basePath = 'assets'` `$assetPath = '/main.css'` view strategy will build such resource address `<link href="$baseUrl . $basePath . $assetPath"/>`
-| controllers        | array      | -                | Described in separate section
-| routes             | array      | -                | Described in separate section
-| default            | array      | -                | Described in separate section
-| modules            | array      | -                | Described in separate section
+| Name                       | Type       | Default          | Description |
+|----------------------------|------------|------------------|-------------|
+| buildOnRequest             | boolean    | `true`           | Set to `true` if you're working in a development environment and you want on every request update your assets. If set to `false` assets won't be build during http request but you can do it from console `vendor/bin/assetic build`
+| debug                      | boolean    | `false`          | If set to `true` then filters prepended with question mark `?CssMinFilter` won't be used. Great option for development enviroment.
+| mergeActionAndRouterConfig | boolean    | `false`          | If set to `true` then controller, action and router config will be merged together. Otherwise, only controller and action config are merged.
+| combine                    | boolean    | `true`           | This flag is optional, by default is set to `true`. In debug mode allow you to combine all assets to one file. Setting `false` will result in loading each asset as a separate file.
+| rendererToStrategy         | array      | -                | Described in separate section
+| acceptableErrors           | array      | -                | Described in separate section
+| webPath                    | string     | `public/assets`  | Here, all assets will be saved
+| cachePath                  | string     | `data/cache`     | Here, cache metadata will be saved
+| cacheEnabled               | boolean    | `true`           | If, true cache will be used on assets using filters. This is very useful if we use filters like scss, closure,...
+| filePermission             | integer    | `null`           | Permission mode of `chmod` command in octal system (exampe: 0777 or 0750) for files.
+| dirPermission              | integer    | `null`           | Permission mode of `chmod` and `mkdir` command in octal system (exampe: 0777 or 0750) for directories.
+| baseUrl                    | string     | `null`           | Define base URL which will prepend your resources. If `null`, then this value will be detected by ZF2
+| basePath                   | string     | `assets`         | Indicate where assets are and from where will be loaded. In example where `$baseUrl = 'http://example.com/'` `$basePath = 'assets'` `$assetPath = '/main.css'` view strategy will build such resource address `<link href="$baseUrl . $basePath . $assetPath"/>`
+| controllers                | array      | -                | Described in separate section
+| routes                     | array      | -                | Described in separate section
+| default                    | array      | -                | Described in separate section
+| modules                    | array      | -                | Described in separate section
 
 ## Specific configuration
 ### Modules section

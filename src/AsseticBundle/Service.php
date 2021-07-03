@@ -238,10 +238,15 @@ class Service
     {
         $controllerConfig = $this->getControllerConfig();
         $actionConfig = $this->getActionConfig();
+        $routerConfig = $this->getRouterConfig();
+
         $config = array_merge($controllerConfig, $actionConfig);
 
-        if (count($config) == 0) {
-            $config = $this->getRouterConfig();
+        $mergeConfigs = $this->configuration->canMergeActionAndRouterConfig();
+        if ($mergeConfigs) {
+            $config = array_merge($routerConfig, $config);
+        } elseif (count($config) == 0) {
+            $config = $routerConfig;
         }
 
         // If we don't have any assets listed by now, or if we are mixing in

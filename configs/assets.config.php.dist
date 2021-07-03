@@ -10,6 +10,7 @@ return [
         'webPath' => __DIR__ . '/../../../public/assets',
         'basePath' => 'assets',
 
+
         'routes' => [
             'home' => [
                 '@base_js',

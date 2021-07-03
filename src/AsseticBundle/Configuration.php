@@ -140,6 +140,11 @@ class Configuration
      */
     protected $dirPermission = null;
 
+    /**
+     * @var null|bool Allow merge controller, action and router config.
+     */
+    protected $mergeActionAndRouterConfig = false;
+
     public function __construct($config = null)
     {
         if (null !== $config) {
@@ -462,5 +467,21 @@ class Configuration
     public function getWriteIfChanged()
     {
         return $this->writeIfChanged;
+    }
+
+    /**
+     * @param bool $flag
+     */
+    public function setMergeActionAndRouterConfig($flag)
+    {
+        $this->mergeActionAndRouterConfig = (bool) $flag;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canMergeActionAndRouterConfig()
+    {
+        return $this->mergeActionAndRouterConfig;
     }
 }
